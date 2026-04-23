@@ -110,8 +110,6 @@
     border-bottom: 1px solid var(--rule);
   }
   .masthead-meta strong { color: var(--green); font-weight: 600; }
-  .masthead-meta a { color: var(--green); text-decoration: none; font-weight: 600; border-bottom: 2px solid var(--rule); transition: all 0.2s ease; }
-  .masthead-meta a:hover { border-bottom-color: var(--green); }
 
   .unit-number {
     font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
@@ -269,7 +267,6 @@
     transition: all .3s ease;
     box-shadow: 0 0 0 0 rgba(0,123,60,0.5);
     animation: pulse 2.5s infinite;
-    border: none;
   }
   .video-play:hover { transform: translate(-50%, -50%) scale(1.08); }
   .video-play svg { width: 28px; height: 28px; fill: white; margin-left: 4px; }
@@ -386,7 +383,6 @@
     padding-top: 14px;
     border-top: 1px solid rgba(242, 235, 214, 0.15);
   }
-  .stat-cite a { color: var(--green-on-dark); }
 
   /* ============== BLOCK 1.3 — ACCORDION ============== */
   .accordion {
@@ -942,8 +938,6 @@
     text-decoration: none;
     border-radius: 2px;
     transition: all .2s ease;
-    border: none;
-    cursor: pointer;
   }
   .next-unit-btn:hover { background: var(--green-dark); }
 
@@ -995,6 +989,36 @@
     .colophon { grid-template-columns: 1fr; }
     .scenario-chars { font-size: 90px; }
   }
+
+  /* Back to Course Home link in masthead meta bar */
+  .masthead-home {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--grey);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .masthead-home:hover {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+  .masthead-home-arrow {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  .masthead-home:hover .masthead-home-arrow {
+    transform: translateX(-3px);
+  }
 </style>
 </head>
 <body>
@@ -1022,7 +1046,7 @@
     <!-- ============ MASTHEAD ============ -->
     <header class="masthead">
       <div class="masthead-meta">
-        <a href="index.html">← Back to Course Home</a>
+        <a href="index.html" class="masthead-home" aria-label="Back to course home"><span class="masthead-home-arrow">&larr;</span> <span class="masthead-home-text">Back to Course Home</span></a>
         <span><strong>Unit 01 of 05</strong> · 30 minutes</span>
       </div>
       <span class="unit-number">01</span>
@@ -1092,15 +1116,16 @@
         <div>
           <div class="stat-card">
             <span class="stat-label">ADOPTION SIGNAL · HIGHER ED FACULTY</span>
-            <span class="stat-number">84<sup>%</sup></span>
-            <p class="stat-caption">of U.S. Educators Actively Use AI In The Classroom.</p>
-            <div class="stat-cite">
-  <a href="https://teachinglicense.study.com/featured-insights/teachers-change-minds-about-AI.html" target="_blank">
-    Teachers are Changing Their Minds About AI
-  </a>
-            </div>
+            <span class="stat-number">72<sup>%</sup></span>
+            <p class="stat-caption">of faculty report using generative AI for at least one teaching task, yet a minority describe their use as principled or theory-grounded.</p>
+            <div class="stat-cite">PLACEHOLDER · VERIFY SOURCE BEFORE PUBLISHING</div>
           </div>
         </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Statistic verification needed</strong>
+        Replace the 72% figure with a verified statistic from a current source (EDUCAUSE Horizon Report, Tyton Partners Time for Class, or similar) before deployment. Do not publish the placeholder number.
       </div>
     </section>
 
@@ -1155,7 +1180,7 @@
         <div class="acc-item">
           <button class="acc-trigger" aria-expanded="false">
             <span class="acc-num">03 · RAG</span>
-            <span class="acc-label">Retrieval-Augmented GenAI</span>
+            <span class="acc-label">Retrieval-Augmented AI</span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-panel">
@@ -1323,8 +1348,8 @@
       </div>
 
       <div class="placeholder-note">
-        <strong>Integration note</strong>
-        In production, this text-entry block saves to the learner's progress and can optionally post to a peer discussion. This HTML prototype uses in-page memory only; the reflection is not transmitted.
+        <strong>Production integration note</strong>
+        In production, this text-entry block saves to the learner's progress tracking and can optionally post to a peer discussion. This HTML prototype uses in-page memory only; the reflection is not transmitted.
       </div>
     </section>
 
@@ -1360,7 +1385,7 @@
 
       <div class="placeholder-note">
         <strong>Artifact asset needed</strong>
-        The TAM + SAMR Tool Audit Worksheet exists as a table in Appendix D of the course spec. It must be exported to an accessible PDF (tagged, WCAG 2.1 AA) and hosted in Canvas as a downloadable resource. The Tool Types Quick Reference is a new one-pager that needs to be designed and produced.
+        The TAM + SAMR Tool Audit Worksheet exists as a table in Appendix D of the course spec. It must be exported to an accessible PDF (tagged, WCAG 2.1 AA) and hosted in the course platform as a downloadable resource. The Tool Types Quick Reference is a new one-pager that needs to be designed and produced.
       </div>
     </section>
 
@@ -1382,7 +1407,7 @@
           <div class="next-unit-label">COMING UP · UNIT 02 · 40 MIN</div>
           <div class="next-unit-title">Prompt Engineering for Clinician-Educators</div>
           <div class="next-unit-desc">Role, Context, Task, Format, Constraints. The five-part prompt model and a six-template library for DE instructional tasks.</div>
-          <a href="unit_02.html" class="next-unit-btn">
+          <a href="#" class="next-unit-btn">
             Begin Unit 02
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
