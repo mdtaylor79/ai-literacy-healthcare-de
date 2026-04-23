@@ -1260,6 +1260,36 @@
     .rctfc-nav { flex-wrap: wrap; }
     .rctfc-tab { flex: 1 0 40%; border-bottom: 1px solid var(--rule); }
   }
+
+  /* Back to Course Home link in masthead meta bar */
+  .masthead-home {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--grey);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .masthead-home:hover {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+  .masthead-home-arrow {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  .masthead-home:hover .masthead-home-arrow {
+    transform: translateX(-3px);
+  }
 </style>
 </head>
 <body>
@@ -1285,11 +1315,11 @@
 <main class="shell">
   <div class="wrap">
 
-  <!-- ============ MASTHEAD ============ -->
-     <header class="masthead">
+    <!-- ============ MASTHEAD ============ -->
+    <header class="masthead">
       <div class="masthead-meta">
-        <a href="index.html">← Back to Course Home</a>
-        <span><strong>Unit 02 of 05</strong> · 30 minutes</span>
+        <a href="index.html" class="masthead-home" aria-label="Back to course home"><span class="masthead-home-arrow">&larr;</span> <span class="masthead-home-text">Back to Course Home</span></a>
+        <span><strong>Unit 02 of 05</strong> · 40 minutes</span>
       </div>
       <span class="unit-number">02</span>
       <h1 class="unit-title">Prompt Engineering for Clinician-Educators</h1>
@@ -1809,7 +1839,7 @@
 
       <div class="placeholder-note">
         <strong>Artifact asset needed</strong>
-        In production, each template is downloadable as a plain-text file or copyable to clipboard inside Canvas. Consider bundling all six into a single "Prompt Library PDF" as a Unit 02 downloadable resource. Source is Appendix E of the course spec.
+        In production, each template is downloadable as a plain-text file or copyable to clipboard inside the course platform. Consider bundling all six into a single "Prompt Library PDF" as a Unit 02 downloadable resource. Source is Appendix E of the course spec.
       </div>
     </section>
 
@@ -1844,6 +1874,10 @@ Constraints: [Ethics, accuracy, scope]..."></textarea>
         </div>
       </div>
 
+      <div class="placeholder-note">
+        <strong>Production integration note</strong>
+        In production, this draft feeds the summative artifact and can optionally post to the Unit 02 peer discussion board where peers apply the Prompt Quality Rubric (Appendix F of the course spec). This HTML prototype uses in-page memory only.
+      </div>
     </section>
 
     <!-- ============ BLOCK 2.10 — UNIT CLOSE ============ -->
