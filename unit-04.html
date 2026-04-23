@@ -1437,6 +1437,36 @@
     .pill { border-right: none; border-bottom: 1px solid var(--rule); }
     .colophon { grid-template-columns: 1fr; }
   }
+
+  /* Back to Course Home link in masthead meta bar */
+  .masthead-home {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--grey);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .masthead-home:hover {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+  .masthead-home-arrow {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  .masthead-home:hover .masthead-home-arrow {
+    transform: translateX(-3px);
+  }
 </style>
 </head>
 <body>
@@ -1462,11 +1492,11 @@
 <main class="shell">
   <div class="wrap">
 
-<!-- ============ MASTHEAD ============ -->
+    <!-- ============ MASTHEAD ============ -->
     <header class="masthead">
       <div class="masthead-meta">
-        <a href="index.html">← Back to Course Home</a>
-        <span><strong>Unit 04 of 05</strong> · 30 minutes</span>
+        <a href="index.html" class="masthead-home" aria-label="Back to course home"><span class="masthead-home-arrow">&larr;</span> <span class="masthead-home-text">Back to Course Home</span></a>
+        <span><strong>Unit 04 of 05</strong> · 40 minutes</span>
       </div>
       <span class="unit-number">04</span>
       <h1 class="unit-title">Designing AI-Enhanced DE Activities</h1>
@@ -1541,7 +1571,7 @@
             <div class="synth-col-head">Three interactions</div>
             <div class="synth-col-cite">Moore (1989); Hillman et al. (1994)</div>
             <ul class="synth-list">
-              <li data-n="1"><strong>Learner ↔ Content.</strong> The reading, the video, the case, the Content block itself.</li>
+              <li data-n="1"><strong>Learner ↔ Content.</strong> The reading, the video, the case, the content block itself.</li>
               <li data-n="2"><strong>Learner ↔ Instructor.</strong> Welcomes, feedback touchpoints, scripted instructor presence.</li>
               <li data-n="3"><strong>Learner ↔ Learner.</strong> Peer discussion, peer review, collaborative interpretation.</li>
               <li data-n="4"><strong>Learner ↔ AI.</strong> Guided prompt practice, AI-coached writing, simulated patients.</li>
@@ -2105,7 +2135,10 @@
         </div>
       </div>
 
-    
+      <div class="placeholder-note">
+        <strong>Production integration note</strong>
+        In production, the completed canvas saves to learner progress, pre-fills the Block 4.9 reflection, and posts to the Unit 04 peer review discussion where peers apply the Activity Design Rubric (course spec Appendix F). This HTML prototype uses in-page memory only.
+      </div>
     </section>
 
     <!-- ============ BLOCK 4.9 — REFLECTION ============ -->
@@ -2127,7 +2160,10 @@
         </div>
       </div>
 
- 
+      <div class="placeholder-note">
+        <strong>Production integration note</strong>
+        In production, this rationale pairs with the canvas above as the submission artifact. Peers in Unit 04's discussion forum apply the Activity Design Rubric to canvas + rationale together.
+      </div>
     </section>
 
     <!-- ============ BLOCK 4.10 — UNIT CLOSE ============ -->
