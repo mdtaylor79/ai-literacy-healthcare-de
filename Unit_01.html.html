@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 01 — Foundations of AI in Healthcare | AI Literacy in Healthcare DE</title>
+
+<!-- Fritz-Quadrata alt: Cormorant Garamond for editorial feel; Work Sans for body; JetBrains Mono for tags -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --green:        #007B3C;
+    --green-dark:   #00562A;
+    --green-soft:   #E8F3EC;
+    --green-on-dark:#4DC17D;
+    --green-tint:   #F4F9F5;
+    --teal:         #00778C;
+    --navy:         #022F46;
+    --navy-soft:    #1a3d52;
+    --cream:        #F2EBD6;
+    --cream-soft:   #FBF7EA;
+    --ink:          #0F1419;
+    --paper:        #FDFCF8;
+    --rule:         #D4C9A8;
+    --rule-soft:    #EAE3CC;
+    --grey:         #5A5F5C;
+    --grey-light:   #5F6865;
+    --rail-w:       72px;
+    --max-w:        1180px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============== LEFT NAVIGATION RAIL ============== */
+  .rail {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: var(--rail-w);
+    background: var(--navy);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 28px 0;
+    z-index: 100;
+  }
+  .rail-logo {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-weight: 600; font-size: 28px;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 36px;
+  }
+  .rail-logo span { display: block; font-size: 14px; letter-spacing: 1.5px; color: var(--green-on-dark); margin-top: 6px; font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif; font-weight: 600; }
+
+  .rail-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; width: 100%; }
+  .rail-dot {
+    display: flex; align-items: center; justify-content: center;
+    height: 42px; width: 100%;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all .25s ease;
+    cursor: pointer;
+  }
+  .rail-dot:hover { color: var(--cream); border-left-color: var(--green-on-dark); background: rgba(255,255,255,.04); }
+  .rail-dot.active { color: var(--cream); border-left-color: var(--green-on-dark); background: rgba(0,123,60,.15); }
+  .rail-foot {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px; color: rgba(255,255,255,0.6);
+    writing-mode: vertical-rl; transform: rotate(180deg);
+  }
+
+  /* ============== MAIN SHELL ============== */
+  .shell {
+    margin-left: var(--rail-w);
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 56px;
+  }
+
+  /* ============== MASTHEAD ============== */
+  .masthead {
+    padding: 64px 0 48px;
+    border-bottom: 2px solid var(--navy);
+    position: relative;
+  }
+  .masthead-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px; color: var(--grey);
+    text-transform: uppercase;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead-meta strong { color: var(--green); font-weight: 600; }
+
+  .unit-number {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 260px;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--green);
+    line-height: 0.85;
+    letter-spacing: -8px;
+    margin-top: 28px;
+    display: block;
+  }
+  .unit-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-weight: 500;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--navy);
+    margin-top: -40px;
+    margin-left: 200px;
+    max-width: 720px;
+  }
+  .unit-sub {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--grey);
+    margin-top: 16px;
+    margin-left: 200px;
+    max-width: 720px;
+    line-height: 1.3;
+  }
+
+  .pill-row {
+    display: flex; gap: 0;
+    margin-top: 48px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .pill {
+    flex: 1;
+    padding: 22px 20px;
+    border-right: 1px solid var(--rule);
+  }
+  .pill:last-child { border-right: none; }
+  .pill-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green); text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .pill-value {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px; font-weight: 500;
+    color: var(--navy);
+    line-height: 1.1;
+  }
+
+  /* ============== BLOCK FRAMING ============== */
+  .block {
+    padding: 80px 0 40px;
+    border-bottom: 1px solid var(--rule-soft);
+    scroll-margin-top: 20px;
+  }
+  .block:last-child { border-bottom: none; }
+
+  .block-head {
+    display: flex; align-items: baseline; gap: 24px;
+    margin-bottom: 36px;
+  }
+  .block-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: var(--green);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .block-type {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--grey-light);
+    border: 1px solid var(--rule);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .block-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.05;
+    flex: 1;
+  }
+
+  p.lede {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.45;
+    max-width: 760px;
+    margin-bottom: 24px;
+  }
+
+  p.body { font-size: 16px; max-width: 760px; color: #1a2028; margin-bottom: 16px; }
+
+  /* ============== BLOCK 1.1 — WELCOME VIDEO ============== */
+  .video-stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -20px rgba(2, 47, 70, 0.4);
+  }
+  .video-stage::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: 
+      repeating-linear-gradient(0deg, transparent 0, transparent 3px, rgba(255,255,255,0.015) 3px, rgba(255,255,255,0.015) 4px);
+    pointer-events: none;
+  }
+  .video-stage::after {
+    content: '';
+    position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 40%, rgba(0,123,60,0.15) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .video-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 36px 44px;
+    color: var(--cream);
+  }
+  .video-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    align-self: flex-start;
+    padding: 6px 12px;
+    border: 1px solid var(--green);
+    border-radius: 2px;
+  }
+  .video-play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .3s ease;
+    box-shadow: 0 0 0 0 rgba(0,123,60,0.5);
+    animation: pulse 2.5s infinite;
+  }
+  .video-play:hover { transform: translate(-50%, -50%) scale(1.08); }
+  .video-play svg { width: 28px; height: 28px; fill: white; margin-left: 4px; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0,123,60,0.5); }
+    70% { box-shadow: 0 0 0 24px rgba(0,123,60,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,123,60,0); }
+  }
+  .video-meta-bottom {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.65);
+  }
+  .video-title-over {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--cream);
+    max-width: 60%;
+  }
+
+  .placeholder-note {
+    background: var(--cream-soft);
+    border-left: 3px solid var(--green);
+    padding: 16px 22px;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--navy);
+    max-width: 760px;
+    border-radius: 0 3px 3px 0;
+  }
+  .placeholder-note strong { color: var(--green); font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 6px; }
+
+  /* ============== BLOCK 1.2 — TEXT ON IMAGE / FRAMING ============== */
+  .framing {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 16px;
+  }
+  .framing-left h4 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 24px;
+  }
+  .framing-q {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 30px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.25;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--rule);
+    counter-increment: q;
+    position: relative;
+    padding-left: 52px;
+  }
+  .framing-q::before {
+    content: "0" counter(q);
+    position: absolute; left: 0; top: 22px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: var(--green);
+    letter-spacing: 1px;
+  }
+  .framing-left { counter-reset: q; }
+  .framing-q:last-child { border-bottom: none; }
+
+  .stat-card {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 40px 36px;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--green-on-dark);
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    display: block;
+    margin-bottom: 12px;
+  }
+  .stat-number {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 88px;
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1;
+    color: var(--cream);
+  }
+  .stat-number sup { font-size: 32px; vertical-align: super; font-style: normal; color: var(--green-on-dark); margin-left: 4px; }
+  .stat-caption {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-top: 16px;
+    color: rgba(242, 235, 214, 0.85);
+    max-width: 340px;
+  }
+  .stat-cite {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green-on-dark);
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(242, 235, 214, 0.15);
+  }
+
+  /* ============== BLOCK 1.3 — ACCORDION ============== */
+  .accordion {
+    margin-top: 16px;
+    border-top: 1px solid var(--navy);
+  }
+  .acc-item {
+    border-bottom: 1px solid var(--rule);
+  }
+  .acc-trigger {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 60px 1fr 40px;
+    align-items: center;
+    padding: 28px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    text-align: left;
+    transition: all .25s ease;
+  }
+  .acc-trigger:hover { background: var(--green-tint); padding-left: 16px; padding-right: 16px; }
+  .acc-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: var(--green);
+    letter-spacing: 1px;
+  }
+  .acc-label {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 26px; font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .acc-icon {
+    font-size: 20px;
+    color: var(--green);
+    transition: transform .3s ease;
+    text-align: right;
+    font-weight: 300;
+  }
+  .acc-item.open .acc-icon { transform: rotate(45deg); }
+  .acc-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease;
+  }
+  .acc-panel-inner {
+    padding: 4px 0 32px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  .acc-definition {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #1a2028;
+  }
+  .acc-definition strong { color: var(--green); font-weight: 600; }
+  .acc-example {
+    background: var(--green-tint);
+    border-left: 3px solid var(--green);
+    padding: 18px 22px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.6;
+    border-radius: 0 3px 3px 0;
+  }
+  .acc-example-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  /* ============== BLOCK 1.4 — SCENARIO VIDEO ============== */
+  .scenario-stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #022F46 0%, #014259 50%, #005a77 100%);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -20px rgba(2, 47, 70, 0.4);
+  }
+  .scenario-stage::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: 
+      linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.02) 55%, transparent 55%),
+      radial-gradient(circle at 70% 30%, rgba(0,119,140,0.25) 0%, transparent 50%);
+    background-size: 20px 20px, 100% 100%;
+    pointer-events: none;
+  }
+  .scenario-chars {
+    position: absolute;
+    bottom: 0; right: 0;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 180px;
+    font-weight: 500;
+    font-style: italic;
+    color: rgba(0, 123, 60, 0.3);
+    line-height: 0.8;
+    padding: 0 40px 20px 0;
+    pointer-events: none;
+  }
+
+  /* ============== BLOCK 1.5 — DRAG & MATCH KNOWLEDGE CHECK ============== */
+  .kc-intro {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 32px;
+    padding: 20px 24px;
+    background: var(--cream-soft);
+    border-radius: 3px;
+  }
+  .kc-intro-num {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--green);
+    font-style: italic;
+    line-height: 1;
+  }
+  .kc-intro-text {
+    font-size: 15px;
+    color: var(--navy);
+  }
+  .kc-intro-text strong { color: var(--green); }
+
+  .kc-game {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 20px;
+  }
+
+  .kc-column h4 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+
+  .kc-item {
+    background: white;
+    border: 1.5px solid var(--rule);
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    border-radius: 3px;
+    cursor: grab;
+    user-select: none;
+    transition: all .2s ease;
+    font-size: 15px;
+    color: var(--navy);
+    line-height: 1.45;
+    position: relative;
+  }
+  .kc-item:hover { border-color: var(--green); box-shadow: 0 4px 12px rgba(0,123,60,0.08); }
+  .kc-item.dragging { opacity: 0.4; cursor: grabbing; }
+  .kc-item.matched { background: var(--green-soft); border-color: var(--green); border-style: solid; }
+  .kc-item.matched::after {
+    content: '✓'; position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    color: var(--green); font-weight: 700; font-size: 18px;
+  }
+
+  .kc-target {
+    background: white;
+    border: 1.5px dashed var(--rule);
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    border-radius: 3px;
+    min-height: 72px;
+    transition: all .2s ease;
+  }
+  .kc-target.over { border-color: var(--green); border-style: solid; background: var(--green-tint); }
+  .kc-target.filled { background: var(--green-soft); border: 1.5px solid var(--green); border-style: solid; }
+  .kc-target-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .kc-target-name {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .kc-target-desc {
+    font-size: 14px;
+    color: var(--grey);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .kc-target-filled {
+    font-size: 14px;
+    color: var(--navy);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--green);
+    font-style: italic;
+  }
+
+  .kc-controls {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .kc-status {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--grey);
+  }
+  .kc-status strong { color: var(--green); }
+  .btn {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+    border: 1.5px solid transparent;
+    background: none;
+  }
+  .btn-primary { background: var(--green); color: white; border-color: var(--green); }
+  .btn-primary:hover { background: var(--green-dark); border-color: var(--green-dark); }
+  .btn-ghost { background: none; color: var(--navy); border-color: var(--rule); }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+
+  .kc-feedback {
+    margin-top: 20px;
+    padding: 20px 24px;
+    border-radius: 3px;
+    display: none;
+  }
+  .kc-feedback.show { display: block; }
+  .kc-feedback.correct { background: var(--green-soft); border-left: 3px solid var(--green); }
+  .kc-feedback.partial { background: var(--cream-soft); border-left: 3px solid #c99a2b; }
+  .kc-feedback-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px; font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .kc-feedback-body { font-size: 14px; color: var(--navy); line-height: 1.55; }
+
+  /* ============== BLOCK 1.6 — PROCESS (SAMR LADDER) ============== */
+  .samr-ladder {
+    margin-top: 24px;
+  }
+  .samr-controls {
+    display: flex; gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .samr-step-btn {
+    flex: 1;
+    padding: 16px 12px;
+    background: white;
+    border: none;
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+    text-align: center;
+    transition: all .2s ease;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+  }
+  .samr-step-btn:last-child { border-right: none; }
+  .samr-step-btn:hover { background: var(--green-tint); }
+  .samr-step-btn.active { background: var(--green); color: white; }
+  .samr-step-btn.active .samr-btn-letter, .samr-step-btn.active .samr-btn-label { color: white; }
+  .samr-btn-letter {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 32px; font-weight: 500; font-style: italic;
+    color: var(--green);
+    display: block;
+    line-height: 1;
+  }
+  .samr-btn-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--navy);
+    text-transform: uppercase;
+    margin-top: 6px;
+    display: block;
+    font-weight: 600;
+  }
+
+  .samr-content {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 48px;
+    padding: 36px 40px;
+    background: var(--cream-soft);
+    border-radius: 3px;
+    min-height: 280px;
+  }
+  .samr-left h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--green);
+    line-height: 0.9;
+  }
+  .samr-left-def {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--navy);
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+  .samr-right h4 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+  .samr-right p {
+    font-size: 15px;
+    color: var(--navy);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+  .samr-example {
+    border-left: 2px solid var(--green);
+    padding: 4px 0 4px 20px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--navy);
+    line-height: 1.45;
+  }
+  .samr-example-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-style: normal;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ============== BLOCK 1.7 — REFLECTION ============== */
+  .reflect-card {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 48px 56px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .reflect-card::before {
+    content: '"';
+    position: absolute;
+    top: -20px; right: 36px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 280px;
+    color: var(--green-on-dark);
+    opacity: 0.25;
+    line-height: 1;
+    font-style: italic;
+  }
+  .reflect-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 16px;
+  }
+  .reflect-prompt {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 32px;
+    color: var(--cream);
+    line-height: 1.3;
+    max-width: 720px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .reflect-textarea {
+    width: 100%;
+    min-height: 140px;
+    background: rgba(253, 252, 248, 0.95);
+    border: none;
+    border-radius: 3px;
+    padding: 20px 22px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    color: var(--navy);
+    line-height: 1.5;
+    resize: vertical;
+    position: relative;
+  }
+  .reflect-textarea:focus { outline: 2px solid var(--green); outline-offset: 2px; }
+  .reflect-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px;
+    position: relative;
+  }
+  .reflect-cite {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.6);
+  }
+  .reflect-save {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 24px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .reflect-save:hover { background: var(--green-dark); }
+  .reflect-saved { color: var(--green) !important; font-style: italic; }
+
+  /* ============== BLOCK 1.8 — BUTTON STACK / DOWNLOAD ============== */
+  .downloads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 16px;
+  }
+  .dl-card {
+    border: 1.5px solid var(--rule);
+    padding: 32px 32px;
+    border-radius: 3px;
+    background: white;
+    display: flex; flex-direction: column;
+    transition: all .25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .dl-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 0;
+    background: var(--green);
+    transition: height .3s ease;
+  }
+  .dl-card:hover { border-color: var(--green); transform: translateY(-2px); box-shadow: 0 12px 24px -8px rgba(0,123,60,0.15); }
+  .dl-card:hover::before { height: 100%; }
+  .dl-badge {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .dl-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .dl-desc {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.55;
+    flex: 1;
+    margin-bottom: 20px;
+  }
+  .dl-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--green);
+    text-decoration: none;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    align-self: flex-start;
+    width: 100%;
+  }
+  .dl-btn svg { width: 14px; height: 14px; transition: transform .25s ease; }
+  .dl-card:hover .dl-btn svg { transform: translateX(4px); }
+
+  /* ============== BLOCK 1.9 — UNIT CLOSE ============== */
+  .close {
+    padding: 56px 56px;
+    background: linear-gradient(135deg, var(--cream-soft) 0%, var(--cream) 100%);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .close-left h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .close-left p {
+    font-size: 16px;
+    color: var(--navy);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .next-unit {
+    background: white;
+    padding: 28px 32px;
+    border-radius: 3px;
+    border-left: 4px solid var(--green);
+  }
+  .next-unit-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .next-unit-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .next-unit-desc {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .next-unit-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: white;
+    background: var(--green);
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all .2s ease;
+  }
+  .next-unit-btn:hover { background: var(--green-dark); }
+
+  /* ============== COLOPHON ============== */
+  .colophon {
+    padding: 80px 0 64px;
+    border-top: 3px double var(--rule);
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  .col-brand {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--navy);
+    line-height: 1.4;
+  }
+  .col-brand strong { font-weight: 600; color: var(--green); display: block; font-size: 14px; font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-style: normal; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .col h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .col p, .col a {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.7;
+    text-decoration: none;
+    display: block;
+  }
+  .col a:hover { color: var(--green); }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .rail { display: none; }
+    .shell { margin-left: 0; }
+    .wrap { padding: 0 28px; }
+    .unit-number { font-size: 140px; letter-spacing: -4px; }
+    .unit-title { font-size: 40px; margin-left: 0; margin-top: 16px; }
+    .unit-sub { font-size: 20px; margin-left: 0; }
+    .block-title { font-size: 28px; }
+    .framing, .kc-game, .close, .downloads, .samr-content, .acc-panel-inner { grid-template-columns: 1fr; gap: 24px; }
+    .pill-row { flex-direction: column; }
+    .pill { border-right: none; border-bottom: 1px solid var(--rule); }
+    .colophon { grid-template-columns: 1fr; }
+    .scenario-chars { font-size: 90px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LEFT RAIL NAV ============ -->
+<nav class="rail" aria-label="Unit blocks">
+  <div class="rail-logo">AIL<span>UNIT 01</span></div>
+  <div class="rail-nav">
+    <a href="#b11" class="rail-dot active" data-block="1">1.1</a>
+    <a href="#b12" class="rail-dot" data-block="2">1.2</a>
+    <a href="#b13" class="rail-dot" data-block="3">1.3</a>
+    <a href="#b14" class="rail-dot" data-block="4">1.4</a>
+    <a href="#b15" class="rail-dot" data-block="5">1.5</a>
+    <a href="#b16" class="rail-dot" data-block="6">1.6</a>
+    <a href="#b17" class="rail-dot" data-block="7">1.7</a>
+    <a href="#b18" class="rail-dot" data-block="8">1.8</a>
+    <a href="#b19" class="rail-dot" data-block="9">1.9</a>
+  </div>
+  <div class="rail-foot">MD TAYLOR</div>
+</nav>
+
+<main class="shell">
+  <div class="wrap">
+
+    <!-- ============ MASTHEAD ============ -->
+    <header class="masthead">
+      <div class="masthead-meta">
+        <span>AI Literacy in Healthcare Distance Education</span>
+        <span><strong>Unit 01 of 05</strong> · 30 minutes · Rise 360</span>
+      </div>
+      <span class="unit-number">01</span>
+      <h1 class="unit-title">Foundations of AI in Healthcare</h1>
+      <p class="unit-sub">What AI is, what it is not, and where it fits in your distance education course.</p>
+
+      <div class="pill-row">
+        <div class="pill">
+          <span class="pill-label">SAMR Target</span>
+          <span class="pill-value">Substitution → Augmentation</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">CoI Emphasis</span>
+          <span class="pill-value">Teaching + Cognitive Presence</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">Summative Artifact</span>
+          <span class="pill-value">TAM + SAMR Tool Audit</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ BLOCK 1.1 — STATEMENT A / WELCOME VIDEO ============ -->
+    <section class="block" id="b11">
+      <div class="block-head">
+        <span class="block-num">1.1</span>
+        <span class="block-type">Statement A · Video</span>
+      </div>
+      <h2 class="block-title">A 60-second welcome from your facilitator</h2>
+      <p class="lede">Before any content, your facilitator sets the tone. This is teaching presence made visible — an anchor for the whole unit.</p>
+
+      <div class="video-stage" role="img" aria-label="Instructor welcome video placeholder">
+        <div class="video-overlay">
+          <span class="video-tag">01 · INSTRUCTOR WELCOME</span>
+          <div class="video-meta-bottom">
+            <span class="video-title-over">"AI will enter your classroom.<br>How you shape its role is the question."</span>
+            <span>00:00 / 00:58</span>
+          </div>
+        </div>
+        <button class="video-play" aria-label="Play welcome video">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Video production needed</strong>
+        45–60 second scripted welcome video from facilitator. Script is in Appendix A of the course spec. Captions on by default (WCAG 2.1 AA). Replace this placeholder with the final video embed (Vimeo or YouTube unlisted, closed-caption enabled).
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 1.2 — TEXT ON IMAGE / FRAMING ============ -->
+    <section class="block" id="b12">
+      <div class="block-head">
+        <span class="block-num">1.2</span>
+        <span class="block-type">Text on Image · Framing</span>
+      </div>
+      <h2 class="block-title">Why AI literacy, why now</h2>
+      <p class="lede">Three questions reframe what this unit is really about. Pair them with the adoption trend that makes this course time-sensitive.</p>
+
+      <div class="framing">
+        <div class="framing-left">
+          <h4>FRAMING QUESTIONS</h4>
+          <p class="framing-q">What can AI do that your existing DE tools cannot?</p>
+          <p class="framing-q">Which instructional tasks deserve AI support, and which do not?</p>
+          <p class="framing-q">How will your learners know AI is present in your course?</p>
+        </div>
+        <div>
+          <div class="stat-card">
+            <span class="stat-label">ADOPTION SIGNAL · HIGHER ED FACULTY</span>
+            <span class="stat-number">72<sup>%</sup></span>
+            <p class="stat-caption">of faculty report using generative AI for at least one teaching task, yet a minority describe their use as principled or theory-grounded.</p>
+            <div class="stat-cite">PLACEHOLDER · VERIFY SOURCE BEFORE PUBLISHING</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Statistic verification needed</strong>
+        Replace the 72% figure with a verified statistic from a current source (EDUCAUSE Horizon Report, Tyton Partners Time for Class, or similar) before deployment. Do not publish the placeholder number.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 1.3 — ACCORDION ============ -->
+    <section class="block" id="b13">
+      <div class="block-head">
+        <span class="block-num">1.3</span>
+        <span class="block-type">Accordion · Concept Blocks</span>
+      </div>
+      <h2 class="block-title">Three types of AI you will meet in healthcare education</h2>
+      <p class="lede">Not all AI systems work the same way. Knowing which type you are working with shapes every design decision that follows.</p>
+
+      <div class="accordion" id="accordion">
+        <div class="acc-item open">
+          <button class="acc-trigger" aria-expanded="true">
+            <span class="acc-num">01 · GEN</span>
+            <span class="acc-label">Generative AI</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-panel" style="max-height: 400px;">
+            <div class="acc-panel-inner">
+              <div class="acc-definition">
+                Systems that <strong>produce new content</strong> such as text, images, code, or audio in response to a prompt. Large language models like GPT-4 and Claude sit here. These are the tools faculty most often reach for when AI becomes a verb in a sentence.
+              </div>
+              <div class="acc-example">
+                <span class="acc-example-label">Clinical Education Example</span>
+                A nursing faculty member asks a chatbot to draft three case-based scenarios for a cardiac unit discussion board. The AI generates the cases. The faculty member verifies clinical accuracy and adapts for learner level.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" aria-expanded="false">
+            <span class="acc-num">02 · DIS</span>
+            <span class="acc-label">Discriminative AI</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-panel">
+            <div class="acc-panel-inner">
+              <div class="acc-definition">
+                Systems that <strong>classify, rank, or detect</strong> patterns in existing data. They answer "what is this?" rather than "make me this." Plagiarism checkers, AI-text detectors, and radiology triage tools all belong to this family.
+              </div>
+              <div class="acc-example">
+                <span class="acc-example-label">Clinical Education Example</span>
+                A pharmacy course uses a discriminative system to flag drug-interaction errors in student SOAP notes. The tool classifies each answer; the instructor reviews flagged items and delivers feedback.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" aria-expanded="false">
+            <span class="acc-num">03 · RAG</span>
+            <span class="acc-label">Retrieval-Augmented AI</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-panel">
+            <div class="acc-panel-inner">
+              <div class="acc-definition">
+                Systems that <strong>pair generation with a curated source library</strong>, grounding outputs in specific documents. Think of a chatbot that only answers from your course textbook or your clinical protocol binder. This is where much of healthcare's responsible AI adoption is moving.
+              </div>
+              <div class="acc-example">
+                <span class="acc-example-label">Clinical Education Example</span>
+                A medical education team builds a retrieval-augmented study partner grounded in the institution's USMLE prep library. Learners ask clinical questions; the tool answers from verified sources with citations, reducing confabulation risk.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 1.4 — SCENARIO VIDEO ============ -->
+    <section class="block" id="b14">
+      <div class="block-head">
+        <span class="block-num">1.4</span>
+        <span class="block-type">Scenario Video · Worked Example</span>
+      </div>
+      <h2 class="block-title">Dr. Ruiz meets ChatGPT</h2>
+      <p class="lede">A 90-second narrated scenario. Watch a pharmacy educator evaluate a chatbot for case-based teaching, then name the TAM constructs and SAMR level at play.</p>
+
+      <div class="scenario-stage" role="img" aria-label="Scenario video placeholder: Dr. Ruiz meets ChatGPT">
+        <div class="scenario-chars" aria-hidden="true">Rx</div>
+        <div class="video-overlay">
+          <span class="video-tag">SCENARIO · 01:30</span>
+          <div class="video-meta-bottom">
+            <span class="video-title-over">Dr. Ruiz prepares a case-based online session and tests a chatbot as a teaching partner.</span>
+            <span>00:00 / 01:30</span>
+          </div>
+        </div>
+        <button class="video-play" aria-label="Play scenario video">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Video production needed</strong>
+        90-second scenario video. Full script in Appendix B1 of the course spec. Visual approach: clean screencast of the chatbot interface with narrator voiceover. Include on-screen callouts naming TAM constructs (perceived usefulness, perceived ease of use) and the SAMR level (Augmentation). Closed captions required.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 1.5 — KNOWLEDGE CHECK ============ -->
+    <section class="block" id="b15">
+      <div class="block-head">
+        <span class="block-num">1.5</span>
+        <span class="block-type">Knowledge Check · Drag & Match</span>
+      </div>
+      <h2 class="block-title">Match the tool to the task</h2>
+      <p class="lede">Drag each clinical scenario to the AI system type that best fits. Formative only — three attempts, no score recorded.</p>
+
+      <div class="kc-intro">
+        <span class="kc-intro-num">3</span>
+        <span class="kc-intro-text"><strong>Three scenarios, three system types.</strong> One answer per target. Click <em>Check my matches</em> when ready.</span>
+      </div>
+
+      <div class="kc-game">
+        <div class="kc-column">
+          <h4>SCENARIOS · DRAG ME</h4>
+          <div class="kc-item" draggable="true" data-id="s1" data-answer="gen">A nursing instructor needs three case-based scenarios for a cardiac care discussion and wants AI to draft them from a short prompt.</div>
+          <div class="kc-item" draggable="true" data-id="s2" data-answer="dis">A pharmacy course needs to flag drug-interaction errors in hundreds of student SOAP notes for instructor review.</div>
+          <div class="kc-item" draggable="true" data-id="s3" data-answer="rag">A medical education team wants a study partner that only answers questions using the institution's verified USMLE prep library.</div>
+        </div>
+        <div class="kc-column">
+          <h4>AI SYSTEM TYPES · DROP ZONES</h4>
+          <div class="kc-target" data-target="gen" data-desc="Produces new content from a prompt.">
+            <span class="kc-target-label">01 · GEN</span>
+            <span class="kc-target-name">Generative AI</span>
+            <span class="kc-target-desc">Produces new content from a prompt.</span>
+          </div>
+          <div class="kc-target" data-target="dis" data-desc="Classifies, ranks, or detects patterns.">
+            <span class="kc-target-label">02 · DIS</span>
+            <span class="kc-target-name">Discriminative AI</span>
+            <span class="kc-target-desc">Classifies, ranks, or detects patterns.</span>
+          </div>
+          <div class="kc-target" data-target="rag" data-desc="Generates from a curated source library.">
+            <span class="kc-target-label">03 · RAG</span>
+            <span class="kc-target-name">Retrieval-Augmented</span>
+            <span class="kc-target-desc">Generates from a curated source library.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kc-controls">
+        <span class="kc-status"><strong id="kc-count">0</strong> / 3 matched · Attempts: <strong id="kc-attempts">0</strong> / 3</span>
+        <div>
+          <button class="btn btn-ghost" id="kc-reset">Reset</button>
+          <button class="btn btn-primary" id="kc-check">Check my matches</button>
+        </div>
+      </div>
+
+      <div class="kc-feedback" id="kc-feedback">
+        <div class="kc-feedback-title" id="kc-fb-title"></div>
+        <div class="kc-feedback-body" id="kc-fb-body"></div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 1.6 — PROCESS / SAMR LADDER ============ -->
+    <section class="block" id="b16">
+      <div class="block-head">
+        <span class="block-num">1.6</span>
+        <span class="block-type">Process · SAMR Ladder</span>
+      </div>
+      <h2 class="block-title">The SAMR ladder, read across healthcare DE</h2>
+      <p class="lede">Puentedura's four-rung model names how AI changes a task. Click each rung to see a healthcare distance education example at that level.</p>
+
+      <div class="samr-ladder">
+        <div class="samr-controls">
+          <button class="samr-step-btn active" data-step="s">
+            <span class="samr-btn-letter">S</span>
+            <span class="samr-btn-label">Substitution</span>
+          </button>
+          <button class="samr-step-btn" data-step="a">
+            <span class="samr-btn-letter">A</span>
+            <span class="samr-btn-label">Augmentation</span>
+          </button>
+          <button class="samr-step-btn" data-step="m">
+            <span class="samr-btn-letter">M</span>
+            <span class="samr-btn-label">Modification</span>
+          </button>
+          <button class="samr-step-btn" data-step="r">
+            <span class="samr-btn-letter">R</span>
+            <span class="samr-btn-label">Redefinition</span>
+          </button>
+        </div>
+
+        <div class="samr-content" id="samr-content">
+          <div class="samr-left">
+            <h3 id="samr-word">Substitution</h3>
+            <p class="samr-left-def" id="samr-def">AI replaces an older tool with no functional change to the task itself.</p>
+          </div>
+          <div class="samr-right">
+            <h4>HEALTHCARE DE EXAMPLE</h4>
+            <p id="samr-body">A faculty member uses an AI tool to generate a one-paragraph reading summary instead of writing it by hand. The task — producing a summary — is identical; only the tool changed.</p>
+            <div class="samr-example">
+              <span class="samr-example-tag">KEY QUESTION</span>
+              <span id="samr-q">"Could you still do this task without AI and reach the same outcome?"</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 1.7 — REFLECTION ============ -->
+    <section class="block" id="b17">
+      <div class="block-head">
+        <span class="block-num">1.7</span>
+        <span class="block-type">Reflection · Text Entry</span>
+      </div>
+      <h2 class="block-title">My SAMR starting line</h2>
+      <p class="lede">Self-regulation asks you to pause and take stock before you design forward. This one-question reflection establishes your baseline.</p>
+
+      <div class="reflect-card">
+        <span class="reflect-label">REFLECT · PRIVATE TO YOU</span>
+        <div class="reflect-prompt">Where does AI currently sit in your course — Substitution, Augmentation, Modification, or Redefinition — and what is one honest reason it sits there?</div>
+        <textarea class="reflect-textarea" id="reflect-input" placeholder="Type your reflection here. Your response stays in this browser session and is not submitted anywhere."></textarea>
+        <div class="reflect-footer">
+          <span class="reflect-cite">Self-regulated learning · Zimmerman (2000)</span>
+          <button class="reflect-save" id="reflect-save">Save my reflection</button>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Rise 360 integration note</strong>
+        In production, this text-entry block saves to the learner's Rise progress and can optionally post to a peer discussion. This HTML prototype uses in-page memory only; the reflection is not transmitted.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 1.8 — BUTTON STACK / DOWNLOADS ============ -->
+    <section class="block" id="b18">
+      <div class="block-head">
+        <span class="block-num">1.8</span>
+        <span class="block-type">Button Stack · Applied Artifact</span>
+      </div>
+      <h2 class="block-title">Take it from concept to artifact</h2>
+      <p class="lede">You now have the foundations. Download the tool audit worksheet and complete it for one AI tool you already use or are considering.</p>
+
+      <div class="downloads">
+        <div class="dl-card">
+          <span class="dl-badge">Primary Artifact</span>
+          <h3 class="dl-title">TAM + SAMR Tool Audit Worksheet</h3>
+          <p class="dl-desc">Nine-field worksheet covering tool name, intended task, TAM ratings, current and target SAMR level, CoI presence affected, data flags, and a final decision with rationale. This is your Unit 01 summative artifact.</p>
+          <a href="#" class="dl-btn">
+            Download PDF
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="dl-card">
+          <span class="dl-badge">Reference</span>
+          <h3 class="dl-title">Tool Types Quick Reference</h3>
+          <p class="dl-desc">One-page summary of the three AI system types, when to reach for each, and the risk profile that comes with it. Keep this next to your desk while drafting your audit.</p>
+          <a href="#" class="dl-btn">
+            Download PDF
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Artifact asset needed</strong>
+        The TAM + SAMR Tool Audit Worksheet exists as a table in Appendix D of the course spec. It must be exported to an accessible PDF (tagged, WCAG 2.1 AA) and hosted in Rise 360 as a downloadable resource. The Tool Types Quick Reference is a new one-pager that needs to be designed and produced.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 1.9 — UNIT CLOSE ============ -->
+    <section class="block" id="b19">
+      <div class="block-head">
+        <span class="block-num">1.9</span>
+        <span class="block-type">Statement B · Close</span>
+      </div>
+      <h2 class="block-title">Close and preview</h2>
+
+      <div class="close">
+        <div class="close-left">
+          <h3>You just built a shared vocabulary.</h3>
+          <p>Three AI types. A four-rung ladder. Two framework lenses. That is enough to have a principled conversation about any AI tool in healthcare distance education.</p>
+          <p>Unit 02 turns that vocabulary into practice. You will stop asking <em>what is AI</em> and start asking <em>how do I get useful instructional output from it</em>. The answer is a prompt model that reads like a lesson plan.</p>
+        </div>
+        <div class="next-unit">
+          <div class="next-unit-label">COMING UP · UNIT 02 · 40 MIN</div>
+          <div class="next-unit-title">Prompt Engineering for Clinician-Educators</div>
+          <div class="next-unit-desc">Role, Context, Task, Format, Constraints. The five-part prompt model and a six-template library for DE instructional tasks.</div>
+          <a href="#" class="next-unit-btn">
+            Begin Unit 02
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COLOPHON ============ -->
+    <footer class="colophon">
+      <div class="col col-brand">
+        <strong>Applied DE Project</strong>
+        A theory-grounded micro-course for health science faculty teaching in distance education environments. Built on Community of Inquiry, TAM, Self-Regulated Learning, and SAMR.
+      </div>
+      <div class="col">
+        <h5>Framework Grounding</h5>
+        <p>Garrison et al. (2000)</p>
+        <p>Davis (1989)</p>
+        <p>Zimmerman (2000)</p>
+        <p>Puentedura (2006)</p>
+      </div>
+      <div class="col">
+        <h5>Attribution</h5>
+        <p>Marcus "MD" Taylor</p>
+        <p>UNT Health Science Center</p>
+        <p>Unit 01 · v1.0</p>
+      </div>
+    </footer>
+
+  </div>
+</main>
+
+<script>
+// ============ RAIL SCROLL SPY ============
+const blocks = document.querySelectorAll('.block');
+const dots = document.querySelectorAll('.rail-dot');
+
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      dots.forEach(d => d.classList.remove('active'));
+      const active = document.querySelector(`.rail-dot[href="#${id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+
+blocks.forEach(b => spy.observe(b));
+
+// ============ ACCORDION ============
+document.querySelectorAll('.acc-trigger').forEach(trigger => {
+  trigger.addEventListener('click', () => {
+    const item = trigger.closest('.acc-item');
+    const panel = item.querySelector('.acc-panel');
+    const isOpen = item.classList.contains('open');
+
+    document.querySelectorAll('.acc-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.acc-panel').style.maxHeight = '0';
+      i.querySelector('.acc-trigger').setAttribute('aria-expanded', 'false');
+    });
+
+    if (!isOpen) {
+      item.classList.add('open');
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+// Prime first open item
+(function primeAcc() {
+  const first = document.querySelector('.acc-item.open .acc-panel');
+  if (first) first.style.maxHeight = first.scrollHeight + 'px';
+})();
+
+// ============ KNOWLEDGE CHECK — DRAG & DROP ============
+const kcItems = document.querySelectorAll('.kc-item');
+const kcTargets = document.querySelectorAll('.kc-target');
+const kcCount = document.getElementById('kc-count');
+const kcAttempts = document.getElementById('kc-attempts');
+const kcCheck = document.getElementById('kc-check');
+const kcReset = document.getElementById('kc-reset');
+const kcFeedback = document.getElementById('kc-feedback');
+const kcFbTitle = document.getElementById('kc-fb-title');
+const kcFbBody = document.getElementById('kc-fb-body');
+
+let matches = {};      // targetKey -> {id, answer}
+let attempts = 0;
+let dragged = null;
+
+function updateCount() {
+  const filled = Object.keys(matches).length;
+  kcCount.textContent = filled;
+  kcCheck.disabled = filled < 3;
+  kcCheck.style.opacity = filled < 3 ? 0.5 : 1;
+}
+updateCount();
+
+kcItems.forEach(item => {
+  item.addEventListener('dragstart', (e) => {
+    dragged = item;
+    item.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  item.addEventListener('dragend', () => {
+    item.classList.remove('dragging');
+    dragged = null;
+  });
+});
+
+kcTargets.forEach(target => {
+  target.addEventListener('dragover', (e) => { e.preventDefault(); target.classList.add('over'); });
+  target.addEventListener('dragleave', () => target.classList.remove('over'));
+  target.addEventListener('drop', (e) => {
+    e.preventDefault();
+    target.classList.remove('over');
+    if (!dragged) return;
+    const targetKey = target.dataset.target;
+    const id = dragged.dataset.id;
+    const answer = dragged.dataset.answer;
+
+    // Remove dragged item from any previous target
+    Object.keys(matches).forEach(k => {
+      if (matches[k].id === id) delete matches[k];
+    });
+
+    // If target had something, return that item to the pool
+    if (matches[targetKey]) {
+      const prevId = matches[targetKey].id;
+      const prevItem = document.querySelector(`.kc-item[data-id="${prevId}"]`);
+      if (prevItem) prevItem.classList.remove('matched');
+      // Clear target's filled text
+      const existing = target.querySelector('.kc-target-filled');
+      if (existing) existing.remove();
+    }
+
+    matches[targetKey] = { id, answer };
+    dragged.classList.add('matched');
+    target.classList.add('filled');
+
+    // Remove any existing filled line
+    const existing = target.querySelector('.kc-target-filled');
+    if (existing) existing.remove();
+
+    const filled = document.createElement('div');
+    filled.className = 'kc-target-filled';
+    filled.textContent = '→ ' + dragged.textContent.substring(0, 90) + (dragged.textContent.length > 90 ? '...' : '');
+    target.appendChild(filled);
+
+    updateCount();
+  });
+});
+
+kcCheck.addEventListener('click', () => {
+  if (Object.keys(matches).length < 3) return;
+  attempts++;
+  kcAttempts.textContent = attempts;
+  let correct = 0;
+  Object.entries(matches).forEach(([targetKey, m]) => {
+    if (m.answer === targetKey) correct++;
+  });
+
+  kcFeedback.classList.remove('correct', 'partial');
+  kcFeedback.classList.add('show');
+
+  if (correct === 3) {
+    kcFeedback.classList.add('correct');
+    kcFbTitle.textContent = 'All three matched correctly.';
+    kcFbBody.innerHTML = 'You can now distinguish generative, discriminative, and retrieval-augmented AI systems by task type. This vocabulary carries through the remaining four units — every prompt, activity, and assessment decision will begin with "which type of AI is this task asking for?"';
+  } else if (attempts >= 3) {
+    kcFeedback.classList.add('partial');
+    kcFbTitle.textContent = 'Attempts exhausted — here is the key.';
+    kcFbBody.innerHTML = '<strong>Generative</strong> drafts new content from a prompt (the nursing cases). <strong>Discriminative</strong> classifies or flags existing content (the SOAP-note error check). <strong>Retrieval-augmented</strong> generates from a curated source library (the USMLE study partner). Review Block 1.3 if useful, then continue.';
+    kcCheck.disabled = true;
+    kcCheck.style.opacity = 0.4;
+  } else {
+    kcFeedback.classList.add('partial');
+    kcFbTitle.textContent = `${correct} of 3 correct — try again.`;
+    kcFbBody.innerHTML = 'Think about what each system <em>does</em>. Does the task ask the AI to <em>produce</em> new content, <em>classify</em> existing content, or <em>ground</em> answers in a specific source library? You have ' + (3 - attempts) + ' attempt' + (3 - attempts === 1 ? '' : 's') + ' remaining.';
+  }
+});
+
+kcReset.addEventListener('click', () => {
+  matches = {};
+  kcItems.forEach(i => i.classList.remove('matched'));
+  kcTargets.forEach(t => {
+    t.classList.remove('filled', 'over');
+    const f = t.querySelector('.kc-target-filled');
+    if (f) f.remove();
+  });
+  kcFeedback.classList.remove('show');
+  updateCount();
+});
+
+// ============ SAMR LADDER ============
+const samrData = {
+  s: {
+    word: 'Substitution',
+    def: 'AI replaces an older tool with no functional change to the task itself.',
+    body: 'A faculty member uses an AI tool to generate a one-paragraph reading summary instead of writing it by hand. The task — producing a summary — is identical; only the tool changed.',
+    q: '"Could you still do this task without AI and reach the same outcome?"'
+  },
+  a: {
+    word: 'Augmentation',
+    def: 'AI replaces an older tool and adds functional improvement.',
+    body: 'A pharmacy educator uses AI to draft a reading summary, then asks the same tool to flag passages that might confuse clinicians new to DE coursework. The task still produces a summary, but with added diagnostic value the faculty member would not have reached alone.',
+    q: '"What does AI add here that a pen or a word processor could not?"'
+  },
+  m: {
+    word: 'Modification',
+    def: 'AI allows significant task redesign that was previously impractical.',
+    body: 'A clinical faculty member redesigns a discussion board into a structured case analysis where each student receives individualized AI-generated probing questions based on their initial post. The activity has been rebuilt around a capability AI uniquely enables.',
+    q: '"Has the learning activity itself changed, or only the tool?"'
+  },
+  r: {
+    word: 'Redefinition',
+    def: 'AI enables tasks that were previously inconceivable.',
+    body: 'A medical education team creates an AI standardized patient simulation where learners conduct asynchronous clinical interviews, receive criterion-referenced feedback, and then debrief with peers and faculty in a synchronous session. No prior DE format could offer this combination.',
+    q: '"Would this task have been unrecognizable as education five years ago?"'
+  }
+};
+
+const samrButtons = document.querySelectorAll('.samr-step-btn');
+const samrWord = document.getElementById('samr-word');
+const samrDef = document.getElementById('samr-def');
+const samrBody = document.getElementById('samr-body');
+const samrQ = document.getElementById('samr-q');
+
+samrButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const step = btn.dataset.step;
+    samrButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const d = samrData[step];
+    samrWord.textContent = d.word;
+    samrDef.textContent = d.def;
+    samrBody.textContent = d.body;
+    samrQ.textContent = d.q;
+  });
+});
+
+// ============ REFLECTION SAVE ============
+const reflectSave = document.getElementById('reflect-save');
+const reflectInput = document.getElementById('reflect-input');
+reflectSave.addEventListener('click', () => {
+  if (!reflectInput.value.trim()) {
+    reflectSave.textContent = 'Please write a reflection first';
+    setTimeout(() => reflectSave.textContent = 'Save my reflection', 2500);
+    return;
+  }
+  reflectSave.textContent = '✓ Saved to this session';
+  reflectSave.classList.add('reflect-saved');
+  reflectSave.style.background = '#E8F3EC';
+  reflectSave.style.color = '#007B3C';
+  setTimeout(() => {
+    reflectSave.textContent = 'Save my reflection';
+    reflectSave.classList.remove('reflect-saved');
+    reflectSave.style.background = '';
+    reflectSave.style.color = '';
+  }, 3000);
+});
+
+// ============ VIDEO PLACEHOLDER CLICK FEEDBACK ============
+document.querySelectorAll('.video-play').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wrapper = btn.closest('.video-stage, .scenario-stage');
+    const existing = wrapper.querySelector('.video-placeholder-msg');
+    if (existing) return;
+    const msg = document.createElement('div');
+    msg.className = 'video-placeholder-msg';
+    msg.style.cssText = 'position:absolute; bottom:24px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.75); color:#F2EBD6; padding:10px 18px; border-radius:3px; font-family:"JetBrains Mono",monospace; font-size: 14px; letter-spacing: 1px; backdrop-filter:blur(8px);';
+    msg.textContent = 'VIDEO ASSET PENDING · SEE PRODUCTION NOTES';
+    wrapper.appendChild(msg);
+    setTimeout(() => msg.remove(), 2800);
+  });
+});
+</script>
+</body>
+</html>

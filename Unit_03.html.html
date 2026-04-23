@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 03 — AI Ethics and Bias in Clinical Contexts | AI Literacy in Healthcare DE</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --green:        #007B3C;
+    --green-dark:   #00562A;
+    --green-soft:   #E8F3EC;
+    --green-on-dark:#4DC17D;
+    --green-tint:   #F4F9F5;
+    --teal:         #00778C;
+    --navy:         #022F46;
+    --navy-soft:   #1a3d52;
+    --cream:        #F2EBD6;
+    --cream-soft:   #FBF7EA;
+    --ink:          #0F1419;
+    --paper:        #FDFCF8;
+    --rule:         #D4C9A8;
+    --rule-soft:    #EAE3CC;
+    --grey:         #5A5F5C;
+    --grey-light:   #5F6865;
+    /* Ethics unit accents */
+    --amber:        #876100;
+    --amber-soft:   #FBF4E3;
+    --warn:         #A63D2A;
+    --warn-soft:    #F5E6E1;
+    --rail-w:       72px;
+    --max-w:        1180px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============== RAIL ============== */
+  .rail {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: var(--rail-w);
+    background: var(--navy);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 28px 0;
+    z-index: 100;
+  }
+  .rail-logo {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-weight: 600; font-size: 28px;
+    color: var(--cream); line-height: 1;
+    margin-bottom: 36px;
+  }
+  .rail-logo span { display: block; font-size: 14px; letter-spacing: 1.5px; color: var(--green-on-dark); margin-top: 6px; font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif; font-weight: 600; }
+  .rail-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; width: 100%; }
+  .rail-dot {
+    display: flex; align-items: center; justify-content: center;
+    height: 38px; width: 100%;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all .25s ease;
+    cursor: pointer;
+  }
+  .rail-dot:hover { color: var(--cream); border-left-color: var(--green-on-dark); background: rgba(255,255,255,.04); }
+  .rail-dot.active { color: var(--cream); border-left-color: var(--green-on-dark); background: rgba(0,123,60,.15); }
+  .rail-foot {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px; color: rgba(255,255,255,0.6);
+    writing-mode: vertical-rl; transform: rotate(180deg);
+  }
+
+  /* ============== MAIN ============== */
+  .shell { margin-left: var(--rail-w); min-height: 100vh; }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 56px; }
+
+  /* ============== MASTHEAD ============== */
+  .masthead {
+    padding: 64px 0 48px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .masthead-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px; color: var(--grey);
+    text-transform: uppercase;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead-meta strong { color: var(--green); font-weight: 600; }
+
+  .unit-number {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 260px;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--green);
+    line-height: 0.85;
+    letter-spacing: -8px;
+    margin-top: 28px;
+    display: block;
+  }
+  .unit-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1;
+    color: var(--navy);
+    margin-top: -40px;
+    margin-left: 200px;
+    max-width: 780px;
+  }
+  .unit-sub {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--grey);
+    margin-top: 16px;
+    margin-left: 200px;
+    max-width: 780px;
+    line-height: 1.3;
+  }
+  .pill-row {
+    display: flex; gap: 0;
+    margin-top: 48px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .pill { flex: 1; padding: 22px 20px; border-right: 1px solid var(--rule); }
+  .pill:last-child { border-right: none; }
+  .pill-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green); text-transform: uppercase;
+    display: block; margin-bottom: 6px;
+  }
+  .pill-value {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px; font-weight: 500;
+    color: var(--navy); line-height: 1.1;
+  }
+
+  /* ============== BLOCK FRAMING ============== */
+  .block {
+    padding: 80px 0 40px;
+    border-bottom: 1px solid var(--rule-soft);
+    scroll-margin-top: 20px;
+  }
+  .block:last-child { border-bottom: none; }
+  .block-head { display: flex; align-items: baseline; gap: 24px; margin-bottom: 36px; }
+  .block-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: var(--green); letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .block-type {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--grey-light);
+    border: 1px solid var(--rule);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .block-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 40px; font-weight: 500;
+    color: var(--navy); line-height: 1.05;
+    flex: 1;
+  }
+  p.lede {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.45;
+    max-width: 760px;
+    margin-bottom: 24px;
+  }
+  p.body { font-size: 16px; max-width: 760px; color: #1a2028; margin-bottom: 16px; }
+
+  .placeholder-note {
+    background: var(--cream-soft);
+    border-left: 3px solid var(--green);
+    padding: 16px 22px;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--navy);
+    max-width: 760px;
+    border-radius: 0 3px 3px 0;
+  }
+  .placeholder-note strong {
+    color: var(--green);
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block; margin-bottom: 6px;
+  }
+
+  .btn {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+    border: 1.5px solid transparent;
+    background: none;
+  }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: var(--green); color: white; border-color: var(--green); }
+  .btn-primary:hover:not(:disabled) { background: var(--green-dark); border-color: var(--green-dark); }
+  .btn-ghost { background: none; color: var(--navy); border-color: var(--rule); }
+  .btn-ghost:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
+
+  /* ============== BLOCK 3.1 — STAKES STATEMENT ============== */
+  .stakes {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border-top: 3px solid var(--navy);
+    border-bottom: 3px solid var(--navy);
+    margin-top: 16px;
+    background: white;
+  }
+  .stakes-col {
+    padding: 44px 36px;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .stakes-col:last-child { border-right: none; }
+  .stakes-col::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 40px; height: 3px;
+    background: var(--warn);
+  }
+  .stakes-col:nth-child(2)::before { background: var(--amber); }
+  .stakes-col:nth-child(3)::before { background: var(--green); }
+
+  .stakes-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--grey); margin-bottom: 10px;
+  }
+  .stakes-head {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .stakes-body {
+    font-size: 15px;
+    color: var(--navy);
+    line-height: 1.6;
+  }
+  .stakes-col:nth-child(1) .stakes-head { color: var(--warn); }
+  .stakes-col:nth-child(2) .stakes-head { color: var(--amber); }
+  .stakes-col:nth-child(3) .stakes-head { color: var(--green); }
+
+  /* ============== BLOCK 3.2 — THREE FAILURE MODES / ACCORDION ============== */
+  .accordion {
+    margin-top: 16px;
+    border-top: 1px solid var(--navy);
+  }
+  .acc-item {
+    border-bottom: 1px solid var(--rule);
+  }
+  .acc-trigger {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 80px 1fr 40px;
+    align-items: center;
+    padding: 28px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    text-align: left;
+    transition: all .25s ease;
+  }
+  .acc-trigger:hover { padding-left: 16px; padding-right: 16px; }
+  .acc-trigger:hover.item-confab { background: #faf0ed; }
+  .acc-trigger:hover.item-bias { background: #faf2e0; }
+  .acc-trigger:hover.item-leak { background: #f0ecf5; }
+  .acc-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .item-confab .acc-num { color: var(--warn); }
+  .item-bias .acc-num { color: var(--amber); }
+  .item-leak .acc-num { color: #6B3FA0; }
+
+  .acc-label {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 28px; font-weight: 500;
+    color: var(--navy); line-height: 1.2;
+  }
+  .acc-label em {
+    display: block;
+    font-size: 14px;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    color: var(--grey);
+    font-style: normal;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+  .acc-icon {
+    font-size: 22px;
+    transition: transform .3s ease;
+    text-align: right;
+    font-weight: 300;
+  }
+  .item-confab .acc-icon { color: var(--warn); }
+  .item-bias .acc-icon { color: var(--amber); }
+  .item-leak .acc-icon { color: #6B3FA0; }
+  .acc-item.open .acc-icon { transform: rotate(45deg); }
+  .acc-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease;
+  }
+  .acc-panel-inner {
+    padding: 4px 0 36px 80px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+  }
+  .acc-definition {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #1a2028;
+  }
+  .acc-definition strong { font-weight: 600; }
+  .item-confab .acc-definition strong { color: var(--warn); }
+  .item-bias .acc-definition strong { color: var(--amber); }
+  .item-leak .acc-definition strong { color: #6B3FA0; }
+
+  .acc-case {
+    padding: 18px 22px;
+    font-size: 14px;
+    line-height: 1.6;
+    border-radius: 0 3px 3px 0;
+  }
+  .item-confab .acc-case { background: var(--warn-soft); border-left: 3px solid var(--warn); }
+  .item-bias .acc-case { background: var(--amber-soft); border-left: 3px solid var(--amber); }
+  .item-leak .acc-case { background: #F2EBF7; border-left: 3px solid #6B3FA0; }
+  .acc-case-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .item-confab .acc-case-label { color: var(--warn); }
+  .item-bias .acc-case-label { color: var(--amber); }
+  .item-leak .acc-case-label { color: #6B3FA0; }
+  .acc-case-body { color: var(--navy); }
+
+  /* ============== BLOCK 3.3 — SCENARIO VIDEO ============== */
+  .scenario-stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #2B1015 0%, #3A1518 50%, #4A1F24 100%);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -20px rgba(2, 47, 70, 0.4);
+  }
+  .scenario-stage::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: 
+      repeating-linear-gradient(0deg, transparent 0, transparent 3px, rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 4px),
+      radial-gradient(circle at 70% 30%, rgba(166,61,42,0.25) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .scenario-chars {
+    position: absolute;
+    bottom: 0; right: 0;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 200px;
+    color: rgba(166, 61, 42, 0.65);
+    line-height: 0.8;
+    padding: 0 40px 20px 0;
+    pointer-events: none;
+  }
+  .video-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 36px 44px;
+    color: var(--cream);
+  }
+  .video-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: #E8B896;
+    align-self: flex-start;
+    padding: 6px 12px;
+    border: 1px solid #E8B896;
+    border-radius: 2px;
+  }
+  .video-play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: var(--warn);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .3s ease;
+    animation: pulse 2.5s infinite;
+    border: none;
+  }
+  .video-play:hover { transform: translate(-50%, -50%) scale(1.08); }
+  .video-play svg { width: 28px; height: 28px; fill: white; margin-left: 4px; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(166,61,42,0.5); }
+    70% { box-shadow: 0 0 0 24px rgba(166,61,42,0); }
+    100% { box-shadow: 0 0 0 0 rgba(166,61,42,0); }
+  }
+  .video-meta-bottom {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.65);
+  }
+  .video-title-over {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--cream);
+    max-width: 60%;
+    line-height: 1.3;
+  }
+
+  /* ============== BLOCK 3.4 — PRISM SCREEN / PROCESS ============== */
+  .prism-wrap { margin-top: 16px; }
+
+  .prism-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 36px;
+    padding: 32px 36px;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .prism-intro::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--green-on-dark);
+  }
+  .prism-intro-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 12px;
+  }
+  .prism-intro-head {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 36px;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.15;
+  }
+  .prism-intro-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(242, 235, 214, 0.85);
+  }
+  .prism-intro-body p { margin-bottom: 10px; }
+
+  .prism-nav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    background: white;
+    margin-bottom: 0;
+  }
+  .prism-tab {
+    padding: 18px 12px;
+    background: none;
+    border: none;
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+    text-align: center;
+    transition: all .2s ease;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+  }
+  .prism-tab:last-child { border-right: none; }
+  .prism-tab:hover { background: var(--green-tint); }
+  .prism-tab.active { background: var(--green); }
+  .prism-tab.active .prism-letter { color: white; }
+  .prism-tab.active .prism-word { color: white; }
+  .prism-letter {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px; font-weight: 500; font-style: italic;
+    color: var(--green);
+    display: block; line-height: 1;
+  }
+  .prism-word {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--navy);
+    text-transform: uppercase;
+    margin-top: 8px;
+    display: block;
+    font-weight: 600;
+  }
+  .prism-panel {
+    padding: 44px 48px;
+    background: white;
+    border: 1px solid var(--rule);
+    border-top: none;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 48px;
+    min-height: 300px;
+  }
+  .prism-panel-left h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--green);
+    line-height: 0.95;
+  }
+  .prism-panel-left .prism-def {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--navy);
+    line-height: 1.4;
+    margin-top: 16px;
+  }
+  .prism-panel-left .prism-why {
+    font-size: 14px;
+    color: var(--grey);
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    line-height: 1.6;
+  }
+  .prism-panel-right h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+  .prism-checklist {
+    margin-bottom: 20px;
+  }
+  .prism-checklist li {
+    list-style: none;
+    padding: 10px 0 10px 30px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.5;
+    position: relative;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .prism-checklist li:last-child { border-bottom: none; }
+  .prism-checklist li::before {
+    content: '?';
+    position: absolute; left: 0; top: 10px;
+    color: var(--green); font-weight: 700; font-size: 16px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-style: italic;
+    width: 20px; height: 20px; line-height: 20px; text-align: center;
+    background: var(--green-soft); border-radius: 50%;
+  }
+  .prism-warn {
+    background: var(--warn-soft);
+    border-left: 3px solid var(--warn);
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.55;
+    border-radius: 0 3px 3px 0;
+    margin-top: 20px;
+  }
+  .prism-warn-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--warn);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  /* ============== BLOCK 3.5 — POLICY FLIP CARDS ============== */
+  .flip-intro {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--grey);
+    margin-bottom: 24px;
+  }
+  .flip-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .flip-card {
+    perspective: 1200px;
+    height: 260px;
+    cursor: pointer;
+  }
+  .flip-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transition: transform .7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+  .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back {
+    position: absolute;
+    width: 100%; height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 3px;
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .flip-front {
+    background: white;
+    border: 1.5px solid var(--rule);
+  }
+  .flip-front::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--navy);
+  }
+  .flip-back {
+    background: var(--navy);
+    color: var(--cream);
+    transform: rotateY(180deg);
+    border: none;
+  }
+  .flip-back::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--green);
+  }
+  .flip-acronym {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--navy);
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .flip-full {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.45;
+    margin-bottom: 20px;
+  }
+  .flip-summary {
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.55;
+  }
+  .flip-hint {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--grey);
+    text-transform: uppercase;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .flip-back-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 12px;
+  }
+  .flip-back-head {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--cream);
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+  .flip-back-body {
+    font-size: 14px;
+    color: rgba(242, 235, 214, 0.88);
+    line-height: 1.55;
+  }
+  .flip-back-body strong { color: white; font-weight: 600; }
+  .flip-close-hint {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.65);
+    margin-top: auto;
+    padding-top: 12px;
+  }
+
+  /* ============== BLOCK 3.6 — KNOWLEDGE CHECK / ETHICS SCENARIOS ============== */
+  .diag-intro {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 32px;
+    padding: 20px 24px;
+    background: var(--cream-soft);
+    border-radius: 3px;
+  }
+  .diag-intro-num {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--green);
+    font-style: italic;
+    line-height: 1;
+  }
+  .diag-intro-text { font-size: 15px; color: var(--navy); }
+  .diag-intro-text strong { color: var(--green); }
+
+  .diag-progress {
+    display: flex; gap: 6px;
+    margin-bottom: 28px;
+  }
+  .diag-dot {
+    flex: 1;
+    height: 4px;
+    background: var(--rule-soft);
+    border-radius: 2px;
+    transition: background .3s ease;
+  }
+  .diag-dot.active { background: var(--green); }
+  .diag-dot.done { background: var(--green-dark); }
+
+  .diag-item { display: none; }
+  .diag-item.active { display: block; }
+
+  .diag-q-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .diag-scenario {
+    background: var(--cream-soft);
+    border-left: 4px solid var(--amber);
+    padding: 22px 26px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    color: var(--navy);
+    line-height: 1.55;
+    border-radius: 0 3px 3px 0;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  .diag-scenario-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-style: normal;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--amber);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .diag-q-question {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 20px;
+    line-height: 1.25;
+  }
+  .diag-options-stacked { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .diag-opt-card {
+    padding: 16px 22px;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    background: white;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    transition: all .2s ease;
+    text-align: left;
+    line-height: 1.5;
+  }
+  .diag-opt-card:hover { border-color: var(--green); background: var(--green-tint); }
+  .diag-opt-card.selected { background: var(--green); color: white; border-color: var(--green); }
+  .diag-opt-card.correct { background: var(--green-soft); color: var(--green-dark); border-color: var(--green); }
+  .diag-opt-card.incorrect { background: var(--warn-soft); color: var(--warn); border-color: #c8816e; }
+  .diag-opt-letter {
+    display: inline-block;
+    width: 24px; height: 24px;
+    background: var(--rule-soft);
+    color: var(--navy);
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 24px;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+  .diag-opt-card.selected .diag-opt-letter { background: rgba(255,255,255,0.2); color: white; }
+
+  .diag-feedback {
+    margin-top: 16px;
+    padding: 18px 22px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.65;
+    display: none;
+  }
+  .diag-feedback.show { display: block; }
+  .diag-feedback.right { background: var(--green-soft); border-left: 3px solid var(--green); }
+  .diag-feedback.wrong { background: var(--warn-soft); border-left: 3px solid #c8816e; }
+  .diag-feedback strong { font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 8px; }
+  .diag-feedback.right strong { color: var(--green); }
+  .diag-feedback.wrong strong { color: var(--warn); }
+  .diag-feedback .prism-ref {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--cream);
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+
+  .diag-controls {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  .diag-counter {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--grey);
+    letter-spacing: 1px;
+  }
+  .diag-counter strong { color: var(--green); }
+
+  .diag-summary {
+    display: none;
+    padding: 40px 48px;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 3px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .diag-summary.show { display: block; }
+  .diag-summary h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 34px;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+  .diag-summary p { font-size: 15px; color: rgba(242, 235, 214, 0.85); max-width: 520px; margin: 0 auto 20px; line-height: 1.6; }
+  .diag-score {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 72px;
+    font-style: italic;
+    color: var(--green-on-dark);
+    line-height: 1;
+    margin: 12px 0;
+  }
+
+  /* ============== BLOCK 3.7 — DISCLOSURE LABELED GRAPHIC ============== */
+  .disclose-wrap {
+    margin-top: 16px;
+  }
+  .disclose-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .disclose-tab {
+    padding: 10px 18px;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    background: white;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--grey);
+    transition: all .2s ease;
+  }
+  .disclose-tab:hover { border-color: var(--green); color: var(--green); }
+  .disclose-tab.active { background: var(--green); color: white; border-color: var(--green); }
+
+  .disclose-panel { display: none; }
+  .disclose-panel.active { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: start; }
+
+  .disclose-doc {
+    background: white;
+    border: 1.5px solid var(--rule);
+    padding: 32px 36px;
+    border-radius: 3px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--navy);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .disclose-doc-head {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .disclose-doc-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .disclose-mark {
+    display: inline;
+    padding: 2px 6px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+    position: relative;
+  }
+  .disclose-mark.strength {
+    background: var(--green-soft);
+    border-bottom: 2px solid var(--green);
+  }
+  .disclose-mark.strength:hover, .disclose-mark.strength.active {
+    background: var(--green);
+    color: white;
+  }
+  .disclose-mark.risk {
+    background: var(--warn-soft);
+    border-bottom: 2px solid var(--warn);
+  }
+  .disclose-mark.risk:hover, .disclose-mark.risk.active {
+    background: var(--warn);
+    color: white;
+  }
+
+  .disclose-notes {
+    padding: 24px 28px;
+    background: var(--cream-soft);
+    border-radius: 3px;
+  }
+  .disclose-notes h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+  .disclose-note {
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--navy);
+    cursor: pointer;
+    transition: all .2s ease;
+    border: 1.5px solid transparent;
+  }
+  .disclose-note.strength {
+    background: var(--green-soft);
+    border-left: 3px solid var(--green);
+  }
+  .disclose-note.risk {
+    background: var(--warn-soft);
+    border-left: 3px solid var(--warn);
+  }
+  .disclose-note.active {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .disclose-note-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .disclose-note.strength .disclose-note-tag { color: var(--green); }
+  .disclose-note.risk .disclose-note-tag { color: var(--warn); }
+  .disclose-legend {
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 14px;
+    color: var(--grey);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .disclose-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .disclose-legend-item::before {
+    content: '';
+    display: inline-block;
+    width: 16px; height: 3px;
+  }
+  .disclose-legend-item.strength::before { background: var(--green); }
+  .disclose-legend-item.risk::before { background: var(--warn); }
+
+  /* ============== BLOCK 3.8 — STANCE BUILDER ============== */
+  .builder {
+    background: white;
+    border: 1.5px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .builder-left {
+    padding: 40px 44px;
+    border-right: 1px solid var(--rule);
+    background: var(--cream-soft);
+  }
+  .builder-left h4 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+
+  .builder-row { margin-bottom: 28px; }
+  .builder-row:last-of-type { margin-bottom: 0; }
+  .builder-row-label {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--navy);
+    display: block;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .builder-row-sub {
+    font-size: 14px;
+    color: var(--grey);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .builder-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .builder-opt {
+    padding: 8px 14px;
+    border: 1.5px solid var(--rule);
+    border-radius: 2px;
+    background: white;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--navy);
+    transition: all .2s ease;
+  }
+  .builder-opt:hover { border-color: var(--green); color: var(--green); }
+  .builder-opt.selected { background: var(--green); color: white; border-color: var(--green); }
+
+  .builder-right {
+    padding: 40px 44px;
+    background: var(--navy);
+    color: var(--cream);
+    position: relative;
+    min-height: 400px;
+  }
+  .builder-right::before {
+    content: '"';
+    position: absolute;
+    top: -10px; right: 24px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 180px;
+    color: var(--green-on-dark);
+    opacity: 0.2;
+    line-height: 1;
+    font-style: italic;
+  }
+  .builder-right h4 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 18px;
+  }
+  .builder-output {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--cream);
+    position: relative;
+    min-height: 240px;
+  }
+  .builder-output em { color: var(--green-on-dark); font-style: italic; background: rgba(0,123,60,0.15); padding: 1px 4px; border-radius: 2px; }
+  .builder-output .placeholder-dots {
+    color: rgba(242,235,214,0.65);
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.05);
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-style: normal;
+  }
+  .builder-footer {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(242, 235, 214, 0.15);
+    display: flex; justify-content: space-between; align-items: center;
+    position: relative;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .builder-word-count {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.6);
+  }
+  .builder-word-count strong { color: var(--green-on-dark); }
+
+  /* ============== BLOCK 3.9 — REFLECTION / DRAFT STANCE ============== */
+  .reflect-card {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 48px 56px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .reflect-card::before {
+    content: '"';
+    position: absolute;
+    top: -20px; right: 36px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 280px;
+    color: var(--green-on-dark);
+    opacity: 0.25;
+    line-height: 1;
+    font-style: italic;
+  }
+  .reflect-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 16px;
+  }
+  .reflect-prompt {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--cream);
+    line-height: 1.35;
+    max-width: 760px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .reflect-textarea {
+    width: 100%;
+    min-height: 180px;
+    background: rgba(253, 252, 248, 0.95);
+    border: none;
+    border-radius: 3px;
+    padding: 20px 22px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    color: var(--navy);
+    line-height: 1.55;
+    resize: vertical;
+    position: relative;
+  }
+  .reflect-textarea:focus { outline: 2px solid var(--green); outline-offset: 2px; }
+  .reflect-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px;
+    position: relative;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .reflect-cite {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.6);
+  }
+  .reflect-save {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 24px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .reflect-save:hover { background: var(--green-dark); }
+
+  /* ============== BLOCK 3.10 — UNIT CLOSE ============== */
+  .close {
+    padding: 56px 56px;
+    background: linear-gradient(135deg, var(--cream-soft) 0%, var(--cream) 100%);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .close-left h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .close-left p {
+    font-size: 16px;
+    color: var(--navy);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .next-unit {
+    background: white;
+    padding: 28px 32px;
+    border-radius: 3px;
+    border-left: 4px solid var(--green);
+  }
+  .next-unit-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .next-unit-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .next-unit-desc {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .next-unit-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: white;
+    background: var(--green);
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all .2s ease;
+  }
+  .next-unit-btn:hover { background: var(--green-dark); }
+
+  /* ============== COLOPHON ============== */
+  .colophon {
+    padding: 80px 0 64px;
+    border-top: 3px double var(--rule);
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  .col-brand {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--navy);
+    line-height: 1.4;
+  }
+  .col-brand strong { font-weight: 600; color: var(--green); display: block; font-size: 14px; font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-style: normal; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .col h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .col p {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.7;
+  }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .rail { display: none; }
+    .shell { margin-left: 0; }
+    .wrap { padding: 0 28px; }
+    .unit-number { font-size: 140px; letter-spacing: -4px; }
+    .unit-title { font-size: 36px; margin-left: 0; margin-top: 16px; }
+    .unit-sub { font-size: 20px; margin-left: 0; }
+    .block-title { font-size: 28px; }
+    .stakes, .prism-panel, .prism-intro, .acc-panel-inner, .flip-grid, .disclose-panel.active, .builder, .close { grid-template-columns: 1fr; gap: 24px; }
+    .prism-nav { grid-template-columns: repeat(5, 1fr); }
+    .pill-row { flex-direction: column; }
+    .pill { border-right: none; border-bottom: 1px solid var(--rule); }
+    .colophon { grid-template-columns: 1fr; }
+    .builder-left, .builder-right { padding: 24px 28px; }
+    .builder-left { border-right: none; border-bottom: 1px solid var(--rule); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LEFT RAIL ============ -->
+<nav class="rail" aria-label="Unit blocks">
+  <div class="rail-logo">AIL<span>UNIT 03</span></div>
+  <div class="rail-nav">
+    <a href="#b31" class="rail-dot active" data-block="1">3.1</a>
+    <a href="#b32" class="rail-dot" data-block="2">3.2</a>
+    <a href="#b33" class="rail-dot" data-block="3">3.3</a>
+    <a href="#b34" class="rail-dot" data-block="4">3.4</a>
+    <a href="#b35" class="rail-dot" data-block="5">3.5</a>
+    <a href="#b36" class="rail-dot" data-block="6">3.6</a>
+    <a href="#b37" class="rail-dot" data-block="7">3.7</a>
+    <a href="#b38" class="rail-dot" data-block="8">3.8</a>
+    <a href="#b39" class="rail-dot" data-block="9">3.9</a>
+    <a href="#b310" class="rail-dot" data-block="10">3.10</a>
+  </div>
+  <div class="rail-foot">MD TAYLOR</div>
+</nav>
+
+<main class="shell">
+  <div class="wrap">
+
+    <!-- ============ MASTHEAD ============ -->
+    <header class="masthead">
+      <div class="masthead-meta">
+        <span>AI Literacy in Healthcare Distance Education</span>
+        <span><strong>Unit 03 of 05</strong> · 35 minutes · Rise 360</span>
+      </div>
+      <span class="unit-number">03</span>
+      <h1 class="unit-title">AI Ethics and Bias in Clinical Contexts</h1>
+      <p class="unit-sub">The stakes are clinical, educational, and personal. The ethics screen is how you hold all three.</p>
+
+      <div class="pill-row">
+        <div class="pill">
+          <span class="pill-label">SAMR Scope</span>
+          <span class="pill-value">Cross-cutting at every level</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">CoI Emphasis</span>
+          <span class="pill-value">Social + Cognitive Presence</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">Summative Artifact</span>
+          <span class="pill-value">PRISM Screen + Disclosure Stance</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ BLOCK 3.1 — STAKES STATEMENT ============ -->
+    <section class="block" id="b31">
+      <div class="block-head">
+        <span class="block-num">3.1</span>
+        <span class="block-type">Statement A · Stakes</span>
+      </div>
+      <h2 class="block-title">Three stakes no other domain replicates</h2>
+      <p class="lede">Healthcare distance education sits at an intersection other disciplines do not. Before a single AI tool touches a patient case, three stakes are already live in the room.</p>
+
+      <div class="stakes">
+        <div class="stakes-col">
+          <div class="stakes-num">STAKE 01</div>
+          <h3 class="stakes-head">Clinical accuracy</h3>
+          <p class="stakes-body">An AI error in a case study propagates into learner reasoning, then into clinical practice. A fabricated medication dose is not a typo; it is a potential adverse event in training.</p>
+        </div>
+        <div class="stakes-col">
+          <div class="stakes-num">STAKE 02</div>
+          <h3 class="stakes-head">Patient privacy</h3>
+          <p class="stakes-body">Real patient data in a prompt is a HIPAA violation in motion. De-identification that feels obvious to a clinician may still carry signature fields a model can recombine.</p>
+        </div>
+        <div class="stakes-col">
+          <div class="stakes-num">STAKE 03</div>
+          <h3 class="stakes-head">Student equity</h3>
+          <p class="stakes-body">AI policies that are unclear, inconsistent, or inequitably enforced harm learners unevenly. Disclosure is not a syllabus formality. It is a condition for trust.</p>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Facilitator opening note optional</strong>
+        A 30-second facilitator video works here to name the stakes aloud. Script is in Appendix A (Unit 03 variant). If produced, insert above the three-column layout. Default: keep as-is.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 3.2 — THREE FAILURE MODES ============ -->
+    <section class="block" id="b32">
+      <div class="block-head">
+        <span class="block-num">3.2</span>
+        <span class="block-type">Accordion · Three Failure Modes</span>
+      </div>
+      <h2 class="block-title">Three ways AI fails in healthcare education</h2>
+      <p class="lede">Generative AI fails in predictable categories. Learn the three that matter most in clinical contexts. Each one carries a specific signature and a specific mitigation.</p>
+
+      <div class="accordion" id="accordion">
+        <div class="acc-item open item-confab">
+          <button class="acc-trigger item-confab" aria-expanded="true">
+            <span class="acc-num">01 · CONFAB</span>
+            <span class="acc-label">
+              Confabulation
+              <em>Hallucinated content presented as fact</em>
+            </span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-panel" style="max-height: 500px;">
+            <div class="acc-panel-inner">
+              <div class="acc-definition">
+                Generative models produce outputs that are <strong>plausible but unsupported</strong>. The model does not know what it does not know. Fabricated citations, invented drug dosages, and cited guidelines that do not exist are the most common patterns in clinical contexts.
+                <br><br>
+                <strong>Mitigation:</strong> every AI-generated claim tied to a clinical fact, a citation, or a guideline must be verified against a primary source before it enters learner-facing material.
+              </div>
+              <div class="acc-case">
+                <span class="acc-case-label">Clinical Education Case</span>
+                <span class="acc-case-body">A faculty member asks an AI tool for three recent articles on sepsis bundles. Two references return with plausible author names, journals, DOIs, and year ranges. One does not exist. The faculty member nearly adds it to a reading list before a librarian catches it. The cost of catching it later: undermined credibility with an entire cohort.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item item-bias">
+          <button class="acc-trigger item-bias" aria-expanded="false">
+            <span class="acc-num">02 · BIAS</span>
+            <span class="acc-label">
+              Training Data Bias
+              <em>Historical inequities encoded into outputs</em>
+            </span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-panel">
+            <div class="acc-panel-inner">
+              <div class="acc-definition">
+                Models reflect the <strong>distributions in their training data</strong>. In healthcare, that means known patterns: underrepresentation of certain populations in clinical literature, stereotyped symptom presentations, and diagnostic bias documented across specialties.
+                <br><br>
+                <strong>Mitigation:</strong> prompt with explicit demographic variance, audit outputs for stereotyping before deployment, and pair AI-generated cases with intentional counter-examples that represent your full learner community.
+              </div>
+              <div class="acc-case">
+                <span class="acc-case-label">Clinical Education Case</span>
+                <span class="acc-case-body">A cardiology instructor asks for five case vignettes. All five patients present with textbook male-pattern chest pain. The model has reproduced a well-documented gender bias in training data. Deployed as-is, the cases would reinforce the same diagnostic blind spot the course is meant to counteract.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item item-leak">
+          <button class="acc-trigger item-leak" aria-expanded="false">
+            <span class="acc-num">03 · LEAK</span>
+            <span class="acc-label">
+              Data Leakage
+              <em>Sensitive inputs retained or re-exposed</em>
+            </span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-panel">
+            <div class="acc-panel-inner">
+              <div class="acc-definition">
+                Inputs to a model may be <strong>retained for training, cached, or recombined</strong> in later outputs. Faculty who paste real patient narratives, de-identified case notes that carry signatures, or student work containing identifiable detail are creating downstream exposure.
+                <br><br>
+                <strong>Mitigation:</strong> use only models with documented no-retain policies for instructional content. Strip identifiers before any clinical narrative enters a prompt. Treat consumer-grade AI tools as unsafe for any content bound by FERPA, HIPAA, or institutional confidentiality policies.
+              </div>
+              <div class="acc-case">
+                <span class="acc-case-label">Clinical Education Case</span>
+                <span class="acc-case-body">A nursing faculty member pastes a de-identified discharge summary into a chatbot to generate a teaching case. The summary still contains the admitting hospital, the unit, and the date of discharge. Combined with the narrative, those fields re-identify the patient to anyone who knows the institution. The chatbot provider retains the input by default.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 3.3 — SCENARIO VIDEO ============ -->
+    <section class="block" id="b33">
+      <div class="block-head">
+        <span class="block-num">3.3</span>
+        <span class="block-type">Scenario Video · The Citation That Wasn't</span>
+      </div>
+      <h2 class="block-title">The citation that was not there</h2>
+      <p class="lede">A two-minute scenario. A faculty member encounters a fabricated reference in AI-generated reading list. Watch the verification steps that catch it, and the PRISM dimension the moment belongs to.</p>
+
+      <div class="scenario-stage" role="img" aria-label="Scenario video placeholder: The citation that was not there">
+        <div class="scenario-chars" aria-hidden="true">¶</div>
+        <div class="video-overlay">
+          <span class="video-tag">SCENARIO · 02:00</span>
+          <div class="video-meta-bottom">
+            <span class="video-title-over">A plausible reference. A confident tone. A citation that does not exist.</span>
+            <span>00:00 / 02:00</span>
+          </div>
+        </div>
+        <button class="video-play" aria-label="Play scenario video">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Video production needed</strong>
+        Two-minute scenario. Full script in Appendix B3 of the course spec. Visual approach: split-screen of the AI output on the left and a verification workflow on the right (library database, DOI resolver, journal homepage). Narrator walks the learner through each verification step and closes with the principle: trust but verify, always verify. Label the PRISM dimension (Integrity) on-screen when the fabrication is caught. Closed captions required.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 3.4 — PRISM PROCESS ============ -->
+    <section class="block" id="b34">
+      <div class="block-head">
+        <span class="block-num">3.4</span>
+        <span class="block-type">Process · The PRISM Ethics Screen</span>
+      </div>
+      <h2 class="block-title">PRISM: five questions, one screen</h2>
+      <p class="lede">PRISM is the screen you run any AI-assisted instructional decision through before it reaches a learner. Click each letter to see the dimension, its core questions, and what triggers a stop.</p>
+
+      <div class="prism-wrap">
+        <div class="prism-intro">
+          <div>
+            <div class="prism-intro-label">THE SCREEN · PRIVACY · REPRESENTATION · INTEGRITY · SAFETY · MINIMIZATION</div>
+            <div class="prism-intro-head">Any AI use that cannot pass all five questions is not ready to deploy.</div>
+          </div>
+          <div class="prism-intro-body">
+            <p>PRISM is designed to be <strong style="color:var(--cream)">fast</strong>: a clinician-educator should be able to run it in under two minutes for a routine use and still catch the decisions that matter.</p>
+            <p>It is not exhaustive. It is a first filter. A "yes" on every dimension means you can move forward. A "no" or "uncertain" on any dimension means you pause, document, or escalate.</p>
+          </div>
+        </div>
+
+        <div class="prism-nav">
+          <button class="prism-tab active" data-step="p"><span class="prism-letter">P</span><span class="prism-word">Privacy</span></button>
+          <button class="prism-tab" data-step="r"><span class="prism-letter">R</span><span class="prism-word">Representation</span></button>
+          <button class="prism-tab" data-step="i"><span class="prism-letter">I</span><span class="prism-word">Integrity</span></button>
+          <button class="prism-tab" data-step="s"><span class="prism-letter">S</span><span class="prism-word">Safety</span></button>
+          <button class="prism-tab" data-step="m"><span class="prism-letter">M</span><span class="prism-word">Minimization</span></button>
+        </div>
+
+        <div class="prism-panel">
+          <div class="prism-panel-left">
+            <h3 id="prism-word">Privacy</h3>
+            <div class="prism-def" id="prism-def">Does any input or output contain identifiable patient, student, or institutional data?</div>
+            <div class="prism-why" id="prism-why">Privacy is the dimension most often violated accidentally. De-identified does not mean anonymous; a combination of fields can re-identify. The default stance: nothing protected goes into a model you do not control.</div>
+          </div>
+          <div class="prism-panel-right">
+            <h5>CORE QUESTIONS · ASK BEFORE YOU DEPLOY</h5>
+            <ul class="prism-checklist" id="prism-checklist">
+              <li>Does the prompt contain PHI, de-identified or otherwise?</li>
+              <li>Does the prompt contain identifiable student work?</li>
+              <li>Does the tool retain inputs for training?</li>
+              <li>Is there an institutional DPA or BAA covering this tool?</li>
+            </ul>
+            <div class="prism-warn">
+              <span class="prism-warn-label">STOP SIGNAL</span>
+              <span id="prism-stop">Any uncertainty on retention policies. Any input that could re-identify a patient when combined with other available data.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 3.5 — POLICY FLIP CARDS ============ -->
+    <section class="block" id="b35">
+      <div class="block-head">
+        <span class="block-num">3.5</span>
+        <span class="block-type">Flip Cards · Policy Landscape</span>
+      </div>
+      <h2 class="block-title">The policies already governing you</h2>
+      <p class="lede">Before your institution's AI policy exists, four other policy frames already apply. Click any card to flip it and see how it maps to healthcare DE.</p>
+
+      <div class="flip-intro">Click a card to flip. Click again to return.</div>
+
+      <div class="flip-grid">
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div>
+                <div class="flip-acronym">FERPA</div>
+                <div class="flip-full">Family Educational Rights and Privacy Act</div>
+              </div>
+              <div>
+                <div class="flip-summary">Protects the privacy of student education records at federally-funded institutions.</div>
+                <div class="flip-hint">TAP TO FLIP →</div>
+              </div>
+            </div>
+            <div class="flip-back">
+              <div>
+                <div class="flip-back-label">APPLICATION · HEALTHCARE DE</div>
+                <div class="flip-back-head">Do not paste student work into a chatbot that retains inputs.</div>
+                <div class="flip-back-body">Student submissions, drafts, discussion posts, and feedback all qualify as education records. An AI tool without a data processing agreement is an unauthorized disclosure. <strong>Use only tools with institutional approval for education records.</strong></div>
+              </div>
+              <div class="flip-close-hint">TAP TO RETURN ←</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div>
+                <div class="flip-acronym">HIPAA</div>
+                <div class="flip-full">Health Insurance Portability and Accountability Act</div>
+              </div>
+              <div>
+                <div class="flip-summary">Governs use and disclosure of protected health information (PHI) in clinical and educational contexts.</div>
+                <div class="flip-hint">TAP TO FLIP →</div>
+              </div>
+            </div>
+            <div class="flip-back">
+              <div>
+                <div class="flip-back-label">APPLICATION · HEALTHCARE DE</div>
+                <div class="flip-back-head">De-identified is not always safe. Combined fields can re-identify.</div>
+                <div class="flip-back-body">Even "de-identified" clinical content can re-identify a patient when combined with institutional detail. Treat all patient narratives as protected until a formal de-identification process confirms otherwise. <strong>Consumer AI tools are not HIPAA-compliant by default.</strong></div>
+              </div>
+              <div class="flip-close-hint">TAP TO RETURN ←</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div>
+                <div class="flip-acronym">Institutional AI Policy</div>
+                <div class="flip-full">Your university or health system's published AI use guidance</div>
+              </div>
+              <div>
+                <div class="flip-summary">Local rules for AI use in teaching, research, clinical work, and administration.</div>
+                <div class="flip-hint">TAP TO FLIP →</div>
+              </div>
+            </div>
+            <div class="flip-back">
+              <div>
+                <div class="flip-back-label">APPLICATION · HEALTHCARE DE</div>
+                <div class="flip-back-head">Read it. Link to it in your syllabus.</div>
+                <div class="flip-back-body">Most health science centers have issued AI guidance since 2023. These policies typically name approved tools, restricted uses, and disclosure requirements. <strong>Your syllabus disclosure cannot contradict institutional policy.</strong></div>
+              </div>
+              <div class="flip-close-hint">TAP TO RETURN ←</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div>
+                <div class="flip-acronym">Professional Bodies</div>
+                <div class="flip-full">AMA, AACP, AACN, NBME, accrediting agency guidance</div>
+              </div>
+              <div>
+                <div class="flip-summary">Discipline-specific guidance on AI use in clinical education, licensure examinations, and scholarly work.</div>
+                <div class="flip-hint">TAP TO FLIP →</div>
+              </div>
+            </div>
+            <div class="flip-back">
+              <div>
+                <div class="flip-back-label">APPLICATION · HEALTHCARE DE</div>
+                <div class="flip-back-head">Your accreditor likely has an AI stance.</div>
+                <div class="flip-back-body">Professional bodies now issue guidance on AI-assisted scholarly writing, exam preparation, and clinical reasoning assessment. These documents often define what counts as authorship and where AI assistance requires disclosure. <strong>Align your course policy with your accreditor's current guidance.</strong></div>
+              </div>
+              <div class="flip-close-hint">TAP TO RETURN ←</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 3.6 — ETHICS KNOWLEDGE CHECK ============ -->
+    <section class="block" id="b36">
+      <div class="block-head">
+        <span class="block-num">3.6</span>
+        <span class="block-type">Knowledge Check · Ethics in Action</span>
+      </div>
+      <h2 class="block-title">Six scenarios, one right response</h2>
+      <p class="lede">Each scenario puts the PRISM screen under pressure. Select the most defensible response. Feedback names the dimension you were working in.</p>
+
+      <div class="diag-intro">
+        <span class="diag-intro-num">6</span>
+        <span class="diag-intro-text"><strong>Six scenarios.</strong> Select the response that best applies the PRISM screen. Feedback is immediate.</span>
+      </div>
+
+      <div class="diag-progress" id="diag-progress">
+        <div class="diag-dot active"></div>
+        <div class="diag-dot"></div>
+        <div class="diag-dot"></div>
+        <div class="diag-dot"></div>
+        <div class="diag-dot"></div>
+        <div class="diag-dot"></div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="diag-item active" data-q="1" data-answer="b" data-dim="P">
+        <span class="diag-q-label">SCENARIO 01 OF 06</span>
+        <div class="diag-scenario">
+          <span class="diag-scenario-label">THE SITUATION</span>
+          A pharmacy faculty member wants to draft case studies from real de-identified patient records in her teaching files. She plans to paste three discharge summaries into a consumer chatbot.
+        </div>
+        <h3 class="diag-q-question">What is the most defensible response?</h3>
+        <div class="diag-options-stacked">
+          <button class="diag-opt-card" data-value="a"><span class="diag-opt-letter">A</span>Paste the summaries. De-identification was already performed when the records entered teaching files.</button>
+          <button class="diag-opt-card" data-value="b"><span class="diag-opt-letter">B</span>Do not paste. Re-work the cases using only fictional patient details, or use an institutionally-approved tool with a BAA.</button>
+          <button class="diag-opt-card" data-value="c"><span class="diag-opt-letter">C</span>Paste the summaries but strip patient names only.</button>
+          <button class="diag-opt-card" data-value="d"><span class="diag-opt-letter">D</span>Paste one summary first as a test, then decide about the other two.</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="diag-item" data-q="2" data-answer="c" data-dim="R">
+        <span class="diag-q-label">SCENARIO 02 OF 06</span>
+        <div class="diag-scenario">
+          <span class="diag-scenario-label">THE SITUATION</span>
+          A cardiology instructor generated five chest-pain cases with AI. All five patients are male, middle-aged, with classic presentation. He is about to deploy the module.
+        </div>
+        <h3 class="diag-q-question">What is the most defensible response?</h3>
+        <div class="diag-options-stacked">
+          <button class="diag-opt-card" data-value="a"><span class="diag-opt-letter">A</span>Deploy. The cases are clinically accurate and that is what matters.</button>
+          <button class="diag-opt-card" data-value="b"><span class="diag-opt-letter">B</span>Deploy but add a footnote noting the demographic limitation.</button>
+          <button class="diag-opt-card" data-value="c"><span class="diag-opt-letter">C</span>Do not deploy. Regenerate with explicit demographic variance or rewrite cases to represent populations reflected in actual ED presentations.</button>
+          <button class="diag-opt-card" data-value="d"><span class="diag-opt-letter">D</span>Deploy four and replace one with a female case, but do not revise the others.</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="diag-item" data-q="3" data-answer="b" data-dim="I">
+        <span class="diag-q-label">SCENARIO 03 OF 06</span>
+        <div class="diag-scenario">
+          <span class="diag-scenario-label">THE SITUATION</span>
+          A faculty member asks an AI tool for three recent journal articles on sepsis management. The tool returns three citations with author names, titles, journals, years, and DOIs.
+        </div>
+        <h3 class="diag-q-question">What is the most defensible response?</h3>
+        <div class="diag-options-stacked">
+          <button class="diag-opt-card" data-value="a"><span class="diag-opt-letter">A</span>Add all three to the reading list. DOIs mean the citations are real.</button>
+          <button class="diag-opt-card" data-value="b"><span class="diag-opt-letter">B</span>Verify each citation against a library database before adding any of them. AI-generated references require verification regardless of format.</button>
+          <button class="diag-opt-card" data-value="c"><span class="diag-opt-letter">C</span>Add them and let students verify as a learning exercise.</button>
+          <button class="diag-opt-card" data-value="d"><span class="diag-opt-letter">D</span>Add only the citation from the journal you recognize.</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="diag-item" data-q="4" data-answer="a" data-dim="S">
+        <span class="diag-q-label">SCENARIO 04 OF 06</span>
+        <div class="diag-scenario">
+          <span class="diag-scenario-label">THE SITUATION</span>
+          A nursing program director considers using an AI tool to auto-score high-stakes final exam essays. The tool scored well on a pilot against human graders.
+        </div>
+        <h3 class="diag-q-question">What is the most defensible response?</h3>
+        <div class="diag-options-stacked">
+          <button class="diag-opt-card" data-value="a"><span class="diag-opt-letter">A</span>Do not auto-score. Use AI for first-pass formative feedback only; retain human judgment as the scoring authority on high-stakes work.</button>
+          <button class="diag-opt-card" data-value="b"><span class="diag-opt-letter">B</span>Use AI to score; use faculty only to spot-check.</button>
+          <button class="diag-opt-card" data-value="c"><span class="diag-opt-letter">C</span>Use AI to score and disclose that fact to students in the syllabus.</button>
+          <button class="diag-opt-card" data-value="d"><span class="diag-opt-letter">D</span>Use AI to score exams worth less than 20 percent of the grade.</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="diag-item" data-q="5" data-answer="c" data-dim="M">
+        <span class="diag-q-label">SCENARIO 05 OF 06</span>
+        <div class="diag-scenario">
+          <span class="diag-scenario-label">THE SITUATION</span>
+          A faculty member wants a chatbot to generate a discussion case. She is drafting the prompt. Her first version: "Use these three patient records I attached and generate a case for graduate students."
+        </div>
+        <h3 class="diag-q-question">What is the most defensible response?</h3>
+        <div class="diag-options-stacked">
+          <button class="diag-opt-card" data-value="a"><span class="diag-opt-letter">A</span>The prompt is fine if the records are de-identified.</button>
+          <button class="diag-opt-card" data-value="b"><span class="diag-opt-letter">B</span>Remove patient records from the prompt and describe clinical scenarios in general terms.</button>
+          <button class="diag-opt-card" data-value="c"><span class="diag-opt-letter">C</span>Replace the patient records with a written description of the clinical pattern you want. The model does not need the source records to produce a case; passing them in creates unnecessary exposure.</button>
+          <button class="diag-opt-card" data-value="d"><span class="diag-opt-letter">D</span>Attach only one record instead of three.</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="diag-item" data-q="6" data-answer="d" data-dim="P+R+I+S+M">
+        <span class="diag-q-label">SCENARIO 06 OF 06</span>
+        <div class="diag-scenario">
+          <span class="diag-scenario-label">THE SITUATION</span>
+          A faculty member has completed PRISM for a new AI-assisted activity. She marked "uncertain" on Representation and "no" on Privacy. She is ready to deploy next Monday.
+        </div>
+        <h3 class="diag-q-question">What is the most defensible response?</h3>
+        <div class="diag-options-stacked">
+          <button class="diag-opt-card" data-value="a"><span class="diag-opt-letter">A</span>Deploy. Three out of five dimensions passing is adequate for a pilot.</button>
+          <button class="diag-opt-card" data-value="b"><span class="diag-opt-letter">B</span>Deploy with a disclaimer to learners about the limitations.</button>
+          <button class="diag-opt-card" data-value="c"><span class="diag-opt-letter">C</span>Deploy to a subset of learners as a pilot before the full cohort.</button>
+          <button class="diag-opt-card" data-value="d"><span class="diag-opt-letter">D</span>Do not deploy. PRISM requires a "yes" on all five dimensions. Resolve the privacy "no" and the representation "uncertain" first.</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <div class="diag-controls">
+        <span class="diag-counter"><strong id="diag-q-num">1</strong> of 6 · Correct: <strong id="diag-correct">0</strong></span>
+        <button class="btn btn-primary" id="diag-next" disabled>Next scenario →</button>
+      </div>
+
+      <div class="diag-summary" id="diag-summary">
+        <h3>Ethics check complete.</h3>
+        <div class="diag-score" id="diag-final-score">0 / 6</div>
+        <p id="diag-final-msg">You are ready to move on.</p>
+        <button class="btn btn-primary" id="diag-restart">Retake</button>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 3.7 — DISCLOSURE EXAMPLES ============ -->
+    <section class="block" id="b37">
+      <div class="block-head">
+        <span class="block-num">3.7</span>
+        <span class="block-type">Labeled Graphic · Disclosure Examples</span>
+      </div>
+      <h2 class="block-title">Three syllabus disclosures, annotated</h2>
+      <p class="lede">Most syllabus AI statements are not wrong — they are incomplete. Three real-style examples below. Green marks a strength. Rust marks a risk. Click either the passage or the note to highlight the pair.</p>
+
+      <div class="disclose-wrap">
+        <div class="disclose-nav">
+          <button class="disclose-tab active" data-tab="d1">Example 01 · Restrictive</button>
+          <button class="disclose-tab" data-tab="d2">Example 02 · Permissive</button>
+          <button class="disclose-tab" data-tab="d3">Example 03 · Balanced</button>
+        </div>
+
+        <!-- Disclosure 1: Restrictive -->
+        <div class="disclose-panel active" data-panel="d1">
+          <div class="disclose-doc">
+            <span class="disclose-doc-head">SYLLABUS LANGUAGE · RESTRICTIVE STANCE</span>
+            <div class="disclose-doc-title">Artificial Intelligence Policy</div>
+            <p>The use of <span class="disclose-mark risk" data-mark="d1-r1">any artificial intelligence tool is strictly prohibited</span> in this course. This includes but is not limited to generative AI such as ChatGPT, Claude, and Gemini. <span class="disclose-mark strength" data-mark="d1-s1">Any violation will be treated as academic dishonesty and referred to the Office of Student Conduct</span>.</p>
+            <p>Students are expected to complete all work using only course materials and approved references. <span class="disclose-mark risk" data-mark="d1-r2">No exceptions will be made.</span></p>
+          </div>
+          <div class="disclose-notes">
+            <h5>ANNOTATIONS</h5>
+            <div class="disclose-note strength" data-mark="d1-s1">
+              <span class="disclose-note-tag">STRENGTH · CLEAR CONSEQUENCE</span>
+              Names the specific consequence and the office involved. Learners know what enforcement looks like.
+            </div>
+            <div class="disclose-note risk" data-mark="d1-r1">
+              <span class="disclose-note-tag">RISK · BLANKET PROHIBITION</span>
+              A total prohibition cannot survive contact with how students already use AI tools (grammar, translation, search). Enforcement becomes arbitrary.
+            </div>
+            <div class="disclose-note risk" data-mark="d1-r2">
+              <span class="disclose-note-tag">RISK · NO EXCEPTIONS</span>
+              Absolute language closes off reasonable accommodations (disability services, language learners, legitimate edge cases).
+            </div>
+            <div class="disclose-legend">
+              <span class="disclose-legend-item strength">Strength</span>
+              <span class="disclose-legend-item risk">Risk</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Disclosure 2: Permissive -->
+        <div class="disclose-panel" data-panel="d2">
+          <div class="disclose-doc">
+            <span class="disclose-doc-head">SYLLABUS LANGUAGE · PERMISSIVE STANCE</span>
+            <div class="disclose-doc-title">AI Use in This Course</div>
+            <p><span class="disclose-mark strength" data-mark="d2-s1">Students are encouraged to use AI tools as learning partners.</span> AI can help you brainstorm, draft, refine, and understand course material. <span class="disclose-mark risk" data-mark="d2-r1">You do not need to disclose when or how you used AI in your work.</span></p>
+            <p>The instructor trusts students to use AI ethically and productively. <span class="disclose-mark risk" data-mark="d2-r2">There are no restricted uses.</span></p>
+          </div>
+          <div class="disclose-notes">
+            <h5>ANNOTATIONS</h5>
+            <div class="disclose-note strength" data-mark="d2-s1">
+              <span class="disclose-note-tag">STRENGTH · LEARNING-PARTNER FRAME</span>
+              Positions AI as a tool that can extend learning. The framing is accurate and empowering.
+            </div>
+            <div class="disclose-note risk" data-mark="d2-r1">
+              <span class="disclose-note-tag">RISK · NO DISCLOSURE EXPECTATION</span>
+              Without disclosure, faculty cannot assess what the student can do independently. This also conflicts with most accreditor guidance and professional body expectations.
+            </div>
+            <div class="disclose-note risk" data-mark="d2-r2">
+              <span class="disclose-note-tag">RISK · NO RESTRICTED USES</span>
+              High-stakes work — exams, clinical reasoning assignments, capstones — typically should restrict AI. A permissive stance without carve-outs leaves these unprotected.
+            </div>
+            <div class="disclose-legend">
+              <span class="disclose-legend-item strength">Strength</span>
+              <span class="disclose-legend-item risk">Risk</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Disclosure 3: Balanced -->
+        <div class="disclose-panel" data-panel="d3">
+          <div class="disclose-doc">
+            <span class="disclose-doc-head">SYLLABUS LANGUAGE · BALANCED STANCE</span>
+            <div class="disclose-doc-title">AI Tools: What Is Permitted, What Is Not</div>
+            <p>AI tools may support your learning in specific ways. <span class="disclose-mark strength" data-mark="d3-s1">Permitted uses: brainstorming, outlining, grammar support, translation, and understanding difficult readings.</span> <span class="disclose-mark strength" data-mark="d3-s2">Restricted uses: substantive drafting of graded work, final examinations, and clinical reasoning assignments.</span></p>
+            <p><span class="disclose-mark strength" data-mark="d3-s3">For permitted uses, include a one-line AI disclosure at the end of any submission that used an AI tool.</span> Format: "AI tool [name] was used for [purpose]. Prompt: [brief summary]."</p>
+            <p>If you are uncertain whether a use is permitted, <span class="disclose-mark strength" data-mark="d3-s4">ask me before you submit.</span> See the institutional AI policy at [link] for the full framework.</p>
+          </div>
+          <div class="disclose-notes">
+            <h5>ANNOTATIONS</h5>
+            <div class="disclose-note strength" data-mark="d3-s1">
+              <span class="disclose-note-tag">STRENGTH · NAMED PERMITTED USES</span>
+              Lists the uses that are in-bounds. Learners can proceed with confidence.
+            </div>
+            <div class="disclose-note strength" data-mark="d3-s2">
+              <span class="disclose-note-tag">STRENGTH · NAMED RESTRICTED USES</span>
+              Protects high-stakes and clinical reasoning work without a blanket ban.
+            </div>
+            <div class="disclose-note strength" data-mark="d3-s3">
+              <span class="disclose-note-tag">STRENGTH · CONCRETE DISCLOSURE FORMAT</span>
+              Gives students a disclosure format they can actually use. Removes ambiguity.
+            </div>
+            <div class="disclose-note strength" data-mark="d3-s4">
+              <span class="disclose-note-tag">STRENGTH · OPEN CHANNEL</span>
+              Invites learners to ask. Ambiguity is normalized, not punished.
+            </div>
+            <div class="disclose-legend">
+              <span class="disclose-legend-item strength">Strength</span>
+              <span class="disclose-legend-item risk">Risk</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 3.8 — STANCE BUILDER ============ -->
+    <section class="block" id="b38">
+      <div class="block-head">
+        <span class="block-num">3.8</span>
+        <span class="block-type">Button Stack · Disclosure Stance Builder</span>
+      </div>
+      <h2 class="block-title">Build your stance</h2>
+      <p class="lede">Select one option in each row. The preview on the right assembles into a live disclosure paragraph for your syllabus. Save it or copy it when you are done.</p>
+
+      <div class="builder">
+        <div class="builder-left">
+          <h4>BUILDER · FIVE DECISIONS</h4>
+
+          <div class="builder-row">
+            <span class="builder-row-label">Overall stance</span>
+            <span class="builder-row-sub">The top-line position your course takes.</span>
+            <div class="builder-options">
+              <button class="builder-opt" data-row="stance" data-val="permitted">Permitted with disclosure</button>
+              <button class="builder-opt" data-row="stance" data-val="scoped">Permitted in named activities only</button>
+              <button class="builder-opt" data-row="stance" data-val="restricted">Restricted with exceptions</button>
+              <button class="builder-opt" data-row="stance" data-val="prohibited">Prohibited</button>
+            </div>
+          </div>
+
+          <div class="builder-row">
+            <span class="builder-row-label">Permitted uses</span>
+            <span class="builder-row-sub">What learners may do with AI.</span>
+            <div class="builder-options">
+              <button class="builder-opt" data-row="permit" data-val="brainstorm">Brainstorming</button>
+              <button class="builder-opt" data-row="permit" data-val="outline">Outlining</button>
+              <button class="builder-opt" data-row="permit" data-val="grammar">Grammar/revision</button>
+              <button class="builder-opt" data-row="permit" data-val="translate">Translation</button>
+              <button class="builder-opt" data-row="permit" data-val="summary">Summarization</button>
+            </div>
+          </div>
+
+          <div class="builder-row">
+            <span class="builder-row-label">Restricted uses</span>
+            <span class="builder-row-sub">What AI is not to be used for.</span>
+            <div class="builder-options">
+              <button class="builder-opt" data-row="restrict" data-val="drafting">Substantive drafting</button>
+              <button class="builder-opt" data-row="restrict" data-val="exams">Final examinations</button>
+              <button class="builder-opt" data-row="restrict" data-val="clinical">Clinical reasoning</button>
+              <button class="builder-opt" data-row="restrict" data-val="none">No restrictions</button>
+            </div>
+          </div>
+
+          <div class="builder-row">
+            <span class="builder-row-label">Disclosure requirement</span>
+            <span class="builder-row-sub">How learners document their AI use.</span>
+            <div class="builder-options">
+              <button class="builder-opt" data-row="disclose" data-val="full">Tool, prompt, and scope at end</button>
+              <button class="builder-opt" data-row="disclose" data-val="brief">Brief one-line note</button>
+              <button class="builder-opt" data-row="disclose" data-val="reflect">Reflection on AI role</button>
+              <button class="builder-opt" data-row="disclose" data-val="none">No disclosure required</button>
+            </div>
+          </div>
+
+          <div class="builder-row">
+            <span class="builder-row-label">Support resource</span>
+            <span class="builder-row-sub">Where learners turn when uncertain.</span>
+            <div class="builder-options">
+              <button class="builder-opt" data-row="support" data-val="policy">Institutional AI policy</button>
+              <button class="builder-opt" data-row="support" data-val="library">Library AI guide</button>
+              <button class="builder-opt" data-row="support" data-val="office">Course AI office hours</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="builder-right">
+          <h4>LIVE PREVIEW · YOUR SYLLABUS PARAGRAPH</h4>
+          <div class="builder-output" id="builder-output">
+            <span class="placeholder-dots">SELECT OPTIONS TO BUILD YOUR DISCLOSURE</span>
+          </div>
+          <div class="builder-footer">
+            <span class="builder-word-count">Words: <strong id="builder-wc">0</strong> · Target: 100 to 180</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-ghost" id="builder-reset" style="color: var(--cream); border-color: rgba(242,235,214,0.3);">Reset</button>
+              <button class="btn btn-primary" id="builder-copy">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Rise 360 integration note</strong>
+        In production, the assembled stance saves to the learner's progress and is pre-populated into the Block 3.9 reflection. This HTML prototype uses in-page memory only.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 3.9 — REFLECTION ============ -->
+    <section class="block" id="b39">
+      <div class="block-head">
+        <span class="block-num">3.9</span>
+        <span class="block-type">Reflection · My Disclosure Stance</span>
+      </div>
+      <h2 class="block-title">Write your one-paragraph stance</h2>
+      <p class="lede">This is your Unit 03 summative artifact. If you used the builder, your starting draft is already above. Edit, refine, and save as your course-ready disclosure paragraph.</p>
+
+      <div class="reflect-card">
+        <span class="reflect-label">DRAFT · COURSE-READY DISCLOSURE</span>
+        <div class="reflect-prompt">Draft a one-paragraph AI disclosure stance for a DE course you currently teach or plan to teach.</div>
+        <textarea class="reflect-textarea" id="reflect-input" placeholder="Target: 100 to 180 words. Include stance, permitted uses, restricted uses, disclosure format, and a support resource. If your builder output above reads well, paste it here and refine with your own institutional language."></textarea>
+        <div class="reflect-footer">
+          <span class="reflect-cite">PRISM ethics screen · course spec Appendix G</span>
+          <button class="reflect-save" id="reflect-save">Save my stance</button>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Rise 360 integration note</strong>
+        In production, this draft posts to the Unit 03 peer discussion forum where peers respond with one scenario that would test the stance. This HTML prototype uses in-page memory only.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 3.10 — UNIT CLOSE ============ -->
+    <section class="block" id="b310">
+      <div class="block-head">
+        <span class="block-num">3.10</span>
+        <span class="block-type">Statement B · Close</span>
+      </div>
+      <h2 class="block-title">Close and bridge</h2>
+
+      <div class="close">
+        <div class="close-left">
+          <h3>You now have a screen and a stance.</h3>
+          <p>PRISM runs in under two minutes. Your disclosure fits in one paragraph. Together they give you a principled way to say yes to AI in your course, and a principled way to say not yet.</p>
+          <p>Unit 04 moves from gatekeeping to building. With the ethical screen in place, you will design an AI-enhanced DE activity that reaches the Modification or Redefinition level on SAMR. This is where the course starts to change how you teach, not just what AI you allow.</p>
+        </div>
+        <div class="next-unit">
+          <div class="next-unit-label">COMING UP · UNIT 04 · 40 MIN</div>
+          <div class="next-unit-title">Designing AI-Enhanced DE Activities</div>
+          <div class="next-unit-desc">Four activity patterns. A design canvas. An activity you can run next term.</div>
+          <a href="#" class="next-unit-btn">
+            Begin Unit 04
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COLOPHON ============ -->
+    <footer class="colophon">
+      <div class="col col-brand">
+        <strong>Applied DE Project</strong>
+        A theory-grounded micro-course for health science faculty teaching in distance education environments. Built on Community of Inquiry, TAM, Self-Regulated Learning, and SAMR.
+      </div>
+      <div class="col">
+        <h5>Policy Frames</h5>
+        <p>FERPA · 34 CFR Part 99</p>
+        <p>HIPAA · 45 CFR Parts 160, 164</p>
+        <p>Institutional AI policy</p>
+        <p>Professional body guidance</p>
+      </div>
+      <div class="col">
+        <h5>Attribution</h5>
+        <p>Marcus "MD" Taylor</p>
+        <p>UNT Health Science Center</p>
+        <p>Unit 03 · v1.0</p>
+      </div>
+    </footer>
+
+  </div>
+</main>
+
+<script>
+// ============ RAIL SCROLL SPY ============
+const blocks = document.querySelectorAll('.block');
+const dots = document.querySelectorAll('.rail-dot');
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      dots.forEach(d => d.classList.remove('active'));
+      const active = document.querySelector(`.rail-dot[href="#${id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+blocks.forEach(b => spy.observe(b));
+
+// ============ BLOCK 3.2 — ACCORDION ============
+document.querySelectorAll('.acc-trigger').forEach(trigger => {
+  trigger.addEventListener('click', () => {
+    const item = trigger.closest('.acc-item');
+    const panel = item.querySelector('.acc-panel');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.acc-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.acc-panel').style.maxHeight = '0';
+      i.querySelector('.acc-trigger').setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+(function primeAcc() {
+  const first = document.querySelector('.acc-item.open .acc-panel');
+  if (first) first.style.maxHeight = first.scrollHeight + 'px';
+})();
+
+// ============ BLOCK 3.4 — PRISM PROCESS ============
+const prismData = {
+  p: {
+    word: 'Privacy',
+    def: 'Does any input or output contain identifiable patient, student, or institutional data?',
+    why: 'Privacy is the dimension most often violated accidentally. De-identified does not mean anonymous; a combination of fields can re-identify. The default stance: nothing protected goes into a model you do not control.',
+    checklist: [
+      'Does the prompt contain PHI, de-identified or otherwise?',
+      'Does the prompt contain identifiable student work?',
+      'Does the tool retain inputs for training?',
+      'Is there an institutional DPA or BAA covering this tool?'
+    ],
+    stop: 'Any uncertainty on retention policies. Any input that could re-identify a patient when combined with other available data.'
+  },
+  r: {
+    word: 'Representation',
+    def: 'Does the output reflect the population, conditions, and presentations learners will actually encounter?',
+    why: 'Training data bias is predictable and documented. Representation is the screen that catches it before it becomes instructional pattern. The goal is not diversity theater; it is clinical accuracy across the range of patients learners will treat.',
+    checklist: [
+      'Are demographic distributions in the output defensible?',
+      'Are symptom presentations varied across gender, age, and race?',
+      'Are comorbidities and edge cases represented?',
+      'Did you prompt for variance, or let the model default?'
+    ],
+    stop: 'Output that homogenizes patients along gender, age, race, or presentation. Outputs that reinforce a stereotype the course is supposed to dismantle.'
+  },
+  i: {
+    word: 'Integrity',
+    def: 'Are all claims, citations, and factual assertions in the output verifiable against primary sources?',
+    why: 'Confabulation is the most dangerous failure mode in a healthcare context. Unlike bias, which shows up in patterns, a fabricated citation looks perfectly plausible until a librarian checks it. Integrity is the screen that catches hallucination before it reaches a learner.',
+    checklist: [
+      'Is every citation verified against a library database?',
+      'Is every dose, lab value, or guideline cross-checked against a primary source?',
+      'Are claims flagged that the model could plausibly invent?',
+      'Has a domain expert reviewed clinical content?'
+    ],
+    stop: 'Any unverified clinical claim in learner-facing material. Any citation that cannot be confirmed in an authoritative database.'
+  },
+  s: {
+    word: 'Safety',
+    def: 'Could the output harm learners if it is wrong, misleading, or misapplied?',
+    why: 'Safety is contextual. The same AI-generated summary that is fine for a general reading list can be dangerous in a high-stakes clinical decision context. Safety asks where human judgment must remain the final authority, and ensures AI does not replace it there.',
+    checklist: [
+      'Is the output used in high-stakes assessment?',
+      'Does the task involve direct clinical decision-making by learners?',
+      'Could a confident but wrong output pass without review?',
+      'Is human judgment clearly positioned as the final authority?'
+    ],
+    stop: 'Auto-scoring of high-stakes final assessments. AI outputs used as the final clinical reasoning authority without expert review.'
+  },
+  m: {
+    word: 'Minimization',
+    def: 'Are you using the smallest amount of sensitive input necessary to produce the output?',
+    why: 'Minimization is the privacy principle most often violated in prompting. Faculty paste entire records when a description of the pattern would do. Every field in a prompt is a field at risk. The question is never "what can I include?" — it is "what is the minimum I need?"',
+    checklist: [
+      'Did you strip fields that were not required for the task?',
+      'Did you use a description of a pattern instead of a real example?',
+      'Did you review the output for residual sensitive content?',
+      'Is the prompt kept in a system the tool provider does not retain?'
+    ],
+    stop: 'Any prompt that includes data the task does not require. Any prompt that uses a real record when a generalized pattern would have worked.'
+  }
+};
+
+document.querySelectorAll('.prism-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const step = tab.dataset.step;
+    document.querySelectorAll('.prism-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const d = prismData[step];
+    document.getElementById('prism-word').textContent = d.word;
+    document.getElementById('prism-def').textContent = d.def;
+    document.getElementById('prism-why').textContent = d.why;
+    document.getElementById('prism-stop').textContent = d.stop;
+    const list = document.getElementById('prism-checklist');
+    list.innerHTML = '';
+    d.checklist.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      list.appendChild(li);
+    });
+  });
+});
+
+// ============ BLOCK 3.5 — FLIP CARDS ============
+document.querySelectorAll('.flip-card').forEach(card => {
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.classList.toggle('flipped'); }
+  });
+  card.setAttribute('tabindex', '0');
+});
+
+// ============ BLOCK 3.6 — ETHICS KNOWLEDGE CHECK ============
+const diagItems = document.querySelectorAll('.diag-item');
+const diagDots = document.querySelectorAll('.diag-dot');
+const diagQNum = document.getElementById('diag-q-num');
+const diagCorrectEl = document.getElementById('diag-correct');
+const diagNext = document.getElementById('diag-next');
+const diagSummary = document.getElementById('diag-summary');
+const diagFinalScore = document.getElementById('diag-final-score');
+const diagFinalMsg = document.getElementById('diag-final-msg');
+const diagRestart = document.getElementById('diag-restart');
+
+const rightMsgs = {
+  1: 'The only defensible path is to use fictional details or an institutionally-approved tool with a BAA. De-identification of teaching files is not equivalent to HIPAA-safe for consumer AI.',
+  2: 'Demographic homogeneity is training data bias, not clinical accuracy. Regenerating with explicit variance (or rewriting) is the only path that matches the course\'s educational intent.',
+  3: 'AI-generated citations require verification regardless of how formatted or confident they appear. Confabulation reliably produces plausible references with plausible DOIs.',
+  4: 'Auto-scoring high-stakes work removes human judgment as the final authority on consequential decisions. AI for formative feedback is appropriate; AI as final scorer is not.',
+  5: 'Describe the clinical pattern rather than pass source records. The model does not need patient records to produce a teaching case, and passing them creates data exposure that is both unnecessary and non-compliant.',
+  6: 'PRISM is a gate, not a score. Any "no" or "uncertain" on any dimension means you pause and resolve before deployment. A pilot does not change this — pilots also reach learners.'
+};
+
+const wrongMsgs = {
+  1: {
+    a: 'De-identification for teaching use is not the same as HIPAA-safe for a consumer AI tool. Retention and re-identification risk remain.',
+    c: 'Stripping names alone does not de-identify. Date of service, unit, and clinical narrative can combine to re-identify.',
+    d: 'The test exposes one real patient to the model. The correct action is to not paste real records at all.'
+  },
+  2: {
+    a: 'Clinical accuracy requires demographic representativeness. Five male-pattern presentations reinforce a known diagnostic bias.',
+    b: 'A footnote does not correct the instructional pattern. Learners will still internalize the bias.',
+    d: 'Adding one female case while keeping biased male cases does not solve the representation failure.'
+  },
+  3: {
+    a: 'DOIs can be fabricated alongside the rest of the citation. The format is not a guarantee of existence.',
+    c: 'Verification is the instructor\'s responsibility before material reaches learners. Using fabricated citations as a "learning exercise" degrades course credibility.',
+    d: 'A familiar journal name does not verify the specific article, volume, issue, or page.'
+  },
+  4: {
+    b: 'If AI scores and faculty spot-check, AI is the de facto decision-maker. This inverts the safety principle.',
+    c: 'Disclosure does not resolve the safety issue. Learners cannot opt out of an auto-scored high-stakes assessment.',
+    d: 'The safety principle does not scale with stakes. Auto-scoring any graded assessment bypasses human judgment on consequential decisions.'
+  },
+  5: {
+    a: 'Minimization asks the prior question: does the task require the records at all? Here, it does not.',
+    b: 'Removing records is correct in principle, but the better framing is to replace them with a pattern description so the task is still completed.',
+    d: 'Attaching any real record when the task does not require it violates minimization.'
+  },
+  6: {
+    a: 'PRISM is a gate, not a score. A "three of five" does not authorize deployment.',
+    b: 'A disclaimer does not resolve an ethics failure; it transfers risk to the learner.',
+    c: 'A pilot still exposes learners. The privacy and representation issues must be resolved first.'
+  }
+};
+
+function resolveFeedback(qNum, answer, selected) {
+  const correct = selected === answer;
+  if (correct) return { correct, message: rightMsgs[qNum] };
+  return { correct, message: (wrongMsgs[qNum] && wrongMsgs[qNum][selected]) || 'Review the PRISM dimensions in Block 3.4 and try again on the next attempt.' };
+}
+
+diagItems.forEach(item => {
+  const q = parseInt(item.dataset.q);
+  const answer = item.dataset.answer;
+  const dim = item.dataset.dim;
+  const opts = item.querySelectorAll('.diag-opt-card');
+  const feedback = item.querySelector('.diag-feedback');
+  opts.forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (item.dataset.answered) return;
+      item.dataset.answered = 'true';
+      const selected = opt.dataset.value;
+      const result = resolveFeedback(q, answer, selected);
+      opts.forEach(o => {
+        if (o.dataset.value === answer) o.classList.add('correct');
+        else if (o === opt && !result.correct) o.classList.add('incorrect');
+      });
+      feedback.classList.add('show', result.correct ? 'right' : 'wrong');
+      feedback.innerHTML = (result.correct ? '<strong>PRISM dimension applied correctly</strong>' : '<strong>Not the strongest path</strong>') + result.message + `<br><span class="prism-ref">DIMENSION · ${dim}</span>`;
+      if (result.correct) diagCorrectEl.textContent = parseInt(diagCorrectEl.textContent) + 1;
+      diagDots[q - 1].classList.remove('active');
+      diagDots[q - 1].classList.add('done');
+      diagNext.disabled = false;
+    });
+  });
+});
+
+let currentQ = 1;
+const totalQ = diagItems.length;
+diagNext.addEventListener('click', () => {
+  const current = document.querySelector(`.diag-item[data-q="${currentQ}"]`);
+  current.classList.remove('active');
+  currentQ++;
+  if (currentQ > totalQ) {
+    diagSummary.classList.add('show');
+    diagNext.style.display = 'none';
+    const score = parseInt(diagCorrectEl.textContent);
+    diagFinalScore.textContent = `${score} / ${totalQ}`;
+    if (score === totalQ) diagFinalMsg.textContent = 'You applied PRISM consistently across all six. Continue to the disclosure examples in Block 3.7.';
+    else if (score >= 4) diagFinalMsg.textContent = 'You applied PRISM correctly on most. Review the dimensions you missed before Block 3.7.';
+    else diagFinalMsg.textContent = 'Review PRISM in Block 3.4 before continuing. The screen sharpens with practice on cases like these.';
+    return;
+  }
+  const next = document.querySelector(`.diag-item[data-q="${currentQ}"]`);
+  next.classList.add('active');
+  diagDots[currentQ - 1].classList.add('active');
+  diagQNum.textContent = currentQ;
+  diagNext.disabled = true;
+});
+
+diagRestart.addEventListener('click', () => {
+  currentQ = 1;
+  diagCorrectEl.textContent = '0';
+  diagQNum.textContent = '1';
+  diagSummary.classList.remove('show');
+  diagNext.style.display = '';
+  diagNext.disabled = true;
+  diagItems.forEach((item, i) => {
+    delete item.dataset.answered;
+    item.classList.remove('active');
+    if (i === 0) item.classList.add('active');
+    item.querySelectorAll('.diag-opt-card').forEach(o => o.classList.remove('correct', 'incorrect', 'selected'));
+    const fb = item.querySelector('.diag-feedback');
+    fb.classList.remove('show', 'right', 'wrong');
+    fb.innerHTML = '';
+  });
+  diagDots.forEach((d, i) => {
+    d.classList.remove('done', 'active');
+    if (i === 0) d.classList.add('active');
+  });
+});
+
+// ============ BLOCK 3.7 — DISCLOSURE EXAMPLES ============
+document.querySelectorAll('.disclose-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    document.querySelectorAll('.disclose-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.disclose-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`.disclose-panel[data-panel="${target}"]`).classList.add('active');
+  });
+});
+// Link marks and notes bidirectionally
+function hookDisclose(wrap) {
+  const marks = wrap.querySelectorAll('.disclose-mark');
+  const notes = wrap.querySelectorAll('.disclose-note');
+  function activate(id) {
+    marks.forEach(m => m.classList.toggle('active', m.dataset.mark === id));
+    notes.forEach(n => n.classList.toggle('active', n.dataset.mark === id));
+  }
+  function clear() {
+    marks.forEach(m => m.classList.remove('active'));
+    notes.forEach(n => n.classList.remove('active'));
+  }
+  marks.forEach(mark => {
+    mark.addEventListener('mouseenter', () => activate(mark.dataset.mark));
+    mark.addEventListener('mouseleave', clear);
+    mark.addEventListener('click', () => activate(mark.dataset.mark));
+  });
+  notes.forEach(note => {
+    note.addEventListener('mouseenter', () => activate(note.dataset.mark));
+    note.addEventListener('mouseleave', clear);
+    note.addEventListener('click', () => activate(note.dataset.mark));
+  });
+}
+document.querySelectorAll('.disclose-panel').forEach(hookDisclose);
+
+// ============ BLOCK 3.8 — STANCE BUILDER ============
+const builderState = { stance: null, permit: new Set(), restrict: null, disclose: null, support: null };
+const stanceTexts = {
+  permitted:  { open: 'AI tools are permitted in this course with disclosure.', rest: 'with appropriate disclosure' },
+  scoped:     { open: 'AI tools are permitted in this course only in named activities.', rest: 'in the activities named below' },
+  restricted: { open: 'AI use in this course is restricted, with specific exceptions.', rest: 'only for the exceptions named below' },
+  prohibited: { open: 'AI tools are prohibited in this course.', rest: null }
+};
+const permitLabels = {
+  brainstorm: 'brainstorming',
+  outline: 'outlining',
+  grammar: 'grammar and revision support',
+  translate: 'translation',
+  summary: 'summarization'
+};
+const restrictLabels = {
+  drafting: 'substantive drafting of graded work',
+  exams: 'final examinations',
+  clinical: 'clinical reasoning assignments',
+  none: null
+};
+const discloseLabels = {
+  full: 'Disclose the tool used, the prompt, and the scope at the end of every submission.',
+  brief: 'Include a one-line AI disclosure note on any submission where AI was used.',
+  reflect: 'Include a brief reflection on the AI\'s role in your work.',
+  none: null
+};
+const supportLabels = {
+  policy: 'See the institutional AI policy for the full framework.',
+  library: 'The library AI guide is your first stop when uncertain.',
+  office: 'Office hours are open for questions about AI in this course.'
+};
+
+function joinList(items, conj = 'and') {
+  if (items.length === 0) return '';
+  if (items.length === 1) return items[0];
+  if (items.length === 2) return items.join(' ' + conj + ' ');
+  return items.slice(0, -1).join(', ') + ', ' + conj + ' ' + items[items.length - 1];
+}
+
+function renderBuilder() {
+  const out = document.getElementById('builder-output');
+  const wc = document.getElementById('builder-wc');
+  const s = builderState;
+  if (!s.stance) {
+    out.innerHTML = '<span class="placeholder-dots">SELECT OPTIONS TO BUILD YOUR DISCLOSURE</span>';
+    wc.textContent = '0';
+    return;
+  }
+  const stance = stanceTexts[s.stance];
+  let text = stance.open + ' ';
+
+  if (s.stance !== 'prohibited') {
+    if (s.permit.size > 0) {
+      const permits = Array.from(s.permit).map(p => permitLabels[p]);
+      text += 'Permitted uses include <em>' + joinList(permits) + '</em>. ';
+    }
+    if (s.restrict && s.restrict !== 'none') {
+      text += 'Restricted uses include <em>' + restrictLabels[s.restrict] + '</em>. ';
+    } else if (s.restrict === 'none') {
+      text += 'No specific uses are restricted in this course. ';
+    }
+    if (s.disclose && discloseLabels[s.disclose]) {
+      text += discloseLabels[s.disclose] + ' ';
+    } else if (s.disclose === 'none') {
+      text += 'Separate disclosure is not required for permitted uses. ';
+    }
+  }
+  if (s.support) {
+    text += supportLabels[s.support];
+  }
+  out.innerHTML = text.trim();
+  const plain = text.replace(/<[^>]+>/g, '').trim();
+  wc.textContent = plain.split(/\s+/).filter(Boolean).length;
+}
+
+document.querySelectorAll('.builder-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    const row = opt.dataset.row;
+    const val = opt.dataset.val;
+    if (row === 'permit') {
+      if (builderState.permit.has(val)) {
+        builderState.permit.delete(val);
+        opt.classList.remove('selected');
+      } else {
+        builderState.permit.add(val);
+        opt.classList.add('selected');
+      }
+    } else {
+      if (builderState[row] === val) {
+        builderState[row] = null;
+        opt.classList.remove('selected');
+      } else {
+        document.querySelectorAll(`.builder-opt[data-row="${row}"]`).forEach(o => o.classList.remove('selected'));
+        builderState[row] = val;
+        opt.classList.add('selected');
+      }
+    }
+    renderBuilder();
+  });
+});
+
+document.getElementById('builder-reset').addEventListener('click', () => {
+  builderState.stance = null; builderState.permit = new Set(); builderState.restrict = null; builderState.disclose = null; builderState.support = null;
+  document.querySelectorAll('.builder-opt').forEach(o => o.classList.remove('selected'));
+  renderBuilder();
+});
+
+document.getElementById('builder-copy').addEventListener('click', async () => {
+  const out = document.getElementById('builder-output');
+  const text = out.textContent.includes('SELECT OPTIONS') ? '' : out.textContent;
+  if (!text) return;
+  const btn = document.getElementById('builder-copy');
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = '✓ Copied';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+    // Pre-fill reflection below
+    const reflect = document.getElementById('reflect-input');
+    if (reflect && !reflect.value) reflect.value = text;
+  } catch {
+    btn.textContent = 'Copy failed';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  }
+});
+
+// ============ BLOCK 3.9 — REFLECTION SAVE ============
+const reflectSave = document.getElementById('reflect-save');
+const reflectInput = document.getElementById('reflect-input');
+reflectSave.addEventListener('click', () => {
+  if (!reflectInput.value.trim()) {
+    reflectSave.textContent = 'Draft required';
+    setTimeout(() => reflectSave.textContent = 'Save my stance', 2500);
+    return;
+  }
+  reflectSave.textContent = '✓ Saved to this session';
+  reflectSave.style.background = '#E8F3EC';
+  reflectSave.style.color = '#007B3C';
+  setTimeout(() => {
+    reflectSave.textContent = 'Save my stance';
+    reflectSave.style.background = '';
+    reflectSave.style.color = '';
+  }, 3000);
+});
+
+// ============ VIDEO PLACEHOLDER ============
+document.querySelectorAll('.video-play').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wrapper = btn.closest('.scenario-stage');
+    if (wrapper.querySelector('.video-placeholder-msg')) return;
+    const msg = document.createElement('div');
+    msg.className = 'video-placeholder-msg';
+    msg.style.cssText = 'position:absolute; bottom:24px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.75); color:#F2EBD6; padding:10px 18px; border-radius:3px; font-family:"JetBrains Mono",monospace; font-size: 14px; letter-spacing: 1px; backdrop-filter:blur(8px); z-index:10;';
+    msg.textContent = 'VIDEO ASSET PENDING · SEE PRODUCTION NOTES';
+    wrapper.appendChild(msg);
+    setTimeout(() => msg.remove(), 2800);
+  });
+});
+</script>
+</body>
+</html>

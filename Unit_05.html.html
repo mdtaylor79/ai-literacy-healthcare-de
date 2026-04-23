@@ -1,0 +1,2623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 05 — Assessment and Feedback with AI Tools | AI Literacy in Healthcare DE</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --green:        #007B3C;
+    --green-dark:   #00562A;
+    --green-soft:   #E8F3EC;
+    --green-on-dark:#4DC17D;
+    --green-tint:   #F4F9F5;
+    --teal:         #00778C;
+    --navy:         #022F46;
+    --navy-soft:   #1a3d52;
+    --cream:        #F2EBD6;
+    --cream-soft:   #FBF7EA;
+    --ink:          #0F1419;
+    --paper:        #FDFCF8;
+    --rule:         #D4C9A8;
+    --rule-soft:    #EAE3CC;
+    --grey:         #5A5F5C;
+    --grey-light:   #5F6865;
+    --amber:        #876100;
+    --amber-soft:   #FBF4E3;
+    --warn:         #A63D2A;
+    --warn-soft:    #F5E6E1;
+    --rail-w:       72px;
+    --max-w:        1180px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============== RAIL ============== */
+  .rail {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: var(--rail-w);
+    background: var(--navy);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 28px 0;
+    z-index: 100;
+  }
+  .rail-logo {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-weight: 600; font-size: 28px;
+    color: var(--cream); line-height: 1;
+    margin-bottom: 36px;
+  }
+  .rail-logo span { display: block; font-size: 14px; letter-spacing: 1.5px; color: var(--green-on-dark); margin-top: 6px; font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif; font-weight: 600; }
+  .rail-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; width: 100%; }
+  .rail-dot {
+    display: flex; align-items: center; justify-content: center;
+    height: 38px; width: 100%;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all .25s ease;
+    cursor: pointer;
+  }
+  .rail-dot:hover { color: var(--cream); border-left-color: var(--green-on-dark); background: rgba(255,255,255,.04); }
+  .rail-dot.active { color: var(--cream); border-left-color: var(--green-on-dark); background: rgba(0,123,60,.15); }
+  .rail-foot {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px; color: rgba(255,255,255,0.6);
+    writing-mode: vertical-rl; transform: rotate(180deg);
+  }
+
+  /* ============== MAIN ============== */
+  .shell { margin-left: var(--rail-w); min-height: 100vh; }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 56px; }
+
+  /* ============== MASTHEAD ============== */
+  .masthead {
+    padding: 64px 0 48px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .masthead-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px; color: var(--grey);
+    text-transform: uppercase;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead-meta strong { color: var(--green); font-weight: 600; }
+  .unit-number {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 260px;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--green);
+    line-height: 0.85;
+    letter-spacing: -8px;
+    margin-top: 28px;
+    display: block;
+  }
+  .unit-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1;
+    color: var(--navy);
+    margin-top: -40px;
+    margin-left: 200px;
+    max-width: 780px;
+  }
+  .unit-sub {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--grey);
+    margin-top: 16px;
+    margin-left: 200px;
+    max-width: 780px;
+    line-height: 1.3;
+  }
+  .pill-row {
+    display: flex; gap: 0;
+    margin-top: 48px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .pill { flex: 1; padding: 22px 20px; border-right: 1px solid var(--rule); }
+  .pill:last-child { border-right: none; }
+  .pill-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green); text-transform: uppercase;
+    display: block; margin-bottom: 6px;
+  }
+  .pill-value {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px; font-weight: 500;
+    color: var(--navy); line-height: 1.1;
+  }
+
+  /* ============== BLOCK FRAMING ============== */
+  .block {
+    padding: 80px 0 40px;
+    border-bottom: 1px solid var(--rule-soft);
+    scroll-margin-top: 20px;
+  }
+  .block:last-child { border-bottom: none; }
+  .block-head { display: flex; align-items: baseline; gap: 24px; margin-bottom: 36px; }
+  .block-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: var(--green); letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .block-type {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--grey-light);
+    border: 1px solid var(--rule);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .block-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 40px; font-weight: 500;
+    color: var(--navy); line-height: 1.05;
+    flex: 1;
+  }
+  p.lede {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.45;
+    max-width: 760px;
+    margin-bottom: 24px;
+  }
+
+  .placeholder-note {
+    background: var(--cream-soft);
+    border-left: 3px solid var(--green);
+    padding: 16px 22px;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--navy);
+    max-width: 760px;
+    border-radius: 0 3px 3px 0;
+  }
+  .placeholder-note strong {
+    color: var(--green);
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block; margin-bottom: 6px;
+  }
+
+  .btn {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+    border: 1.5px solid transparent;
+    background: none;
+  }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: var(--green); color: white; border-color: var(--green); }
+  .btn-primary:hover:not(:disabled) { background: var(--green-dark); border-color: var(--green-dark); }
+  .btn-ghost { background: none; color: var(--navy); border-color: var(--rule); }
+  .btn-ghost:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
+
+  /* ============== BLOCK 5.1 — FEEDBACK AS TEACHING PRESENCE ============== */
+  .presence-frame {
+    margin-top: 16px;
+    padding: 52px 56px;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .presence-frame::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--green-on-dark);
+  }
+  .presence-frame::after {
+    content: '05';
+    position: absolute;
+    bottom: -40px; right: -10px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 300px;
+    color: rgba(0, 123, 60, 0.12);
+    line-height: 0.8;
+    pointer-events: none;
+  }
+  .presence-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .presence-statement {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 42px;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 28px;
+    max-width: 860px;
+    position: relative;
+    z-index: 2;
+  }
+  .presence-statement em {
+    color: var(--green-on-dark);
+    font-style: italic;
+  }
+  .presence-body {
+    font-size: 16px;
+    color: rgba(242, 235, 214, 0.88);
+    line-height: 1.65;
+    max-width: 720px;
+    position: relative;
+    z-index: 2;
+  }
+  .presence-body p { margin-bottom: 12px; }
+  .presence-body strong { color: var(--cream); font-weight: 600; }
+
+  /* ============== BLOCK 5.2 — THREE USES, ONE NON-USE ============== */
+  .uses-grid {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  .use-card {
+    border: 1.5px solid var(--rule);
+    padding: 32px 32px;
+    border-radius: 3px;
+    background: white;
+    position: relative;
+    overflow: hidden;
+    transition: all .25s ease;
+  }
+  .use-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--green);
+  }
+  .use-card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -8px rgba(0, 123, 60, 0.15); border-color: var(--green); }
+  .use-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .use-check {
+    position: absolute;
+    top: 24px; right: 24px;
+    width: 36px; height: 36px;
+    background: var(--green-soft);
+    color: var(--green);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    font-weight: 600;
+  }
+  .use-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 10px;
+    padding-right: 48px;
+  }
+  .use-samr {
+    display: inline-block;
+    padding: 3px 8px;
+    background: var(--green-soft);
+    color: var(--green-dark);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .use-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--navy);
+  }
+  .use-body strong { color: var(--green); font-weight: 600; }
+
+  .non-use {
+    margin-top: 24px;
+    background: var(--warn-soft);
+    border: 1.5px solid var(--warn);
+    padding: 32px 40px;
+    border-radius: 3px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 32px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .non-use::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: var(--warn);
+  }
+  .non-use-seal {
+    width: 92px; height: 92px;
+    border-radius: 50%;
+    background: var(--warn);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 54px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .non-use-content { position: relative; z-index: 2; }
+  .non-use-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--warn);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .non-use-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--warn);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .non-use-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--navy);
+  }
+  .non-use-body strong { color: var(--warn); font-weight: 700; }
+
+  /* ============== BLOCK 5.3 — FEEDBACK LOOP PROCESS ============== */
+  .loop-wrap { margin-top: 16px; }
+  .loop-flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    margin-bottom: 40px;
+  }
+  .loop-node {
+    padding: 28px 20px;
+    background: white;
+    border: 1.5px solid var(--rule);
+    border-right: none;
+    cursor: pointer;
+    text-align: center;
+    transition: all .2s ease;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    position: relative;
+  }
+  .loop-node:first-child { border-radius: 3px 0 0 3px; }
+  .loop-node:last-child { border-right: 1.5px solid var(--rule); border-radius: 0 3px 3px 0; }
+  .loop-node:hover { background: var(--green-tint); }
+  .loop-node.active { background: var(--navy); border-color: var(--navy); }
+  .loop-node.active .loop-num, .loop-node.active .loop-label { color: var(--cream); }
+  .loop-node.active .loop-num::before { color: var(--green-on-dark); }
+  .loop-node.active .loop-actor { color: var(--green-on-dark); }
+  .loop-node::after {
+    content: '→';
+    position: absolute;
+    top: 50%; right: -14px;
+    transform: translateY(-50%);
+    width: 28px; height: 28px;
+    background: white;
+    border: 1.5px solid var(--rule);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--green);
+    font-weight: 700;
+    z-index: 5;
+    font-size: 14px;
+  }
+  .loop-node:last-child::after { display: none; }
+
+  .loop-actor {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .loop-num {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--green);
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .loop-label {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+
+  .loop-panel {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 40px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 48px;
+    min-height: 300px;
+  }
+  .loop-panel-left h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--green);
+    line-height: 0.95;
+  }
+  .loop-panel-left .loop-def {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--navy);
+    line-height: 1.4;
+    margin-top: 16px;
+  }
+  .loop-panel-left .loop-why {
+    font-size: 14px;
+    color: var(--grey);
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    line-height: 1.6;
+  }
+  .loop-panel-right h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+  .loop-check-list {
+    list-style: none;
+    margin-bottom: 20px;
+  }
+  .loop-check-list li {
+    padding: 10px 0 10px 30px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.5;
+    position: relative;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .loop-check-list li:last-child { border-bottom: none; }
+  .loop-check-list li::before {
+    content: '✓';
+    position: absolute; left: 0; top: 11px;
+    color: var(--green); font-weight: 700; font-size: 14px;
+    width: 20px; height: 20px; line-height: 20px; text-align: center;
+    background: var(--green-soft); border-radius: 50%;
+  }
+  .loop-artifact {
+    background: var(--cream-soft);
+    border-left: 3px solid var(--green);
+    padding: 14px 18px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    color: var(--navy);
+    line-height: 1.55;
+    font-style: italic;
+    border-radius: 0 3px 3px 0;
+  }
+  .loop-artifact-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-style: normal;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  /* ============== BLOCK 5.4 — SCENARIO VIDEO ============== */
+  .scenario-stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #022F46 0%, #013A57 50%, #014a68 100%);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -20px rgba(2, 47, 70, 0.4);
+  }
+  .scenario-stage::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: 
+      repeating-linear-gradient(-45deg, transparent 0, transparent 3px, rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 4px),
+      radial-gradient(circle at 60% 50%, rgba(0,123,60,0.25) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .scenario-chars {
+    position: absolute;
+    bottom: 0; right: 0;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 200px;
+    color: rgba(0, 123, 60, 0.65);
+    line-height: 0.8;
+    padding: 0 40px 20px 0;
+    pointer-events: none;
+  }
+  .video-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 36px 44px;
+    color: var(--cream);
+  }
+  .video-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    align-self: flex-start;
+    padding: 6px 12px;
+    border: 1px solid var(--green);
+    border-radius: 2px;
+  }
+  .video-play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .3s ease;
+    animation: pulse 2.5s infinite;
+    border: none;
+  }
+  .video-play:hover { transform: translate(-50%, -50%) scale(1.08); }
+  .video-play svg { width: 28px; height: 28px; fill: white; margin-left: 4px; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0,123,60,0.5); }
+    70% { box-shadow: 0 0 0 24px rgba(0,123,60,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,123,60,0); }
+  }
+  .video-meta-bottom {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.65);
+  }
+  .video-title-over {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--cream);
+    max-width: 60%;
+    line-height: 1.3;
+  }
+
+  /* ============== BLOCK 5.5 — APPROPRIATE OR NOT ============== */
+  .appro-intro {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    background: var(--cream-soft);
+    border-radius: 3px;
+  }
+  .appro-intro-num {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--green);
+    font-style: italic;
+    line-height: 1;
+  }
+  .appro-intro-text { font-size: 15px; color: var(--navy); }
+  .appro-intro-text strong { color: var(--green); }
+
+  .appro-progress {
+    display: flex; gap: 6px;
+    margin-bottom: 28px;
+  }
+  .appro-dot {
+    flex: 1;
+    height: 4px;
+    background: var(--rule-soft);
+    border-radius: 2px;
+    transition: background .3s ease;
+  }
+  .appro-dot.active { background: var(--green); }
+  .appro-dot.done { background: var(--green-dark); }
+
+  .appro-item { display: none; }
+  .appro-item.active { display: block; }
+
+  .appro-q-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .appro-task {
+    background: var(--cream-soft);
+    border-left: 4px solid var(--amber);
+    padding: 22px 26px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    color: var(--navy);
+    line-height: 1.5;
+    border-radius: 0 3px 3px 0;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  .appro-task-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-style: normal;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--amber);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .appro-choice {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .appro-btn {
+    padding: 20px 24px;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    background: white;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    transition: all .2s ease;
+    text-align: left;
+  }
+  .appro-btn:hover { border-color: var(--green); background: var(--green-tint); transform: translateY(-1px); }
+  .appro-btn.selected { border-color: var(--green); background: var(--green); }
+  .appro-btn.selected .appro-btn-label { color: white; }
+  .appro-btn.selected .appro-btn-sub { color: rgba(255,255,255,0.75); }
+  .appro-btn.correct { background: var(--green-soft); border-color: var(--green); }
+  .appro-btn.correct .appro-btn-label { color: var(--green-dark); }
+  .appro-btn.incorrect { background: var(--warn-soft); border-color: var(--warn); }
+  .appro-btn.incorrect .appro-btn-label { color: var(--warn); }
+  .appro-btn-label {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    display: block;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .appro-btn-sub {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.45;
+  }
+
+  .appro-feedback {
+    margin-top: 16px;
+    padding: 18px 22px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.65;
+    display: none;
+  }
+  .appro-feedback.show { display: block; }
+  .appro-feedback.right { background: var(--green-soft); border-left: 3px solid var(--green); }
+  .appro-feedback.wrong { background: var(--warn-soft); border-left: 3px solid var(--warn); }
+  .appro-feedback strong { font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 8px; }
+  .appro-feedback.right strong { color: var(--green); }
+  .appro-feedback.wrong strong { color: var(--warn); }
+  .appro-feedback-principle {
+    background: rgba(0,123,60,0.08);
+    padding: 10px 14px;
+    border-radius: 3px;
+    margin-top: 10px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+  }
+
+  .appro-controls {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  .appro-counter {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--grey);
+    letter-spacing: 1px;
+  }
+  .appro-counter strong { color: var(--green); }
+
+  .appro-summary {
+    display: none;
+    padding: 40px 48px;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 3px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .appro-summary.show { display: block; }
+  .appro-summary h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 34px;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+  .appro-summary p { font-size: 15px; color: rgba(242, 235, 214, 0.85); max-width: 520px; margin: 0 auto 20px; line-height: 1.6; }
+  .appro-score {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 72px;
+    font-style: italic;
+    color: var(--green-on-dark);
+    line-height: 1;
+    margin: 12px 0;
+  }
+
+  /* ============== BLOCK 5.6 — ANATOMY OF A RUBRIC ROW ============== */
+  .anatomy-wrap { margin-top: 16px; }
+  .anatomy-head {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    padding: 36px 44px;
+    border-radius: 4px 4px 0 0;
+    color: var(--cream);
+    border-left: 4px solid var(--green);
+    position: relative;
+    overflow: hidden;
+  }
+  .anatomy-head::after {
+    content: '|';
+    position: absolute;
+    top: -20px; right: 60px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 340px;
+    color: rgba(0, 123, 60, 0.15);
+    line-height: 1;
+  }
+  .anatomy-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .anatomy-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 2;
+  }
+  .anatomy-desc {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: rgba(242, 235, 214, 0.85);
+    line-height: 1.5;
+    max-width: 680px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .rubric-row-box {
+    background: white;
+    border: 1px solid var(--rule);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    overflow-x: auto;
+  }
+  .rubric-row-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+  }
+  .rubric-row-table th, .rubric-row-table td {
+    padding: 18px 20px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--rule-soft);
+    position: relative;
+  }
+  .rubric-row-table th {
+    background: var(--navy);
+    color: var(--cream);
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-bottom: none;
+  }
+  .rubric-row-table th.criterion { background: var(--green-dark); width: 22%; }
+  .rubric-row-table td.criterion-cell {
+    background: var(--green-soft);
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .rubric-row-table td {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.55;
+  }
+  .rubric-level-label {
+    display: block;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-style: normal;
+  }
+  .rubric-hotspot {
+    display: block;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 4px;
+    margin: -4px;
+    transition: all .2s ease;
+  }
+  .rubric-hotspot:hover, .rubric-hotspot.active {
+    background: var(--green-soft);
+  }
+  .rubric-note-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 16px;
+    padding: 18px 24px;
+    border-top: 2px solid var(--green);
+    background: var(--cream-soft);
+  }
+  .rubric-note-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    font-weight: 700;
+    align-self: start;
+    padding-top: 2px;
+  }
+  .rubric-note-body {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--navy);
+    line-height: 1.55;
+  }
+  .rubric-note-body strong {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  .anatomy-labels-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .anatomy-card {
+    border: 1.5px solid var(--rule);
+    padding: 20px 24px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all .2s ease;
+    background: white;
+  }
+  .anatomy-card:hover, .anatomy-card.active {
+    border-color: var(--green);
+    background: var(--green-tint);
+    transform: translateY(-2px);
+  }
+  .anatomy-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .anatomy-card-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .anatomy-card-icon {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--green);
+  }
+  .anatomy-card-name {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .anatomy-card-desc {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+  }
+  .anatomy-card-desc strong { color: var(--navy); font-weight: 600; }
+
+  /* ============== BLOCK 5.7 — RUBRIC BUILDER ============== */
+  .rubric-builder {
+    margin-top: 16px;
+    background: white;
+    border: 1.5px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .rb-header {
+    padding: 28px 36px;
+    background: var(--cream-soft);
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .rb-field { }
+  .rb-field-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    margin-bottom: 6px;
+    display: block;
+    font-weight: 600;
+  }
+  .rb-field-hint {
+    font-size: 14px;
+    color: var(--grey);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .rb-input {
+    width: 100%;
+    background: white;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    padding: 12px 16px;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    transition: border-color .2s ease;
+  }
+  .rb-input:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(0, 123, 60, 0.12); }
+
+  .rb-levels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .rb-level {
+    padding: 24px 24px;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .rb-level:last-child { border-right: none; }
+  .rb-level::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+  }
+  .rb-level.l4::before { background: var(--green); }
+  .rb-level.l3::before { background: #3D7559; }
+  .rb-level.l2::before { background: var(--amber); }
+  .rb-level.l1::before { background: var(--warn); }
+  .rb-level-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .rb-level.l4 .rb-level-label { color: var(--green); }
+  .rb-level.l3 .rb-level-label { color: #3D7559; }
+  .rb-level.l2 .rb-level-label { color: var(--amber); }
+  .rb-level.l1 .rb-level-label { color: var(--warn); }
+  .rb-level-name {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+  .rb-textarea {
+    width: 100%;
+    min-height: 90px;
+    background: white;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    padding: 10px 12px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.5;
+    resize: vertical;
+  }
+  .rb-textarea:focus { outline: none; border-color: var(--green); }
+
+  .rb-ai-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 20px;
+    padding: 28px 36px;
+    background: var(--navy);
+    color: var(--cream);
+    align-items: start;
+  }
+  .rb-ai-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green-on-dark);
+    font-weight: 700;
+    padding-top: 10px;
+  }
+  .rb-ai-input {
+    width: 100%;
+    min-height: 80px;
+    background: rgba(253, 252, 248, 0.95);
+    border: none;
+    border-radius: 3px;
+    padding: 14px 18px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    color: var(--navy);
+    line-height: 1.55;
+    resize: vertical;
+  }
+  .rb-ai-input:focus { outline: 2px solid var(--green); outline-offset: 2px; }
+
+  .rb-actions {
+    padding: 20px 36px;
+    background: white;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rb-status {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--grey);
+    letter-spacing: 1px;
+  }
+  .rb-status strong { color: var(--green); }
+
+  .rb-seed {
+    display: flex;
+    gap: 8px;
+    padding: 20px 36px;
+    background: var(--green-tint);
+    border-top: 1px solid var(--rule);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .rb-seed-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    font-weight: 700;
+    margin-right: 8px;
+  }
+  .rb-seed-btn {
+    padding: 8px 14px;
+    background: white;
+    border: 1.5px solid var(--green);
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green);
+    transition: all .15s ease;
+  }
+  .rb-seed-btn:hover { background: var(--green); color: white; }
+
+  /* ============== BLOCK 5.8 — PORTFOLIO ASSEMBLY ============== */
+  .portfolio {
+    margin-top: 16px;
+    background: linear-gradient(135deg, #013a57 0%, var(--navy) 50%, #011F30 100%);
+    border-radius: 4px;
+    padding: 52px 56px;
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  .portfolio::before {
+    content: '05 / 05';
+    position: absolute;
+    top: 28px; right: 40px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    font-weight: 600;
+  }
+  .portfolio-head {
+    margin-bottom: 36px;
+  }
+  .portfolio-head-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 12px;
+  }
+  .portfolio-head-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    font-style: italic;
+    max-width: 780px;
+  }
+  .portfolio-head-body {
+    font-size: 15px;
+    color: rgba(242, 235, 214, 0.85);
+    line-height: 1.65;
+    max-width: 680px;
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .portfolio-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(242, 235, 214, 0.18);
+    padding: 22px 20px;
+    border-radius: 3px;
+    transition: all .25s ease;
+    position: relative;
+  }
+  .portfolio-item:hover {
+    background: rgba(0, 123, 60, 0.18);
+    border-color: var(--green);
+    transform: translateY(-2px);
+  }
+  .portfolio-item-unit {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--green-on-dark);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .portfolio-item-artifact {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .portfolio-item-claim {
+    font-size: 14px;
+    color: rgba(242, 235, 214, 0.7);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .portfolio-item-status {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green-on-dark);
+    font-weight: 600;
+  }
+
+  .portfolio-mastery {
+    padding: 24px 28px;
+    background: rgba(0, 123, 60, 0.1);
+    border: 1px solid rgba(0, 123, 60, 0.3);
+    border-radius: 3px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 28px;
+    align-items: center;
+  }
+  .portfolio-mastery-seal {
+    width: 72px; height: 72px;
+    background: var(--green);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 42px;
+    flex-shrink: 0;
+  }
+  .portfolio-mastery-text h4 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .portfolio-mastery-text p {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--cream);
+    line-height: 1.4;
+  }
+
+  /* ============== BLOCK 5.9 — FINAL REFLECTION ============== */
+  .reflect-card {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 48px 56px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .reflect-card::before {
+    content: '"';
+    position: absolute;
+    top: -20px; right: 36px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 280px;
+    color: var(--green-on-dark);
+    opacity: 0.25;
+    line-height: 1;
+    font-style: italic;
+  }
+  .reflect-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 16px;
+  }
+  .reflect-prompt {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--cream);
+    line-height: 1.35;
+    max-width: 760px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .reflect-textarea {
+    width: 100%;
+    min-height: 200px;
+    background: rgba(253, 252, 248, 0.95);
+    border: none;
+    border-radius: 3px;
+    padding: 20px 22px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    color: var(--navy);
+    line-height: 1.55;
+    resize: vertical;
+    position: relative;
+  }
+  .reflect-textarea:focus { outline: 2px solid var(--green); outline-offset: 2px; }
+  .reflect-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px;
+    position: relative;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .reflect-cite {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.6);
+  }
+  .reflect-save {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 24px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .reflect-save:hover { background: var(--green-dark); }
+
+  /* ============== BLOCK 5.10 — COURSE CLOSE / DIPLOMA ============== */
+  .course-close {
+    padding: 64px 56px;
+    background: linear-gradient(135deg, var(--cream-soft) 0%, var(--cream) 100%);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .course-close::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: linear-gradient(to bottom, var(--green), var(--teal));
+  }
+  .course-close::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -40px;
+    width: 220px; height: 220px;
+    border: 3px solid var(--green);
+    border-radius: 50%;
+    opacity: 0.1;
+  }
+
+  .course-close-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px 6px 10px;
+    background: var(--green);
+    color: white;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .course-close-badge-icon {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .course-close-badge-text {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .course-close-head {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.05;
+    margin-bottom: 20px;
+    max-width: 780px;
+  }
+  .course-close-head em {
+    font-style: italic;
+    color: var(--green);
+  }
+  .course-close-body {
+    font-size: 17px;
+    color: var(--navy);
+    line-height: 1.65;
+    margin-bottom: 16px;
+    max-width: 720px;
+  }
+  .course-close-body strong { color: var(--green); font-weight: 600; }
+
+  .course-close-next {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+  }
+  .next-step {
+    background: white;
+    padding: 22px 26px;
+    border-radius: 3px;
+    border-left: 3px solid var(--green);
+  }
+  .next-step-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .next-step-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .next-step-body {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+  }
+
+  /* ============== COLOPHON ============== */
+  .colophon {
+    padding: 80px 0 64px;
+    border-top: 3px double var(--rule);
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  .col-brand {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--navy);
+    line-height: 1.4;
+  }
+  .col-brand strong { font-weight: 600; color: var(--green); display: block; font-size: 14px; font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-style: normal; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .col h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .col p { font-size: 14px; color: var(--grey); line-height: 1.7; }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .rail { display: none; }
+    .shell { margin-left: 0; }
+    .wrap { padding: 0 28px; }
+    .unit-number { font-size: 140px; letter-spacing: -4px; }
+    .unit-title { font-size: 36px; margin-left: 0; margin-top: 16px; }
+    .unit-sub { font-size: 20px; margin-left: 0; }
+    .block-title { font-size: 28px; }
+    .uses-grid, .loop-panel, .appro-choice, .anatomy-labels-grid, .rb-header, .rb-levels, .portfolio-grid, .course-close-next { grid-template-columns: 1fr; }
+    .loop-flow { grid-template-columns: 1fr 1fr; }
+    .loop-node:nth-child(2)::after, .loop-node:last-child::after { display: none; }
+    .rb-level { border-right: none; }
+    .presence-statement { font-size: 28px; }
+    .course-close-head { font-size: 36px; }
+    .pill-row { flex-direction: column; }
+    .pill { border-right: none; border-bottom: 1px solid var(--rule); }
+    .colophon { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LEFT RAIL ============ -->
+<nav class="rail" aria-label="Unit blocks">
+  <div class="rail-logo">AIL<span>UNIT 05</span></div>
+  <div class="rail-nav">
+    <a href="#b51" class="rail-dot active" data-block="1">5.1</a>
+    <a href="#b52" class="rail-dot" data-block="2">5.2</a>
+    <a href="#b53" class="rail-dot" data-block="3">5.3</a>
+    <a href="#b54" class="rail-dot" data-block="4">5.4</a>
+    <a href="#b55" class="rail-dot" data-block="5">5.5</a>
+    <a href="#b56" class="rail-dot" data-block="6">5.6</a>
+    <a href="#b57" class="rail-dot" data-block="7">5.7</a>
+    <a href="#b58" class="rail-dot" data-block="8">5.8</a>
+    <a href="#b59" class="rail-dot" data-block="9">5.9</a>
+    <a href="#b510" class="rail-dot" data-block="10">5.10</a>
+  </div>
+  <div class="rail-foot">MD TAYLOR</div>
+</nav>
+
+<main class="shell">
+  <div class="wrap">
+
+    <!-- ============ MASTHEAD ============ -->
+    <header class="masthead">
+      <div class="masthead-meta">
+        <span>AI Literacy in Healthcare Distance Education</span>
+        <span><strong>Unit 05 of 05</strong> · 35 minutes · Rise 360 · Final Unit</span>
+      </div>
+      <span class="unit-number">05</span>
+      <h1 class="unit-title">Assessment and Feedback with AI Tools</h1>
+      <p class="unit-sub">Where AI augments feedback throughput — and where human judgment must remain the final authority.</p>
+
+      <div class="pill-row">
+        <div class="pill">
+          <span class="pill-label">SAMR Target</span>
+          <span class="pill-value">Augmentation → Redefinition</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">CoI Emphasis</span>
+          <span class="pill-value">Teaching + Cognitive Presence</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">Summative Artifact</span>
+          <span class="pill-value">AI-Aware Rubric Row</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ BLOCK 5.1 — FEEDBACK IS TEACHING PRESENCE ============ -->
+    <section class="block" id="b51">
+      <div class="block-head">
+        <span class="block-num">5.1</span>
+        <span class="block-type">Statement A · Unit Welcome</span>
+      </div>
+      <h2 class="block-title">Feedback is teaching presence</h2>
+      <p class="lede">Before a rubric row, before any AI workflow, one reframe. Feedback is not correction. Feedback is how teaching presence reaches learners who will never be in the same room as you.</p>
+
+      <div class="presence-frame">
+        <div class="presence-label">05 · UNIT OPENING</div>
+        <div class="presence-statement">
+          In a DE course, feedback is not the part that <em>comes after</em> teaching. Feedback <em>is</em> the teaching.
+        </div>
+        <div class="presence-body">
+          <p>In a face-to-face course, teaching presence happens in the room: live questions, live explanations, the body language of a raised eyebrow. In asynchronous DE, the analogous channel is your written feedback on learner work. A comment in the margin is the closest equivalent to the raised eyebrow.</p>
+          <p>That is also why AI enters the assessment conversation so carefully. An AI tool can extend your <strong>reach</strong> and your <strong>throughput</strong>, but only you carry the authority of the course and the discipline. This unit is the last fifteen feet of that reasoning. Three appropriate uses. One firm non-use. A rubric row you can ship.</p>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Facilitator video optional</strong>
+        A 30-second opening video works here. Script is in Appendix A (Unit 05 variant). If produced, insert above the framing card. Default: keep as-is.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 5.2 — THREE USES, ONE NON-USE ============ -->
+    <section class="block" id="b52">
+      <div class="block-head">
+        <span class="block-num">5.2</span>
+        <span class="block-type">Accordion · Three Uses, One Non-Use</span>
+      </div>
+      <h2 class="block-title">Three ways AI helps. One way it cannot.</h2>
+      <p class="lede">The boundaries first. Three uses where AI earns its place in the feedback loop. One category where AI must not take the final call, regardless of how well it performs in pilot.</p>
+
+      <div class="uses-grid">
+        <div class="use-card">
+          <span class="use-tag">APPROPRIATE USE · 01</span>
+          <div class="use-check">✓</div>
+          <h3 class="use-title">Rubric drafting</h3>
+          <span class="use-samr">SAMR · AUGMENTATION</span>
+          <p class="use-body">AI drafts a <strong>first-pass rubric</strong> from a learning outcome. Faculty edits for course-specific criteria, language, and level distinctions. Final rubric remains a human authorship decision.</p>
+        </div>
+        <div class="use-card">
+          <span class="use-tag">APPROPRIATE USE · 02</span>
+          <div class="use-check">✓</div>
+          <h3 class="use-title">Formative feedback</h3>
+          <span class="use-samr">SAMR · MODIFICATION</span>
+          <p class="use-body">AI drafts a <strong>first-pass formative comment</strong> against your rubric. Faculty reviews, edits, and delivers. Learners receive faster and more consistent feedback than asynchronous teaching alone can produce.</p>
+        </div>
+        <div class="use-card">
+          <span class="use-tag">APPROPRIATE USE · 03</span>
+          <div class="use-check">✓</div>
+          <h3 class="use-title">Test item review</h3>
+          <span class="use-samr">SAMR · AUGMENTATION</span>
+          <p class="use-body">AI reviews draft <strong>test items for ambiguity, clinical accuracy, and bias</strong>. Faculty adopts, rejects, or revises each suggestion. Item bank remains under human editorial control.</p>
+        </div>
+      </div>
+
+      <div class="non-use">
+        <div class="non-use-seal">✕</div>
+        <div class="non-use-content">
+          <span class="non-use-tag">THE NON-USE · DO NOT CROSS</span>
+          <h3 class="non-use-title">High-stakes final scoring</h3>
+          <p class="non-use-body">AI must not serve as the <strong>final scoring authority</strong> on high-stakes assessments. Midterms, finals, capstones, licensure-adjacent exams, clinical reasoning competency decisions — these require human judgment as the last call, regardless of how well an AI tool performs in validation. An AI that scores well against human graders in a pilot is still not the appropriate final authority on a student's record.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 5.3 — FEEDBACK LOOP PROCESS ============ -->
+    <section class="block" id="b53">
+      <div class="block-head">
+        <span class="block-num">5.3</span>
+        <span class="block-type">Process · The Feedback Loop with AI</span>
+      </div>
+      <h2 class="block-title">The four-step feedback loop</h2>
+      <p class="lede">A workflow you can run every time AI enters the feedback process. Click each node to see what the step produces, who owns it, and what the instructor verifies.</p>
+
+      <div class="loop-wrap">
+        <div class="loop-flow">
+          <button class="loop-node active" data-step="1">
+            <span class="loop-actor">INSTRUCTOR</span>
+            <span class="loop-num">1</span>
+            <span class="loop-label">Draft rubric</span>
+          </button>
+          <button class="loop-node" data-step="2">
+            <span class="loop-actor">AI</span>
+            <span class="loop-num">2</span>
+            <span class="loop-label">Augment</span>
+          </button>
+          <button class="loop-node" data-step="3">
+            <span class="loop-actor">INSTRUCTOR</span>
+            <span class="loop-num">3</span>
+            <span class="loop-label">Review</span>
+          </button>
+          <button class="loop-node" data-step="4">
+            <span class="loop-actor">INSTRUCTOR</span>
+            <span class="loop-num">4</span>
+            <span class="loop-label">Deliver</span>
+          </button>
+        </div>
+
+        <div class="loop-panel">
+          <div class="loop-panel-left">
+            <h3 id="loop-word">Draft rubric</h3>
+            <div class="loop-def" id="loop-def">The instructor establishes the rubric and the outcome alignment before any AI touches the workflow.</div>
+            <div class="loop-why" id="loop-why">The rubric is the contract between teacher and learner. Without it, AI augmentation drifts toward whatever the model finds plausible. With it, every AI suggestion can be evaluated against a stable criterion.</div>
+          </div>
+          <div class="loop-panel-right">
+            <h5>WHAT THE INSTRUCTOR DOES</h5>
+            <ul class="loop-check-list" id="loop-checks">
+              <li>Writes the rubric or adapts an existing one to this assignment.</li>
+              <li>Confirms alignment to a named learning outcome.</li>
+              <li>Decides where AI will augment and where it will not.</li>
+            </ul>
+            <div class="loop-artifact">
+              <span class="loop-artifact-tag">ARTIFACT FROM THIS STEP</span>
+              <span id="loop-artifact">A finalized rubric with criteria, four performance levels, an AI-use expectation row, and a named learning outcome alignment.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 5.4 — SCENARIO VIDEO ============ -->
+    <section class="block" id="b54">
+      <div class="block-head">
+        <span class="block-num">5.4</span>
+        <span class="block-type">Scenario Video · Grading With an AI Assistant</span>
+      </div>
+      <h2 class="block-title">Grading with an AI assistant</h2>
+      <p class="lede">A three-minute scenario. A faculty member uses AI for first-pass formative feedback on a clinical reflection, reviews the AI output against the rubric, edits, and delivers. Watch the moves that keep criterion-referenced judgment intact.</p>
+
+      <div class="scenario-stage" role="img" aria-label="Scenario video placeholder: Grading with an AI assistant">
+        <div class="scenario-chars" aria-hidden="true">§</div>
+        <div class="video-overlay">
+          <span class="video-tag">SCENARIO · 03:00</span>
+          <div class="video-meta-bottom">
+            <span class="video-title-over">AI drafts. The instructor remains the author of the feedback. The rubric is the constant.</span>
+            <span>00:00 / 03:00</span>
+          </div>
+        </div>
+        <button class="video-play" aria-label="Play scenario video">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Video production needed</strong>
+        Three-minute narrated scenario. Full script in Appendix B5 of the course spec. Visual approach: split-screen showing the student submission and rubric on one side, the AI draft feedback and the instructor's edits on the other. Narrator emphasizes that the human judgment remains the final authority and frames AI as augmentation of throughput, not replacement. Closed captions required.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 5.5 — APPROPRIATE OR NOT ============ -->
+    <section class="block" id="b55">
+      <div class="block-head">
+        <span class="block-num">5.5</span>
+        <span class="block-type">Knowledge Check · Appropriate or Not</span>
+      </div>
+      <h2 class="block-title">Six tasks. AI-appropriate, or not?</h2>
+      <p class="lede">A single binary per task: appropriate for AI augmentation, or inappropriate. Feedback names the principle you were applying.</p>
+
+      <div class="appro-intro">
+        <span class="appro-intro-num">6</span>
+        <span class="appro-intro-text"><strong>Six assessment tasks.</strong> Classify each for AI suitability. Immediate feedback cites the principle and returns you to the map of uses.</span>
+      </div>
+
+      <div class="appro-progress" id="appro-progress">
+        <div class="appro-dot active"></div>
+        <div class="appro-dot"></div>
+        <div class="appro-dot"></div>
+        <div class="appro-dot"></div>
+        <div class="appro-dot"></div>
+        <div class="appro-dot"></div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="appro-item active" data-q="1" data-answer="appropriate">
+        <span class="appro-q-label">TASK 01 OF 06</span>
+        <div class="appro-task">
+          <span class="appro-task-label">THE TASK</span>
+          A pharmacy faculty member uses AI to draft a first-pass rubric for a Week 4 case analysis. She will edit it for course-specific criteria and level language before deploying.
+        </div>
+        <div class="appro-choice">
+          <button class="appro-btn" data-value="appropriate">
+            <span class="appro-btn-label">Appropriate</span>
+            <span class="appro-btn-sub">AI belongs in this workflow with the controls described.</span>
+          </button>
+          <button class="appro-btn" data-value="inappropriate">
+            <span class="appro-btn-label">Inappropriate</span>
+            <span class="appro-btn-sub">This task requires human judgment as the final authority.</span>
+          </button>
+        </div>
+        <div class="appro-feedback"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="appro-item" data-q="2" data-answer="inappropriate">
+        <span class="appro-q-label">TASK 02 OF 06</span>
+        <div class="appro-task">
+          <span class="appro-task-label">THE TASK</span>
+          A nursing program piloted an AI that auto-scores final licensure-prep essays. It agreed with human graders on 91% of scores. Leadership proposes using the AI as the scoring authority this term.
+        </div>
+        <div class="appro-choice">
+          <button class="appro-btn" data-value="appropriate">
+            <span class="appro-btn-label">Appropriate</span>
+            <span class="appro-btn-sub">AI belongs in this workflow with the controls described.</span>
+          </button>
+          <button class="appro-btn" data-value="inappropriate">
+            <span class="appro-btn-label">Inappropriate</span>
+            <span class="appro-btn-sub">This task requires human judgment as the final authority.</span>
+          </button>
+        </div>
+        <div class="appro-feedback"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="appro-item" data-q="3" data-answer="appropriate">
+        <span class="appro-q-label">TASK 03 OF 06</span>
+        <div class="appro-task">
+          <span class="appro-task-label">THE TASK</span>
+          A medical educator uses AI to draft formative Glow/Grow/Go feedback on 45 clinical reflection assignments. She reviews each AI draft against the rubric, revises where needed, and delivers the feedback as her own comments.
+        </div>
+        <div class="appro-choice">
+          <button class="appro-btn" data-value="appropriate">
+            <span class="appro-btn-label">Appropriate</span>
+            <span class="appro-btn-sub">AI belongs in this workflow with the controls described.</span>
+          </button>
+          <button class="appro-btn" data-value="inappropriate">
+            <span class="appro-btn-label">Inappropriate</span>
+            <span class="appro-btn-sub">This task requires human judgment as the final authority.</span>
+          </button>
+        </div>
+        <div class="appro-feedback"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="appro-item" data-q="4" data-answer="inappropriate">
+        <span class="appro-q-label">TASK 04 OF 06</span>
+        <div class="appro-task">
+          <span class="appro-task-label">THE TASK</span>
+          A faculty member proposes letting an AI tool make the pass/fail decision on a clinical reasoning OSCE station. Faculty will only review the cases the AI flagged as borderline.
+        </div>
+        <div class="appro-choice">
+          <button class="appro-btn" data-value="appropriate">
+            <span class="appro-btn-label">Appropriate</span>
+            <span class="appro-btn-sub">AI belongs in this workflow with the controls described.</span>
+          </button>
+          <button class="appro-btn" data-value="inappropriate">
+            <span class="appro-btn-label">Inappropriate</span>
+            <span class="appro-btn-sub">This task requires human judgment as the final authority.</span>
+          </button>
+        </div>
+        <div class="appro-feedback"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="appro-item" data-q="5" data-answer="appropriate">
+        <span class="appro-q-label">TASK 05 OF 06</span>
+        <div class="appro-task">
+          <span class="appro-task-label">THE TASK</span>
+          A health sciences faculty member submits draft exam questions to AI to flag possible ambiguity, clinical inaccuracy, and unintended bias. She adopts some suggestions, rejects others, and revises the final item bank herself.
+        </div>
+        <div class="appro-choice">
+          <button class="appro-btn" data-value="appropriate">
+            <span class="appro-btn-label">Appropriate</span>
+            <span class="appro-btn-sub">AI belongs in this workflow with the controls described.</span>
+          </button>
+          <button class="appro-btn" data-value="inappropriate">
+            <span class="appro-btn-label">Inappropriate</span>
+            <span class="appro-btn-sub">This task requires human judgment as the final authority.</span>
+          </button>
+        </div>
+        <div class="appro-feedback"></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="appro-item" data-q="6" data-answer="inappropriate">
+        <span class="appro-q-label">TASK 06 OF 06</span>
+        <div class="appro-task">
+          <span class="appro-task-label">THE TASK</span>
+          A program proposes using AI to assign the final course grade letter once formative feedback and assessments are complete. Faculty would only be consulted on appeals.
+        </div>
+        <div class="appro-choice">
+          <button class="appro-btn" data-value="appropriate">
+            <span class="appro-btn-label">Appropriate</span>
+            <span class="appro-btn-sub">AI belongs in this workflow with the controls described.</span>
+          </button>
+          <button class="appro-btn" data-value="inappropriate">
+            <span class="appro-btn-label">Inappropriate</span>
+            <span class="appro-btn-sub">This task requires human judgment as the final authority.</span>
+          </button>
+        </div>
+        <div class="appro-feedback"></div>
+      </div>
+
+      <div class="appro-controls">
+        <span class="appro-counter"><strong id="appro-q-num">1</strong> of 6 · Correct: <strong id="appro-correct">0</strong></span>
+        <button class="btn btn-primary" id="appro-next" disabled>Next task →</button>
+      </div>
+
+      <div class="appro-summary" id="appro-summary">
+        <h3>Suitability check complete.</h3>
+        <div class="appro-score" id="appro-final-score">0 / 6</div>
+        <p id="appro-final-msg">Continue to the rubric row anatomy.</p>
+        <button class="btn btn-primary" id="appro-restart">Retake</button>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 5.6 — RUBRIC ROW ANATOMY ============ -->
+    <section class="block" id="b56">
+      <div class="block-head">
+        <span class="block-num">5.6</span>
+        <span class="block-type">Labeled Graphic · Rubric Row Anatomy</span>
+      </div>
+      <h2 class="block-title">Anatomy of an AI-aware rubric row</h2>
+      <p class="lede">One real rubric row, annotated. Hover or click any passage to see the element it represents. Use this as the pattern for your own row in Block 5.7.</p>
+
+      <div class="anatomy-wrap">
+        <div class="anatomy-head">
+          <div class="anatomy-label">WORKED EXAMPLE · CLINICAL REFLECTION CRITERION</div>
+          <div class="anatomy-title">"Clinical Reasoning" rubric row with explicit AI-use expectation</div>
+          <div class="anatomy-desc">A rubric row that holds across four performance levels AND declares what AI use is in-bounds, what requires disclosure, and what crosses into the student's own work. Without the AI-use row, the rubric leaves enforcement to guesswork.</div>
+        </div>
+
+        <div class="rubric-row-box">
+          <table class="rubric-row-table">
+            <thead>
+              <tr>
+                <th class="criterion">Criterion</th>
+                <th>Exceeds (4)</th>
+                <th>Mastery (3)</th>
+                <th>Near (2)</th>
+                <th>Below (1)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="criterion-cell">
+                  <span class="rubric-hotspot" data-id="1">Clinical reasoning<span class="rubric-level-label" style="margin-top: 4px;">LO-4.2</span></span>
+                </td>
+                <td>
+                  <span class="rubric-level-label">EXCEEDS</span>
+                  <span class="rubric-hotspot" data-id="2">Integrates multiple evidence sources, acknowledges uncertainty, and defends a clinically-defensible recommendation that accounts for patient context.</span>
+                </td>
+                <td>
+                  <span class="rubric-level-label">MASTERY</span>
+                  <span class="rubric-hotspot" data-id="3">Cites at least one authoritative guideline, arrives at a clinically-defensible recommendation, and shows awareness of at least one alternative.</span>
+                </td>
+                <td>
+                  <span class="rubric-level-label">NEAR</span>
+                  <span class="rubric-hotspot" data-id="4">Recommendation is plausible but reasoning is thin; missing guideline reference or key clinical consideration.</span>
+                </td>
+                <td>
+                  <span class="rubric-level-label">BELOW</span>
+                  <span class="rubric-hotspot" data-id="5">Recommendation is unsafe, unsupported, or not anchored to the clinical case.</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="rubric-note-row">
+            <span class="rubric-note-label">AI-USE EXPECTATION</span>
+            <div class="rubric-note-body">
+              <span class="rubric-hotspot" data-id="6"><strong>Permitted:</strong> AI for brainstorming structure, outlining, and revising clarity. <strong>Requires disclosure:</strong> AI used to draft any portion of the reasoning (tool, prompt, and scope noted at end of submission). <strong>Not permitted:</strong> AI as the author of the clinical recommendation itself — the reasoning must be the student's.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="anatomy-labels-grid">
+          <div class="anatomy-card" data-id="1">
+            <div class="anatomy-card-head">
+              <span class="anatomy-card-num">ELEMENT 01</span>
+              <span class="anatomy-card-icon">•</span>
+            </div>
+            <div class="anatomy-card-name">Criterion tied to outcome</div>
+            <div class="anatomy-card-desc"><strong>LO anchor.</strong> Every rubric row opens with a criterion that maps to a named learning outcome. No outcome, no row.</div>
+          </div>
+          <div class="anatomy-card" data-id="2">
+            <div class="anatomy-card-head">
+              <span class="anatomy-card-num">ELEMENT 02</span>
+              <span class="anatomy-card-icon">4</span>
+            </div>
+            <div class="anatomy-card-name">Exceeds</div>
+            <div class="anatomy-card-desc"><strong>Beyond mastery.</strong> Describes performance that integrates, defends, or extends. Should be achievable, not abstract excellence.</div>
+          </div>
+          <div class="anatomy-card" data-id="3">
+            <div class="anatomy-card-head">
+              <span class="anatomy-card-num">ELEMENT 03</span>
+              <span class="anatomy-card-icon">3</span>
+            </div>
+            <div class="anatomy-card-name">Mastery</div>
+            <div class="anatomy-card-desc"><strong>The bar.</strong> This is the level that represents the outcome met. Write this level first, then derive the others from it.</div>
+          </div>
+          <div class="anatomy-card" data-id="4">
+            <div class="anatomy-card-head">
+              <span class="anatomy-card-num">ELEMENT 04</span>
+              <span class="anatomy-card-icon">2</span>
+            </div>
+            <div class="anatomy-card-name">Near</div>
+            <div class="anatomy-card-desc"><strong>Specific deficit.</strong> Name the exact element missing from Mastery. Avoid adjective-swapping like "less clear" or "somewhat weaker."</div>
+          </div>
+          <div class="anatomy-card" data-id="5">
+            <div class="anatomy-card-head">
+              <span class="anatomy-card-num">ELEMENT 05</span>
+              <span class="anatomy-card-icon">1</span>
+            </div>
+            <div class="anatomy-card-name">Below</div>
+            <div class="anatomy-card-desc"><strong>Unambiguous.</strong> The level should be concrete enough that any instructor applying the rubric would agree when it applies.</div>
+          </div>
+          <div class="anatomy-card" data-id="6">
+            <div class="anatomy-card-head">
+              <span class="anatomy-card-num">ELEMENT 06</span>
+              <span class="anatomy-card-icon">AI</span>
+            </div>
+            <div class="anatomy-card-name">AI-use expectation</div>
+            <div class="anatomy-card-desc"><strong>The unit's signature move.</strong> Explicitly names permitted, disclosure-required, and not-permitted AI use against this criterion.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 5.7 — RUBRIC BUILDER ============ -->
+    <section class="block" id="b57">
+      <div class="block-head">
+        <span class="block-num">5.7</span>
+        <span class="block-type">Button Stack · AI-Aware Rubric Row Builder</span>
+      </div>
+      <h2 class="block-title">Build your rubric row</h2>
+      <p class="lede">Draft one rubric row for an assessment in your own course. Include the AI-use expectation. Copy when the row reads coherently across all four levels. This is your Unit 05 summative artifact.</p>
+
+      <div class="rubric-builder">
+        <div class="rb-header">
+          <div class="rb-field">
+            <label class="rb-field-label">CRITERION NAME</label>
+            <p class="rb-field-hint">One concept. One criterion. Tied to a learning outcome.</p>
+            <input type="text" class="rb-input" id="rb-criterion" placeholder="e.g. Clinical reasoning">
+          </div>
+          <div class="rb-field">
+            <label class="rb-field-label">ALIGNED LEARNING OUTCOME</label>
+            <p class="rb-field-hint">The LO this criterion measures against.</p>
+            <input type="text" class="rb-input" id="rb-lo" placeholder="e.g. LO-4.2: Analyze complex regimens...">
+          </div>
+        </div>
+
+        <div class="rb-levels">
+          <div class="rb-level l4">
+            <span class="rb-level-label">LEVEL 4</span>
+            <div class="rb-level-name">Exceeds</div>
+            <textarea class="rb-textarea" id="rb-l4" placeholder="Integrates... defends... extends..."></textarea>
+          </div>
+          <div class="rb-level l3">
+            <span class="rb-level-label">LEVEL 3</span>
+            <div class="rb-level-name">Mastery</div>
+            <textarea class="rb-textarea" id="rb-l3" placeholder="Cites... arrives at... shows awareness of..."></textarea>
+          </div>
+          <div class="rb-level l2">
+            <span class="rb-level-label">LEVEL 2</span>
+            <div class="rb-level-name">Near</div>
+            <textarea class="rb-textarea" id="rb-l2" placeholder="Plausible but... missing..."></textarea>
+          </div>
+          <div class="rb-level l1">
+            <span class="rb-level-label">LEVEL 1</span>
+            <div class="rb-level-name">Below</div>
+            <textarea class="rb-textarea" id="rb-l1" placeholder="Unsafe, unsupported, or..."></textarea>
+          </div>
+        </div>
+
+        <div class="rb-ai-row">
+          <span class="rb-ai-label">AI-USE<br>EXPECTATION</span>
+          <textarea class="rb-ai-input" id="rb-ai" placeholder="Permitted: ... Requires disclosure: ... Not permitted: ..."></textarea>
+        </div>
+
+        <div class="rb-seed">
+          <span class="rb-seed-label">QUICK START</span>
+          <button class="rb-seed-btn" data-seed="reasoning">Clinical reasoning</button>
+          <button class="rb-seed-btn" data-seed="writing">Scholarly writing</button>
+          <button class="rb-seed-btn" data-seed="communication">Patient communication</button>
+          <button class="rb-seed-btn" data-seed="evidence">Evidence integration</button>
+        </div>
+
+        <div class="rb-actions">
+          <span class="rb-status">Auto-saves to session · <strong id="rb-status-text">Not yet saved</strong></span>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-ghost" id="rb-reset">Reset</button>
+            <button class="btn btn-primary" id="rb-copy">Copy rubric row</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Rise 360 integration note</strong>
+        In production, the completed rubric row saves to learner progress and posts to the Unit 05 peer review where peers apply the Rubric Quality Rubric (course spec Appendix F). This HTML prototype uses in-page memory only.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 5.8 — PORTFOLIO ASSEMBLY ============ -->
+    <section class="block" id="b58">
+      <div class="block-head">
+        <span class="block-num">5.8</span>
+        <span class="block-type">Button Stack · Your Course Portfolio</span>
+      </div>
+      <h2 class="block-title">Five artifacts. One portfolio.</h2>
+      <p class="lede">The rubric row you just built is the fifth of five. Below is your complete AI Literacy in Healthcare DE portfolio — the evidence that you can design, deploy, and defend AI-enhanced instruction in your own course.</p>
+
+      <div class="portfolio">
+        <div class="portfolio-head">
+          <div class="portfolio-head-label">COURSE PORTFOLIO · AI LITERACY IN HEALTHCARE DE</div>
+          <h3 class="portfolio-head-title">You now carry five artifacts a program director can review in fifteen minutes.</h3>
+          <p class="portfolio-head-body">Each artifact maps to a course outcome. Together they are the evidence that your AI-enhanced DE work is principled, ethical, and ready to ship. Present them as-is to your program director, accreditation cycle, or next instructional designer meeting.</p>
+        </div>
+
+        <div class="portfolio-grid">
+          <div class="portfolio-item">
+            <div class="portfolio-item-unit">01</div>
+            <div class="portfolio-item-artifact">TAM + SAMR Tool Audit</div>
+            <div class="portfolio-item-claim">Learner evaluates AI tool fit against DE criteria.</div>
+            <div class="portfolio-item-status">SUBMITTED</div>
+          </div>
+          <div class="portfolio-item">
+            <div class="portfolio-item-unit">02</div>
+            <div class="portfolio-item-artifact">RCTFC Prompt Template</div>
+            <div class="portfolio-item-claim">Learner constructs a context-rich prompt for a DE outcome.</div>
+            <div class="portfolio-item-status">SUBMITTED</div>
+          </div>
+          <div class="portfolio-item">
+            <div class="portfolio-item-unit">03</div>
+            <div class="portfolio-item-artifact">PRISM Screen + Disclosure</div>
+            <div class="portfolio-item-claim">Learner applies a five-point ethics screen and sets a stance.</div>
+            <div class="portfolio-item-status">SUBMITTED</div>
+          </div>
+          <div class="portfolio-item">
+            <div class="portfolio-item-unit">04</div>
+            <div class="portfolio-item-artifact">Activity Design Canvas</div>
+            <div class="portfolio-item-claim">Learner designs a SAMR Modification or Redefinition activity.</div>
+            <div class="portfolio-item-status">SUBMITTED</div>
+          </div>
+          <div class="portfolio-item">
+            <div class="portfolio-item-unit">05</div>
+            <div class="portfolio-item-artifact">AI-Aware Rubric Row</div>
+            <div class="portfolio-item-claim">Learner aligns assessment criteria to declared AI use.</div>
+            <div class="portfolio-item-status">THIS UNIT</div>
+          </div>
+        </div>
+
+        <div class="portfolio-mastery">
+          <div class="portfolio-mastery-seal">✓</div>
+          <div class="portfolio-mastery-text">
+            <h4>MASTERY EVIDENCE</h4>
+            <p>Criterion-referenced across grounding, DE fit, SAMR level, ethics, and craft. Five artifacts that hold together because they were designed to.</p>
+          </div>
+          <div>
+            <button class="btn btn-primary" id="portfolio-review">Review the rubric</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 5.9 — FINAL REFLECTION ============ -->
+    <section class="block" id="b59">
+      <div class="block-head">
+        <span class="block-num">5.9</span>
+        <span class="block-type">Reflection · Course Close</span>
+      </div>
+      <h2 class="block-title">The one change I will make</h2>
+      <p class="lede">Three hours across five units. The only reflection that actually matters now is this one: what will you do differently in your own course as a result? Be specific. One change. With a date.</p>
+
+      <div class="reflect-card">
+        <span class="reflect-label">COURSE CLOSE · PRIVATE TO YOU</span>
+        <div class="reflect-prompt">Name one specific change you will make in your next DE course, and when you will make it.</div>
+        <textarea class="reflect-textarea" id="reflect-input" placeholder="Write your one change in 100-200 words. Be specific enough that you could start tomorrow.&#10;&#10;Example structure:&#10;· The current state of my course: ...&#10;· The one change I will make: ...&#10;· When I will make it: ...&#10;· How I will know it worked: ..."></textarea>
+        <div class="reflect-footer">
+          <span class="reflect-cite">Self-regulated learning · Zimmerman (2000)</span>
+          <button class="reflect-save" id="reflect-save">Save my commitment</button>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Rise 360 integration note</strong>
+        In production, this commitment pairs with the course portfolio as the final submission. A follow-up email six weeks after course completion asks learners whether the change was implemented — the closing loop for the SRL framework underlying the course.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 5.10 — COURSE CLOSE ============ -->
+    <section class="block" id="b510">
+      <div class="block-head">
+        <span class="block-num">5.10</span>
+        <span class="block-type">Statement B · Course Close</span>
+      </div>
+      <h2 class="block-title">Course complete</h2>
+
+      <div class="course-close">
+        <div class="course-close-badge">
+          <span class="course-close-badge-icon">✓</span>
+          <span class="course-close-badge-text">Course Complete · 5 of 5 Units</span>
+        </div>
+        <h3 class="course-close-head">You did not just learn <em>about</em> AI in healthcare DE.<br>You built a course that <em>uses</em> it well.</h3>
+        <p class="course-close-body">You entered this course with an instinct that AI belonged in your work and an uncertainty about how to shape its role. Three hours later, you leave with five course-ready artifacts, a principled screen, and a vocabulary that can hold a conversation with your program director, your IRB, and your students.</p>
+        <p class="course-close-body"><strong>AI refines. It does not replace.</strong> That line opened the masthead of Unit 01. You now have the evidence to live it — in your rubrics, your prompts, your activities, your disclosure, and the critical judgment that remains yours.</p>
+
+        <div class="course-close-next">
+          <div class="next-step">
+            <div class="next-step-label">NEXT · THIS WEEK</div>
+            <div class="next-step-title">Submit your portfolio</div>
+            <div class="next-step-body">Five artifacts to your program director or instructional design lead.</div>
+          </div>
+          <div class="next-step">
+            <div class="next-step-label">NEXT · THIS MONTH</div>
+            <div class="next-step-title">Ship the one change</div>
+            <div class="next-step-body">Your Block 5.9 commitment. Put it on your calendar now.</div>
+          </div>
+          <div class="next-step">
+            <div class="next-step-label">NEXT · THIS TERM</div>
+            <div class="next-step-title">Revisit and revise</div>
+            <div class="next-step-body">The PRISM screen, the canvas, and the rubric row are living documents.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COLOPHON ============ -->
+    <footer class="colophon">
+      <div class="col col-brand">
+        <strong>Applied DE Project</strong>
+        A theory-grounded micro-course for health science faculty teaching in distance education environments. Built on Community of Inquiry, TAM, Self-Regulated Learning, and SAMR.
+      </div>
+      <div class="col">
+        <h5>Framework Grounding</h5>
+        <p>Garrison et al. (2000)</p>
+        <p>Davis (1989)</p>
+        <p>Zimmerman (2000)</p>
+        <p>Puentedura (2006)</p>
+      </div>
+      <div class="col">
+        <h5>Attribution</h5>
+        <p>Marcus "MD" Taylor</p>
+        <p>UNT Health Science Center</p>
+        <p>Unit 05 · v1.0</p>
+      </div>
+    </footer>
+
+  </div>
+</main>
+
+<script>
+// ============ RAIL SCROLL SPY ============
+const blocks = document.querySelectorAll('.block');
+const dots = document.querySelectorAll('.rail-dot');
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      dots.forEach(d => d.classList.remove('active'));
+      const active = document.querySelector(`.rail-dot[href="#${id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+blocks.forEach(b => spy.observe(b));
+
+// ============ BLOCK 5.3 — FEEDBACK LOOP ============
+const loopData = {
+  1: {
+    word: 'Draft rubric',
+    def: 'The instructor establishes the rubric and the outcome alignment before any AI touches the workflow.',
+    why: 'The rubric is the contract between teacher and learner. Without it, AI augmentation drifts toward whatever the model finds plausible. With it, every AI suggestion can be evaluated against a stable criterion.',
+    checks: [
+      'Writes the rubric or adapts an existing one to this assignment.',
+      'Confirms alignment to a named learning outcome.',
+      'Decides where AI will augment and where it will not.'
+    ],
+    artifact: 'A finalized rubric with criteria, four performance levels, an AI-use expectation row, and a named learning outcome alignment.'
+  },
+  2: {
+    word: 'AI augment',
+    def: 'AI produces a first-pass draft (formative feedback, test item review, rubric refinement). The AI does not score; it proposes.',
+    why: 'This is where AI earns its place: throughput. What used to take a faculty member three hours can take thirty minutes with a first-pass draft. But the model is drafting, not grading.',
+    checks: [
+      'Passes a clean, rubric-aligned prompt to the AI.',
+      'Limits AI to one artifact per pass (feedback, rubric draft, or item review — not all three in one call).',
+      'Does not paste student identifiers or PHI into the tool.'
+    ],
+    artifact: 'An AI-generated first-pass draft flagged as "AI output, unreviewed" until step 3 completes.'
+  },
+  3: {
+    word: 'Instructor review',
+    def: 'The instructor reviews the AI output against the rubric, edits for accuracy and voice, and revises where the AI drifted from criterion.',
+    why: 'This is the step where human judgment reasserts itself. The AI may have flattened a nuance, missed a strength, or softened a clinical concern. The instructor is the quality gate.',
+    checks: [
+      'Compares every AI claim against the rubric and the student\'s work.',
+      'Edits for voice so the comment sounds like the instructor, not a tool.',
+      'Catches any drift from criterion-referenced language back into adjective-swapping.'
+    ],
+    artifact: 'A reviewed and edited draft ready to deliver as instructor feedback.'
+  },
+  4: {
+    word: 'Deliver',
+    def: 'The instructor delivers the feedback to the learner as instructor feedback — not as AI output. The instructor owns the comment.',
+    why: 'Learners do not need a disclosure that AI helped draft formative feedback any more than they need disclosure that the instructor used a word processor. What learners need is feedback that meets the rubric and carries teaching presence.',
+    checks: [
+      'Delivers the feedback through the normal course channel.',
+      'Retains ownership: this is the instructor\'s comment now.',
+      'Documents AI involvement in course-level planning notes, not in student-facing feedback.'
+    ],
+    artifact: 'A single learner-facing feedback comment aligned to the rubric, authored by the instructor.'
+  }
+};
+
+document.querySelectorAll('.loop-node').forEach(node => {
+  node.addEventListener('click', () => {
+    const n = node.dataset.step;
+    document.querySelectorAll('.loop-node').forEach(s => s.classList.remove('active'));
+    node.classList.add('active');
+    const d = loopData[n];
+    document.getElementById('loop-word').textContent = d.word;
+    document.getElementById('loop-def').textContent = d.def;
+    document.getElementById('loop-why').textContent = d.why;
+    document.getElementById('loop-artifact').textContent = d.artifact;
+    const list = document.getElementById('loop-checks');
+    list.innerHTML = '';
+    d.checks.forEach(c => {
+      const li = document.createElement('li');
+      li.textContent = c;
+      list.appendChild(li);
+    });
+  });
+});
+
+// ============ BLOCK 5.5 — APPROPRIATE OR NOT ============
+const approItems = document.querySelectorAll('.appro-item');
+const approDots = document.querySelectorAll('.appro-dot');
+const approQNum = document.getElementById('appro-q-num');
+const approCorrect = document.getElementById('appro-correct');
+const approNext = document.getElementById('appro-next');
+const approSummary = document.getElementById('appro-summary');
+const approFinalScore = document.getElementById('appro-final-score');
+const approFinalMsg = document.getElementById('appro-final-msg');
+const approRestart = document.getElementById('appro-restart');
+
+const approFeedback = {
+  1: {
+    right: 'AI drafts, the instructor edits, the learning outcome alignment is preserved. This is the textbook appropriate use — rubric drafting under human editorial control.',
+    wrong: 'AI drafting a first-pass rubric with faculty editorial control is explicitly one of the three appropriate uses (Block 5.2). No student scoring is involved.',
+    principle: 'AI proposes. The instructor authors.'
+  },
+  2: {
+    right: 'High agreement in a pilot does not authorize AI as final scoring authority on licensure-adjacent work. The non-use rule is firm regardless of performance.',
+    wrong: 'Licensure-prep final essays are high-stakes. Even 91% agreement does not authorize AI as the final scoring authority on consequential work. The non-use category is not a performance threshold.',
+    principle: 'High stakes require human judgment as the final call, regardless of pilot accuracy.'
+  },
+  3: {
+    right: 'AI drafts formative comments, faculty reviews every one against the rubric, and delivers as her own comment. Throughput improves, criterion-referenced judgment is preserved.',
+    wrong: 'Formative feedback under rubric-aligned human review is an appropriate use. This is the exact workflow in Block 5.3.',
+    principle: 'AI augments throughput. Human judgment gates delivery.'
+  },
+  4: {
+    right: 'An OSCE pass/fail is a high-stakes competency decision. AI cannot be the pass/fail authority, even with faculty review of only borderline cases. The non-use rule applies to the decision itself, not just the edge cases.',
+    wrong: 'An OSCE pass/fail decision is high-stakes. AI cannot be the primary decision-maker and have faculty only spot-check. This inverts the non-use principle.',
+    principle: 'If AI decides and humans audit, AI is the authority. That is the inversion the non-use rule forbids.'
+  },
+  5: {
+    right: 'AI as item reviewer with full faculty editorial control is the third appropriate use. The item bank remains under human authorship.',
+    wrong: 'Test item review with faculty adopting, rejecting, or revising each suggestion is an appropriate use. The faculty member never loses editorial control.',
+    principle: 'Review is not scoring. Suggestions are not decisions.'
+  },
+  6: {
+    right: 'The final course grade is the highest-stakes decision in a course. AI cannot be the grade-assignment authority with faculty only consulted on appeals. This is a textbook non-use.',
+    wrong: 'A final course grade is the highest-stakes decision the course produces. An appeals-only role for faculty inverts the non-use principle completely.',
+    principle: 'The final grade is the course\'s highest-stakes decision. Human judgment is non-negotiable.'
+  }
+};
+
+approItems.forEach(item => {
+  const q = parseInt(item.dataset.q);
+  const answer = item.dataset.answer;
+  const btns = item.querySelectorAll('.appro-btn');
+  const feedback = item.querySelector('.appro-feedback');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (item.dataset.answered) return;
+      item.dataset.answered = 'true';
+      const selected = btn.dataset.value;
+      const correct = selected === answer;
+      btns.forEach(b => {
+        if (b.dataset.value === answer) b.classList.add('correct');
+        else if (b === btn && !correct) b.classList.add('incorrect');
+      });
+      feedback.classList.add('show', correct ? 'right' : 'wrong');
+      const fb = approFeedback[q];
+      feedback.innerHTML = (correct ? '<strong>Correct</strong>' : '<strong>Reconsider</strong>') +
+        (correct ? fb.right : fb.wrong) +
+        '<div class="appro-feedback-principle">' + fb.principle + '</div>';
+      if (correct) approCorrect.textContent = parseInt(approCorrect.textContent) + 1;
+      approDots[q - 1].classList.remove('active');
+      approDots[q - 1].classList.add('done');
+      approNext.disabled = false;
+    });
+  });
+});
+
+let currentApproQ = 1;
+const totalApproQ = approItems.length;
+approNext.addEventListener('click', () => {
+  const current = document.querySelector(`.appro-item[data-q="${currentApproQ}"]`);
+  current.classList.remove('active');
+  currentApproQ++;
+  if (currentApproQ > totalApproQ) {
+    approSummary.classList.add('show');
+    approNext.style.display = 'none';
+    const score = parseInt(approCorrect.textContent);
+    approFinalScore.textContent = `${score} / ${totalApproQ}`;
+    if (score === totalApproQ) approFinalMsg.textContent = 'You hold the line on the non-use rule and you recognize appropriate use. Continue to the rubric row anatomy.';
+    else if (score >= 4) approFinalMsg.textContent = 'You are close. Review the cases you missed and the non-use rule from Block 5.2 before continuing.';
+    else approFinalMsg.textContent = 'Review Block 5.2 (three uses and the non-use) before continuing. The distinction between augmentation and authority is the core move of this unit.';
+    return;
+  }
+  const next = document.querySelector(`.appro-item[data-q="${currentApproQ}"]`);
+  next.classList.add('active');
+  approDots[currentApproQ - 1].classList.add('active');
+  approQNum.textContent = currentApproQ;
+  approNext.disabled = true;
+});
+
+approRestart.addEventListener('click', () => {
+  currentApproQ = 1;
+  approCorrect.textContent = '0';
+  approQNum.textContent = '1';
+  approSummary.classList.remove('show');
+  approNext.style.display = '';
+  approNext.disabled = true;
+  approItems.forEach((item, i) => {
+    delete item.dataset.answered;
+    item.classList.remove('active');
+    if (i === 0) item.classList.add('active');
+    item.querySelectorAll('.appro-btn').forEach(b => b.classList.remove('correct', 'incorrect', 'selected'));
+    const fb = item.querySelector('.appro-feedback');
+    fb.classList.remove('show', 'right', 'wrong');
+    fb.innerHTML = '';
+  });
+  approDots.forEach((d, i) => {
+    d.classList.remove('done', 'active');
+    if (i === 0) d.classList.add('active');
+  });
+});
+
+// ============ BLOCK 5.6 — ANATOMY BIDIRECTIONAL ============
+function activateAnatomy(id) {
+  document.querySelectorAll('.rubric-hotspot').forEach(h => {
+    h.classList.toggle('active', h.dataset.id === id);
+  });
+  document.querySelectorAll('.anatomy-card').forEach(c => {
+    c.classList.toggle('active', c.dataset.id === id);
+  });
+}
+function clearAnatomy() {
+  document.querySelectorAll('.rubric-hotspot').forEach(h => h.classList.remove('active'));
+  document.querySelectorAll('.anatomy-card').forEach(c => c.classList.remove('active'));
+}
+document.querySelectorAll('.rubric-hotspot').forEach(hs => {
+  hs.addEventListener('mouseenter', () => activateAnatomy(hs.dataset.id));
+  hs.addEventListener('mouseleave', clearAnatomy);
+  hs.addEventListener('click', () => activateAnatomy(hs.dataset.id));
+});
+document.querySelectorAll('.anatomy-card').forEach(card => {
+  card.addEventListener('mouseenter', () => activateAnatomy(card.dataset.id));
+  card.addEventListener('mouseleave', clearAnatomy);
+  card.addEventListener('click', () => activateAnatomy(card.dataset.id));
+});
+
+// ============ BLOCK 5.7 — RUBRIC BUILDER ============
+const rbSeeds = {
+  reasoning: {
+    criterion: 'Clinical reasoning',
+    lo: 'LO-4.2: Analyze a complex regimen and justify a recommendation.',
+    l4: 'Integrates multiple evidence sources, acknowledges uncertainty, and defends a clinically-defensible recommendation that accounts for patient context.',
+    l3: 'Cites at least one authoritative guideline, arrives at a clinically-defensible recommendation, and shows awareness of at least one alternative.',
+    l2: 'Recommendation is plausible but reasoning is thin; missing guideline reference or key clinical consideration.',
+    l1: 'Recommendation is unsafe, unsupported, or not anchored to the clinical case.',
+    ai: 'Permitted: AI for brainstorming structure, outlining, and revising clarity. Requires disclosure: AI used to draft any portion of the reasoning (tool, prompt, scope noted at end). Not permitted: AI as the author of the clinical recommendation itself.'
+  },
+  writing: {
+    criterion: 'Scholarly writing',
+    lo: 'LO-3.1: Produce scholarly writing aligned to APA 7 conventions.',
+    l4: 'Prose is precise and disciplined; argument structure is purposeful; every claim is supported; citations are flawless.',
+    l3: 'Prose is clear and mostly precise; argument structure is visible; most claims are supported; citations are correctly formatted.',
+    l2: 'Prose is readable but imprecise; argument structure is hard to follow in places; citation errors present but not pervasive.',
+    l1: 'Prose obstructs meaning; argument structure is missing or illegible; citations are missing, inconsistent, or fabricated.',
+    ai: 'Permitted: AI for brainstorming, outlining, and grammar/clarity revision. Requires disclosure: AI drafting of any paragraph (noted at end). Not permitted: AI as the author of the argument itself; all claims must be the student\'s and citations must be verified against primary sources.'
+  },
+  communication: {
+    criterion: 'Patient communication',
+    lo: 'LO-5.3: Conduct a patient-centered clinical interview.',
+    l4: 'Consistently uses open-ended questioning, reflective listening, and shared decision-making; adapts style to patient context.',
+    l3: 'Regularly uses open-ended questioning and reflective listening; shows awareness of patient context in most exchanges.',
+    l2: 'Uses some open-ended questioning but reverts to closed prompts or dominates the conversation; inconsistent listening.',
+    l1: 'Interview is interrogative, closed, or non-responsive to patient context; key communication skills absent.',
+    ai: 'Permitted: AI standardized patient for practice interviews. Requires disclosure: AI coaching of interview questions in advance. Not permitted: AI used during live patient encounters (simulated or real).'
+  },
+  evidence: {
+    criterion: 'Evidence integration',
+    lo: 'LO-2.4: Integrate evidence from current literature into clinical decisions.',
+    l4: 'Synthesizes multiple recent sources; weighs evidence quality; acknowledges gaps; integrates findings into a defensible recommendation.',
+    l3: 'Draws on at least two recent peer-reviewed sources; applies findings to the clinical situation; correctly represents study conclusions.',
+    l2: 'Cites evidence but application is surface-level; some misrepresentation of study conclusions.',
+    l1: 'Evidence is missing, outdated, or misrepresented; no link to the clinical situation.',
+    ai: 'Permitted: AI for literature search assistance and summarization of reading lists. Requires disclosure: AI-generated summaries of specific sources used in the submission. Not permitted: AI-generated citations presented as if independently verified — all citations must be confirmed against a library database.'
+  }
+};
+
+document.querySelectorAll('.rb-seed-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const seed = rbSeeds[btn.dataset.seed];
+    if (!seed) return;
+    document.getElementById('rb-criterion').value = seed.criterion;
+    document.getElementById('rb-lo').value = seed.lo;
+    document.getElementById('rb-l4').value = seed.l4;
+    document.getElementById('rb-l3').value = seed.l3;
+    document.getElementById('rb-l2').value = seed.l2;
+    document.getElementById('rb-l1').value = seed.l1;
+    document.getElementById('rb-ai').value = seed.ai;
+    const status = document.getElementById('rb-status-text');
+    status.textContent = 'Seeded from ' + btn.textContent;
+    status.style.color = 'var(--green)';
+  });
+});
+
+document.getElementById('rb-reset').addEventListener('click', () => {
+  ['rb-criterion','rb-lo','rb-l4','rb-l3','rb-l2','rb-l1','rb-ai'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('rb-status-text').textContent = 'Reset';
+});
+
+document.getElementById('rb-copy').addEventListener('click', async () => {
+  const btn = document.getElementById('rb-copy');
+  const vals = {
+    crit: document.getElementById('rb-criterion').value.trim(),
+    lo: document.getElementById('rb-lo').value.trim(),
+    l4: document.getElementById('rb-l4').value.trim(),
+    l3: document.getElementById('rb-l3').value.trim(),
+    l2: document.getElementById('rb-l2').value.trim(),
+    l1: document.getElementById('rb-l1').value.trim(),
+    ai: document.getElementById('rb-ai').value.trim()
+  };
+  const text = [
+    'AI-AWARE RUBRIC ROW · UNIT 05',
+    '',
+    `CRITERION: ${vals.crit || '—'}`,
+    `ALIGNED OUTCOME: ${vals.lo || '—'}`,
+    '',
+    `EXCEEDS (4): ${vals.l4 || '—'}`,
+    `MASTERY (3): ${vals.l3 || '—'}`,
+    `NEAR (2): ${vals.l2 || '—'}`,
+    `BELOW (1): ${vals.l1 || '—'}`,
+    '',
+    `AI-USE EXPECTATION: ${vals.ai || '—'}`
+  ].join('\n');
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = '✓ Copied rubric row';
+    setTimeout(() => btn.textContent = 'Copy rubric row', 2500);
+  } catch {
+    btn.textContent = 'Copy failed';
+    setTimeout(() => btn.textContent = 'Copy rubric row', 2500);
+  }
+});
+
+// Auto-status on input
+['rb-criterion','rb-lo','rb-l4','rb-l3','rb-l2','rb-l1','rb-ai'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    const status = document.getElementById('rb-status-text');
+    status.textContent = 'Saved';
+    status.style.color = 'var(--green)';
+  });
+});
+
+// ============ BLOCK 5.8 — PORTFOLIO REVIEW ============
+document.getElementById('portfolio-review').addEventListener('click', (e) => {
+  const btn = e.currentTarget;
+  btn.textContent = 'Rubric in course spec · Appendix F';
+  btn.style.background = 'var(--green-dark)';
+  setTimeout(() => { btn.textContent = 'Review the rubric'; btn.style.background = ''; }, 3000);
+});
+
+// ============ BLOCK 5.9 — REFLECTION SAVE ============
+const reflectSave = document.getElementById('reflect-save');
+const reflectInput = document.getElementById('reflect-input');
+reflectSave.addEventListener('click', () => {
+  if (!reflectInput.value.trim()) {
+    reflectSave.textContent = 'Commitment required';
+    setTimeout(() => reflectSave.textContent = 'Save my commitment', 2500);
+    return;
+  }
+  reflectSave.textContent = '✓ Commitment saved';
+  reflectSave.style.background = '#E8F3EC';
+  reflectSave.style.color = '#007B3C';
+  setTimeout(() => {
+    reflectSave.textContent = 'Save my commitment';
+    reflectSave.style.background = '';
+    reflectSave.style.color = '';
+  }, 3000);
+});
+
+// ============ VIDEO PLACEHOLDER ============
+document.querySelectorAll('.video-play').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wrapper = btn.closest('.scenario-stage');
+    if (wrapper.querySelector('.video-placeholder-msg')) return;
+    const msg = document.createElement('div');
+    msg.className = 'video-placeholder-msg';
+    msg.style.cssText = 'position:absolute; bottom:24px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.75); color:#F2EBD6; padding:10px 18px; border-radius:3px; font-family:"JetBrains Mono",monospace; font-size: 14px; letter-spacing: 1px; backdrop-filter:blur(8px); z-index:10;';
+    msg.textContent = 'VIDEO ASSET PENDING · SEE PRODUCTION NOTES';
+    wrapper.appendChild(msg);
+    setTimeout(() => msg.remove(), 2800);
+  });
+});
+</script>
+</body>
+</html>

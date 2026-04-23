@@ -1,0 +1,2594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 04 — Designing AI-Enhanced DE Activities | AI Literacy in Healthcare DE</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --green:        #007B3C;
+    --green-dark:   #00562A;
+    --green-soft:   #E8F3EC;
+    --green-on-dark:#4DC17D;
+    --green-tint:   #F4F9F5;
+    --teal:         #00778C;
+    --navy:         #022F46;
+    --navy-soft:    #1a3d52;
+    --cream:        #F2EBD6;
+    --cream-soft:   #FBF7EA;
+    --ink:          #0F1419;
+    --paper:        #FDFCF8;
+    --rule:         #D4C9A8;
+    --rule-soft:    #EAE3CC;
+    --grey:         #5A5F5C;
+    --grey-light:   #5F6865;
+    --amber:        #876100;
+    --amber-soft:   #FBF4E3;
+    --warn:         #A63D2A;
+    --warn-soft:    #F5E6E1;
+    --rail-w:       72px;
+    --max-w:        1180px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============== RAIL ============== */
+  .rail {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: var(--rail-w);
+    background: var(--navy);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 28px 0;
+    z-index: 100;
+  }
+  .rail-logo {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-weight: 600; font-size: 28px;
+    color: var(--cream); line-height: 1;
+    margin-bottom: 36px;
+  }
+  .rail-logo span { display: block; font-size: 14px; letter-spacing: 1.5px; color: var(--green-on-dark); margin-top: 6px; font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif; font-weight: 600; }
+  .rail-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; width: 100%; }
+  .rail-dot {
+    display: flex; align-items: center; justify-content: center;
+    height: 38px; width: 100%;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all .25s ease;
+    cursor: pointer;
+  }
+  .rail-dot:hover { color: var(--cream); border-left-color: var(--green-on-dark); background: rgba(255,255,255,.04); }
+  .rail-dot.active { color: var(--cream); border-left-color: var(--green-on-dark); background: rgba(0,123,60,.15); }
+  .rail-foot {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px; color: rgba(255,255,255,0.6);
+    writing-mode: vertical-rl; transform: rotate(180deg);
+  }
+
+  /* ============== MAIN ============== */
+  .shell { margin-left: var(--rail-w); min-height: 100vh; }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 56px; }
+
+  /* ============== MASTHEAD ============== */
+  .masthead {
+    padding: 64px 0 48px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .masthead-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px; color: var(--grey);
+    text-transform: uppercase;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead-meta strong { color: var(--green); font-weight: 600; }
+
+  .unit-number {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 260px;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--green);
+    line-height: 0.85;
+    letter-spacing: -8px;
+    margin-top: 28px;
+    display: block;
+  }
+  .unit-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1;
+    color: var(--navy);
+    margin-top: -40px;
+    margin-left: 200px;
+    max-width: 780px;
+  }
+  .unit-sub {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--grey);
+    margin-top: 16px;
+    margin-left: 200px;
+    max-width: 780px;
+    line-height: 1.3;
+  }
+  .pill-row {
+    display: flex; gap: 0;
+    margin-top: 48px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .pill { flex: 1; padding: 22px 20px; border-right: 1px solid var(--rule); }
+  .pill:last-child { border-right: none; }
+  .pill-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green); text-transform: uppercase;
+    display: block; margin-bottom: 6px;
+  }
+  .pill-value {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px; font-weight: 500;
+    color: var(--navy); line-height: 1.1;
+  }
+
+  /* ============== BLOCK FRAMING ============== */
+  .block {
+    padding: 80px 0 40px;
+    border-bottom: 1px solid var(--rule-soft);
+    scroll-margin-top: 20px;
+  }
+  .block:last-child { border-bottom: none; }
+  .block-head { display: flex; align-items: baseline; gap: 24px; margin-bottom: 36px; }
+  .block-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: var(--green); letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .block-type {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--grey-light);
+    border: 1px solid var(--rule);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .block-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 40px; font-weight: 500;
+    color: var(--navy); line-height: 1.05;
+    flex: 1;
+  }
+  p.lede {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.45;
+    max-width: 760px;
+    margin-bottom: 24px;
+  }
+
+  .placeholder-note {
+    background: var(--cream-soft);
+    border-left: 3px solid var(--green);
+    padding: 16px 22px;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--navy);
+    max-width: 760px;
+    border-radius: 0 3px 3px 0;
+  }
+  .placeholder-note strong {
+    color: var(--green);
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block; margin-bottom: 6px;
+  }
+
+  .btn {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+    border: 1.5px solid transparent;
+    background: none;
+  }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: var(--green); color: white; border-color: var(--green); }
+  .btn-primary:hover:not(:disabled) { background: var(--green-dark); border-color: var(--green-dark); }
+  .btn-ghost { background: none; color: var(--navy); border-color: var(--rule); }
+  .btn-ghost:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
+
+  /* ============== BLOCK 4.1 — FROM GATE TO BUILD ============== */
+  .bridge {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1.5px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    min-height: 320px;
+  }
+  .bridge-from {
+    padding: 44px 48px;
+    background: var(--cream-soft);
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative;
+  }
+  .bridge-to {
+    padding: 44px 48px;
+    background: var(--navy);
+    color: var(--cream);
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .bridge-to::after {
+    content: '04';
+    position: absolute;
+    bottom: -40px; right: -10px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 300px;
+    color: rgba(0, 123, 60, 0.12);
+    line-height: 0.8;
+    pointer-events: none;
+  }
+  .bridge-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .bridge-from .bridge-label { color: var(--grey); }
+  .bridge-to .bridge-label { color: var(--green-on-dark); }
+  .bridge-head {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .bridge-from .bridge-head { color: var(--navy); }
+  .bridge-to .bridge-head { color: var(--cream); font-style: italic; }
+  .bridge-body {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .bridge-from .bridge-body { color: var(--navy); }
+  .bridge-to .bridge-body { color: rgba(242, 235, 214, 0.88); position: relative; z-index: 2; }
+  .bridge-arrow {
+    position: absolute;
+    top: 50%; right: -18px;
+    transform: translateY(-50%);
+    width: 36px; height: 36px;
+    background: var(--green);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-weight: 700;
+    z-index: 5;
+    box-shadow: 0 4px 12px rgba(0, 123, 60, 0.3);
+  }
+  .bridge-deliverables {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(242, 235, 214, 0.15);
+    position: relative; z-index: 2;
+  }
+  .bridge-deliverables li {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    color: var(--cream);
+    padding: 8px 0 8px 28px;
+    position: relative;
+    list-style: none;
+  }
+  .bridge-deliverables li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--green-on-dark);
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 700;
+  }
+
+  /* ============== BLOCK 4.2 — SYNTHESIS DIAGRAM ============== */
+  .synth {
+    margin-top: 16px;
+    padding: 48px 56px;
+    background: var(--cream-soft);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .synth::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: linear-gradient(to bottom, var(--green), var(--teal));
+  }
+
+  .synth-head {
+    margin-bottom: 40px;
+  }
+  .synth-head h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.15;
+  }
+  .synth-head h3 em {
+    font-style: italic;
+    color: var(--green);
+  }
+
+  .synth-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    position: relative;
+  }
+  .synth-col {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 28px 32px;
+    border-radius: 3px;
+  }
+  .synth-col h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .synth-col-head {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .synth-col-cite {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--teal);
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .synth-list {
+    list-style: none;
+  }
+  .synth-list li {
+    font-size: 14px;
+    color: var(--navy);
+    padding: 8px 0 8px 32px;
+    line-height: 1.5;
+    position: relative;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .synth-list li:last-child { border-bottom: none; }
+  .synth-list li::before {
+    content: attr(data-n);
+    position: absolute; left: 0; top: 10px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-soft);
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+  }
+
+  .synth-venn {
+    margin-top: 28px;
+    padding: 28px 32px;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 3px;
+    position: relative;
+  }
+  .synth-venn-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .synth-venn-body {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    color: var(--cream);
+    line-height: 1.45;
+    font-style: italic;
+  }
+  .synth-venn-body strong { color: var(--green-on-dark); font-style: normal; font-weight: 600; }
+
+  /* ============== BLOCK 4.3 — DESIGN LOOP / PROCESS ============== */
+  .loop-wrap { margin-top: 16px; }
+  .loop-track {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    background: white;
+  }
+  .loop-step {
+    padding: 18px 12px;
+    background: none;
+    border: none;
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+    text-align: center;
+    transition: all .2s ease;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    position: relative;
+  }
+  .loop-step:last-child { border-right: none; }
+  .loop-step:hover { background: var(--green-tint); }
+  .loop-step.active { background: var(--green); }
+  .loop-step.active .loop-num, .loop-step.active .loop-word { color: white; }
+  .loop-num {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--green);
+    display: block;
+    line-height: 1;
+  }
+  .loop-word {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--navy);
+    text-transform: uppercase;
+    margin-top: 6px;
+    display: block;
+    font-weight: 600;
+  }
+
+  .loop-panel {
+    padding: 40px 48px;
+    background: white;
+    border: 1px solid var(--rule);
+    border-top: none;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 48px;
+    min-height: 280px;
+  }
+  .loop-panel-left h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 44px;
+    font-weight: 500;
+    color: var(--green);
+    line-height: 0.95;
+  }
+  .loop-panel-left .loop-def {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--navy);
+    line-height: 1.4;
+    margin-top: 16px;
+  }
+  .loop-panel-left .loop-why {
+    font-size: 14px;
+    color: var(--grey);
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    line-height: 1.6;
+  }
+  .loop-panel-right h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+  .loop-questions {
+    list-style: none;
+    margin-bottom: 20px;
+  }
+  .loop-questions li {
+    padding: 10px 0 10px 30px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.5;
+    position: relative;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .loop-questions li:last-child { border-bottom: none; }
+  .loop-questions li::before {
+    content: '?';
+    position: absolute; left: 0; top: 10px;
+    color: var(--green); font-weight: 700; font-size: 14px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-style: italic;
+    width: 20px; height: 20px; line-height: 20px; text-align: center;
+    background: var(--green-soft); border-radius: 50%;
+  }
+  .loop-example {
+    background: var(--cream-soft);
+    border-left: 3px solid var(--green);
+    padding: 14px 18px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    color: var(--navy);
+    line-height: 1.55;
+    font-style: italic;
+    border-radius: 0 3px 3px 0;
+  }
+  .loop-example-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-style: normal;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  /* ============== BLOCK 4.4 — FOUR ACTIVITY PATTERNS / TABS ============== */
+  .patterns-wrap { margin-top: 16px; }
+  .patterns-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .patterns-tab {
+    padding: 18px 24px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--grey);
+    transition: all .2s ease;
+    margin-bottom: -1px;
+    text-align: left;
+  }
+  .patterns-tab:hover { color: var(--navy); }
+  .patterns-tab.active { color: var(--green); border-bottom-color: var(--green); }
+  .patterns-tab-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .patterns-panel { display: none; }
+  .patterns-panel.active { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; }
+
+  .patterns-main {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 36px 40px;
+    border-radius: 3px;
+  }
+  .patterns-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .patterns-subtitle {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--grey);
+    margin-bottom: 24px;
+    line-height: 1.35;
+  }
+  .patterns-body {
+    font-size: 15px;
+    color: #1a2028;
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+  .patterns-body strong { color: var(--green); font-weight: 600; }
+
+  .patterns-example {
+    background: var(--green-tint);
+    border-left: 3px solid var(--green);
+    padding: 18px 22px;
+    margin-top: 24px;
+    border-radius: 0 3px 3px 0;
+  }
+  .patterns-example-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .patterns-example-text {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--navy);
+    line-height: 1.55;
+  }
+
+  .patterns-meta {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .patterns-meta-card {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 20px 24px;
+    border-radius: 3px;
+  }
+  .patterns-meta-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .patterns-meta-value {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+  .patterns-meta-sub {
+    font-size: 14px;
+    color: var(--grey);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .samr-tier {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-right: 6px;
+    margin-top: 4px;
+  }
+  .samr-tier.m { background: #2F7249; color: white; }
+  .samr-tier.r { background: var(--green); color: white; }
+
+  /* ============== BLOCK 4.5 — SCENARIO VIDEO ============== */
+  .scenario-stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #022F46 0%, #004a33 50%, #007B3C 100%);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -20px rgba(2, 47, 70, 0.4);
+  }
+  .scenario-stage::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: 
+      repeating-linear-gradient(90deg, transparent 0, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 4px),
+      radial-gradient(circle at 30% 60%, rgba(0,123,60,0.25) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .scenario-chars {
+    position: absolute;
+    bottom: 0; right: 0;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 200px;
+    color: rgba(0, 123, 60, 0.65);
+    line-height: 0.8;
+    padding: 0 40px 20px 0;
+    pointer-events: none;
+  }
+  .video-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 36px 44px;
+    color: var(--cream);
+  }
+  .video-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    align-self: flex-start;
+    padding: 6px 12px;
+    border: 1px solid var(--green);
+    border-radius: 2px;
+  }
+  .video-play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .3s ease;
+    animation: pulse 2.5s infinite;
+    border: none;
+  }
+  .video-play:hover { transform: translate(-50%, -50%) scale(1.08); }
+  .video-play svg { width: 28px; height: 28px; fill: white; margin-left: 4px; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0,123,60,0.5); }
+    70% { box-shadow: 0 0 0 24px rgba(0,123,60,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,123,60,0); }
+  }
+  .video-meta-bottom {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.65);
+  }
+  .video-title-over {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--cream);
+    max-width: 60%;
+    line-height: 1.3;
+  }
+
+  /* ============== BLOCK 4.6 — SAMR SORT ============== */
+  .sort-intro {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    background: var(--cream-soft);
+    border-radius: 3px;
+  }
+  .sort-intro-num {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--green);
+    font-style: italic;
+    line-height: 1;
+  }
+  .sort-intro-text { font-size: 15px; color: var(--navy); }
+  .sort-intro-text strong { color: var(--green); }
+
+  .sort-game {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 32px;
+    margin-bottom: 20px;
+  }
+
+  .sort-column h4 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+
+  .sort-item {
+    background: white;
+    border: 1.5px solid var(--rule);
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    cursor: grab;
+    user-select: none;
+    transition: all .2s ease;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.5;
+    position: relative;
+  }
+  .sort-item:hover { border-color: var(--green); box-shadow: 0 4px 12px rgba(0,123,60,0.08); transform: translateY(-1px); }
+  .sort-item.dragging { opacity: 0.4; cursor: grabbing; }
+  .sort-item.placed { background: var(--green-soft); border-color: var(--green); }
+  .sort-item.placed::after {
+    content: '✓'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--green); font-weight: 700; font-size: 14px;
+  }
+
+  .sort-ladder {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .sort-rung {
+    background: white;
+    border: 1.5px dashed var(--rule);
+    padding: 18px 22px;
+    border-radius: 3px;
+    transition: all .2s ease;
+    min-height: 70px;
+  }
+  .sort-rung.s { border-color: #c2d4c6; background: linear-gradient(to right, #eef3ee 0%, white 100%); }
+  .sort-rung.a { border-color: #94b8a1; background: linear-gradient(to right, #e4efe7 0%, white 100%); }
+  .sort-rung.m { border-color: #5a9775; background: linear-gradient(to right, #dde9e1 0%, white 100%); }
+  .sort-rung.r { border-color: var(--green); background: linear-gradient(to right, #d4e7db 0%, white 100%); }
+  .sort-rung.over { border-style: solid; background: var(--green-soft); transform: scale(1.01); }
+
+  .sort-rung-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .sort-rung-letter {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--green);
+    line-height: 1;
+  }
+  .sort-rung-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--navy);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .sort-rung-desc {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.4;
+  }
+  .sort-dropped {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sort-dropped-item {
+    background: white;
+    border: 1px solid var(--green);
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.4;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sort-dropped-item.correct { background: var(--green-soft); }
+  .sort-dropped-item.incorrect { background: var(--warn-soft); border-color: var(--warn); color: var(--warn); }
+  .sort-dropped-check {
+    font-weight: 700;
+    margin-left: 8px;
+  }
+  .sort-dropped-item.correct .sort-dropped-check { color: var(--green); }
+  .sort-dropped-item.incorrect .sort-dropped-check { color: var(--warn); }
+
+  .sort-controls {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  .sort-status {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--grey);
+  }
+  .sort-status strong { color: var(--green); }
+
+  .sort-feedback {
+    margin-top: 20px;
+    padding: 20px 24px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.6;
+    display: none;
+  }
+  .sort-feedback.show { display: block; }
+  .sort-feedback.correct { background: var(--green-soft); border-left: 3px solid var(--green); }
+  .sort-feedback.partial { background: var(--cream-soft); border-left: 3px solid var(--amber); }
+  .sort-feedback-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px; font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  /* ============== BLOCK 4.7 — ANATOMY OF REDEFINITION ============== */
+  .anatomy-wrap { margin-top: 16px; }
+  .anatomy-head {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--green-dark) 100%);
+    padding: 40px 48px;
+    border-radius: 4px 4px 0 0;
+    color: var(--cream);
+    border-left: 4px solid var(--green);
+    position: relative;
+    overflow: hidden;
+  }
+  .anatomy-head::after {
+    content: 'R';
+    position: absolute;
+    top: -40px; right: 40px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 340px;
+    color: rgba(0, 123, 60, 0.2);
+    line-height: 1;
+  }
+  .anatomy-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .anatomy-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 2;
+  }
+  .anatomy-desc {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: rgba(242, 235, 214, 0.85);
+    line-height: 1.5;
+    max-width: 680px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .anatomy-body {
+    background: white;
+    border: 1px solid var(--rule);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    padding: 36px 40px;
+  }
+
+  .anatomy-labels-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .anatomy-card {
+    border: 1.5px solid var(--rule);
+    padding: 22px 26px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all .2s ease;
+    background: white;
+    position: relative;
+  }
+  .anatomy-card:hover, .anatomy-card.active {
+    border-color: var(--green);
+    background: var(--green-tint);
+    transform: translateX(4px);
+  }
+  .anatomy-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .anatomy-card-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .anatomy-card-icon {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 24px;
+    color: var(--green);
+  }
+  .anatomy-card-name {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .anatomy-card-desc {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+  }
+  .anatomy-card-desc strong { color: var(--navy); font-weight: 600; }
+
+  /* ============== BLOCK 4.8 — DESIGN CANVAS / BUILDER ============== */
+  .canvas-wrap { margin-top: 16px; }
+
+  .canvas-progress {
+    display: flex;
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 16px 24px;
+    margin-bottom: 20px;
+    align-items: center;
+    gap: 20px;
+  }
+  .canvas-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--rule-soft);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .canvas-progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--green), var(--teal));
+    width: 0%;
+    transition: width .4s ease;
+  }
+  .canvas-progress-text {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--grey);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .canvas-progress-text strong { color: var(--green); }
+
+  .canvas {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 0;
+    background: white;
+    border: 1.5px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .canvas-form {
+    padding: 36px 40px;
+    border-right: 1px solid var(--rule);
+    background: var(--cream-soft);
+  }
+  .canvas-form h4 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 20px;
+  }
+
+  .canvas-field {
+    margin-bottom: 22px;
+  }
+  .canvas-field-label {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .canvas-field-label-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--green);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-right: 8px;
+  }
+  .canvas-field-hint {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .canvas-input, .canvas-textarea, .canvas-select {
+    width: 100%;
+    background: white;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    padding: 12px 16px;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    transition: border-color .2s ease;
+  }
+  .canvas-textarea { min-height: 72px; resize: vertical; font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size: 15px; line-height: 1.5; }
+  .canvas-input:focus, .canvas-textarea:focus, .canvas-select:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(0, 123, 60, 0.12);
+  }
+  .canvas-chips {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .canvas-chip {
+    padding: 6px 12px;
+    border: 1.5px solid var(--rule);
+    border-radius: 2px;
+    background: white;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: var(--navy);
+    transition: all .15s ease;
+  }
+  .canvas-chip:hover { border-color: var(--green); color: var(--green); }
+  .canvas-chip.selected { background: var(--green); color: white; border-color: var(--green); }
+
+  .canvas-preview {
+    padding: 36px 40px;
+    background: var(--navy);
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+    min-height: 400px;
+  }
+  .canvas-preview::before {
+    content: 'CANVAS';
+    position: absolute;
+    top: 24px; right: 32px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 100px;
+    color: rgba(0, 123, 60, 0.12);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .canvas-preview h4 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 20px;
+  }
+  .canvas-preview-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(242, 235, 214, 0.18);
+    min-height: 48px;
+  }
+  .canvas-preview-title .placeholder-dots { color: rgba(242, 235, 214, 0.55); font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+
+  .canvas-preview-row {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(242, 235, 214, 0.12);
+  }
+  .canvas-preview-row:last-of-type { border-bottom: none; }
+  .canvas-preview-row-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green-on-dark);
+    font-weight: 600;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .canvas-preview-row-value {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+  .canvas-preview-row-value.empty {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: rgba(242, 235, 214, 0.55);
+    letter-spacing: 1px;
+    font-style: normal;
+  }
+  .canvas-preview-row-value em { font-style: italic; color: var(--green-on-dark); }
+
+  .canvas-footer {
+    grid-column: span 2;
+    padding: 20px 40px;
+    background: white;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .canvas-status {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--grey);
+    letter-spacing: 1px;
+  }
+  .canvas-status strong { color: var(--green); }
+  .canvas-actions { display: flex; gap: 8px; }
+
+  /* ============== BLOCK 4.9 — REFLECTION / ARTIFACT ============== */
+  .reflect-card {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 48px 56px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .reflect-card::before {
+    content: '"';
+    position: absolute;
+    top: -20px; right: 36px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 280px;
+    color: var(--green-on-dark);
+    opacity: 0.25;
+    line-height: 1;
+    font-style: italic;
+  }
+  .reflect-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 16px;
+  }
+  .reflect-prompt {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--cream);
+    line-height: 1.35;
+    max-width: 760px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .reflect-textarea {
+    width: 100%;
+    min-height: 180px;
+    background: rgba(253, 252, 248, 0.95);
+    border: none;
+    border-radius: 3px;
+    padding: 20px 22px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    color: var(--navy);
+    line-height: 1.55;
+    resize: vertical;
+    position: relative;
+  }
+  .reflect-textarea:focus { outline: 2px solid var(--green); outline-offset: 2px; }
+  .reflect-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px;
+    position: relative;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .reflect-cite {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.6);
+  }
+  .reflect-save {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 24px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .reflect-save:hover { background: var(--green-dark); }
+
+  /* ============== BLOCK 4.10 — UNIT CLOSE ============== */
+  .close {
+    padding: 56px 56px;
+    background: linear-gradient(135deg, var(--cream-soft) 0%, var(--cream) 100%);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .close-left h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .close-left p {
+    font-size: 16px;
+    color: var(--navy);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .next-unit {
+    background: white;
+    padding: 28px 32px;
+    border-radius: 3px;
+    border-left: 4px solid var(--green);
+  }
+  .next-unit-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .next-unit-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .next-unit-desc {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .next-unit-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: white;
+    background: var(--green);
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all .2s ease;
+  }
+  .next-unit-btn:hover { background: var(--green-dark); }
+
+  /* ============== COLOPHON ============== */
+  .colophon {
+    padding: 80px 0 64px;
+    border-top: 3px double var(--rule);
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  .col-brand {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--navy);
+    line-height: 1.4;
+  }
+  .col-brand strong { font-weight: 600; color: var(--green); display: block; font-size: 14px; font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-style: normal; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .col h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .col p { font-size: 14px; color: var(--grey); line-height: 1.7; }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .rail { display: none; }
+    .shell { margin-left: 0; }
+    .wrap { padding: 0 28px; }
+    .unit-number { font-size: 140px; letter-spacing: -4px; }
+    .unit-title { font-size: 36px; margin-left: 0; margin-top: 16px; }
+    .unit-sub { font-size: 20px; margin-left: 0; }
+    .block-title { font-size: 28px; }
+    .bridge, .synth-grid, .loop-panel, .patterns-panel.active, .sort-game, .canvas, .anatomy-labels-grid, .close { grid-template-columns: 1fr; gap: 24px; }
+    .loop-track { grid-template-columns: repeat(3, 1fr); border-right: none; }
+    .loop-step:nth-child(3n) { border-right: none; }
+    .loop-step { border-bottom: 1px solid var(--rule); }
+    .canvas-form, .canvas-preview { border-right: none; border-bottom: 1px solid var(--rule); }
+    .bridge-arrow { display: none; }
+    .pill-row { flex-direction: column; }
+    .pill { border-right: none; border-bottom: 1px solid var(--rule); }
+    .colophon { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LEFT RAIL ============ -->
+<nav class="rail" aria-label="Unit blocks">
+  <div class="rail-logo">AIL<span>UNIT 04</span></div>
+  <div class="rail-nav">
+    <a href="#b41" class="rail-dot active" data-block="1">4.1</a>
+    <a href="#b42" class="rail-dot" data-block="2">4.2</a>
+    <a href="#b43" class="rail-dot" data-block="3">4.3</a>
+    <a href="#b44" class="rail-dot" data-block="4">4.4</a>
+    <a href="#b45" class="rail-dot" data-block="5">4.5</a>
+    <a href="#b46" class="rail-dot" data-block="6">4.6</a>
+    <a href="#b47" class="rail-dot" data-block="7">4.7</a>
+    <a href="#b48" class="rail-dot" data-block="8">4.8</a>
+    <a href="#b49" class="rail-dot" data-block="9">4.9</a>
+    <a href="#b410" class="rail-dot" data-block="10">4.10</a>
+  </div>
+  <div class="rail-foot">MD TAYLOR</div>
+</nav>
+
+<main class="shell">
+  <div class="wrap">
+
+    <!-- ============ MASTHEAD ============ -->
+    <header class="masthead">
+      <div class="masthead-meta">
+        <span>AI Literacy in Healthcare Distance Education</span>
+        <span><strong>Unit 04 of 05</strong> · 40 minutes · Rise 360</span>
+      </div>
+      <span class="unit-number">04</span>
+      <h1 class="unit-title">Designing AI-Enhanced DE Activities</h1>
+      <p class="unit-sub">This is where the course changes how you teach — not just what AI you allow.</p>
+
+      <div class="pill-row">
+        <div class="pill">
+          <span class="pill-label">SAMR Target</span>
+          <span class="pill-value">Modification → Redefinition</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">CoI Emphasis</span>
+          <span class="pill-value">Teaching + Social + Cognitive</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">Summative Artifact</span>
+          <span class="pill-value">Activity Design Canvas</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ BLOCK 4.1 — FROM GATE TO BUILD ============ -->
+    <section class="block" id="b41">
+      <div class="block-head">
+        <span class="block-num">4.1</span>
+        <span class="block-type">Statement A · Unit Welcome</span>
+      </div>
+      <h2 class="block-title">From gate to build</h2>
+      <p class="lede">Units 01 through 03 put the tools, the prompts, and the ethical screen in place. Unit 04 asks what you will build with them.</p>
+
+      <div class="bridge">
+        <div class="bridge-from">
+          <div>
+            <div class="bridge-label">UNITS 01-03 · GATEKEEPING</div>
+            <div class="bridge-head">You learned to decide <em>whether</em> AI belongs in an activity.</div>
+          </div>
+          <div class="bridge-body">You evaluated tools with TAM and SAMR. You wrote prompts that produce pedagogically useful output. You ran the PRISM ethics screen and drafted your course disclosure. You can now say <em>yes</em> to AI, and you can say <em>not yet</em>, with principled reasoning behind each decision.</div>
+          <div class="bridge-arrow">→</div>
+        </div>
+        <div class="bridge-to">
+          <div>
+            <div class="bridge-label">UNIT 04 · BUILDING</div>
+            <div class="bridge-head">Now you design <em>how</em> AI changes the activity.</div>
+          </div>
+          <div class="bridge-body">This unit shifts from evaluation to authorship. You will learn four activity patterns, work through a design loop, sort existing activities by SAMR level, and produce a complete Activity Design Canvas for one DE activity in your own course.</div>
+          <ul class="bridge-deliverables">
+            <li>Four activity patterns for DE</li>
+            <li>A six-step design loop</li>
+            <li>One complete design canvas</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 4.2 — SYNTHESIS / THREE INTERACTIONS, THREE PRESENCES ============ -->
+    <section class="block" id="b42">
+      <div class="block-head">
+        <span class="block-num">4.2</span>
+        <span class="block-type">Text on Image · Synthesis</span>
+      </div>
+      <h2 class="block-title">Three interactions, three presences, one activity</h2>
+      <p class="lede">Every DE activity sits at the intersection of two frameworks you already know. Learning to read an activity through both lenses is the core move of this unit.</p>
+
+      <div class="synth">
+        <div class="synth-head">
+          <h3>An activity is strong when every <em>interaction</em> activates a <em>presence</em>.</h3>
+        </div>
+
+        <div class="synth-grid">
+          <div class="synth-col">
+            <h5>MOORE · HILLMAN</h5>
+            <div class="synth-col-head">Three interactions</div>
+            <div class="synth-col-cite">Moore (1989); Hillman et al. (1994)</div>
+            <ul class="synth-list">
+              <li data-n="1"><strong>Learner ↔ Content.</strong> The reading, the video, the case, the Rise block itself.</li>
+              <li data-n="2"><strong>Learner ↔ Instructor.</strong> Welcomes, feedback touchpoints, scripted instructor presence.</li>
+              <li data-n="3"><strong>Learner ↔ Learner.</strong> Peer discussion, peer review, collaborative interpretation.</li>
+              <li data-n="4"><strong>Learner ↔ AI.</strong> Guided prompt practice, AI-coached writing, simulated patients.</li>
+            </ul>
+          </div>
+          <div class="synth-col">
+            <h5>GARRISON ET AL.</h5>
+            <div class="synth-col-head">Three presences</div>
+            <div class="synth-col-cite">Garrison et al. (2000)</div>
+            <ul class="synth-list">
+              <li data-n="1"><strong>Teaching presence.</strong> Design, facilitation, and direct instruction from the instructor.</li>
+              <li data-n="2"><strong>Social presence.</strong> Learners projecting themselves authentically into the cohort.</li>
+              <li data-n="3"><strong>Cognitive presence.</strong> Sustained inquiry that moves from trigger to resolution.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="synth-venn">
+          <div class="synth-venn-label">THE DESIGN TEST</div>
+          <div class="synth-venn-body">An activity that moves only learner-content interaction activates at best <strong>cognitive presence</strong>. An activity that moves all four interactions has a reasonable chance of activating <strong>all three presences</strong> at once. That is the quiet rubric behind every design choice in this unit.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 4.3 — ACTIVITY DESIGN LOOP ============ -->
+    <section class="block" id="b43">
+      <div class="block-head">
+        <span class="block-num">4.3</span>
+        <span class="block-type">Process · Activity Design Loop</span>
+      </div>
+      <h2 class="block-title">The six-step design loop</h2>
+      <p class="lede">This is the loop you run every time you design or redesign a DE activity with AI. Click each step to see what it asks and what a faculty member would actually write.</p>
+
+      <div class="loop-wrap">
+        <div class="loop-track">
+          <button class="loop-step active" data-step="1"><span class="loop-num">1</span><span class="loop-word">Outcome</span></button>
+          <button class="loop-step" data-step="2"><span class="loop-num">2</span><span class="loop-word">Interaction</span></button>
+          <button class="loop-step" data-step="3"><span class="loop-num">3</span><span class="loop-word">AI Role</span></button>
+          <button class="loop-step" data-step="4"><span class="loop-num">4</span><span class="loop-word">Presence</span></button>
+          <button class="loop-step" data-step="5"><span class="loop-num">5</span><span class="loop-word">Reflection</span></button>
+          <button class="loop-step" data-step="6"><span class="loop-num">6</span><span class="loop-word">Assessment</span></button>
+        </div>
+
+        <div class="loop-panel">
+          <div class="loop-panel-left">
+            <h3 id="loop-word">Outcome</h3>
+            <div class="loop-def" id="loop-def">Name one specific learning outcome this activity serves. Every downstream decision follows from it.</div>
+            <div class="loop-why" id="loop-why">An AI-enhanced activity without a stated outcome will drift toward whatever the model generates well. The outcome anchors the design and tells you when the activity is done.</div>
+          </div>
+          <div class="loop-panel-right">
+            <h5>QUESTIONS TO ANSWER</h5>
+            <ul class="loop-questions" id="loop-questions">
+              <li>What is the single learning outcome this activity serves?</li>
+              <li>Is the outcome measurable in a DE context?</li>
+              <li>Does the outcome require AI, or would a standard activity serve it?</li>
+            </ul>
+            <div class="loop-example">
+              <span class="loop-example-tag">WHAT A FACULTY MEMBER WRITES</span>
+              <span id="loop-example">LO-4.2: Analyze a complex heart failure regimen, identifying one drug-related problem per patient and justifying your recommendation using evidence-based guidelines.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 4.4 — FOUR ACTIVITY PATTERNS ============ -->
+    <section class="block" id="b44">
+      <div class="block-head">
+        <span class="block-num">4.4</span>
+        <span class="block-type">Tabs · Four Activity Patterns</span>
+      </div>
+      <h2 class="block-title">Four patterns that work in healthcare DE</h2>
+      <p class="lede">Four designs that consistently reach Modification or Redefinition on SAMR in healthcare education. Click any pattern to see its mechanics, its SAMR tier, and the presences it activates.</p>
+
+      <div class="patterns-wrap">
+        <div class="patterns-tabs">
+          <button class="patterns-tab active" data-panel="p1"><span class="patterns-tab-num">PATTERN 01</span>Case Debate with AI Devil's Advocate</button>
+          <button class="patterns-tab" data-panel="p2"><span class="patterns-tab-num">PATTERN 02</span>AI-Coached Writing</button>
+          <button class="patterns-tab" data-panel="p3"><span class="patterns-tab-num">PATTERN 03</span>AI Standardized Patient</button>
+          <button class="patterns-tab" data-panel="p4"><span class="patterns-tab-num">PATTERN 04</span>AI-Annotated Reading</button>
+        </div>
+
+        <!-- Pattern 1 -->
+        <div class="patterns-panel active" id="p1">
+          <div class="patterns-main">
+            <h3 class="patterns-title">Case Debate with AI Devil's Advocate</h3>
+            <p class="patterns-subtitle">Two learner groups take a clinical position. The AI argues the opposing case at equal strength.</p>
+            <p class="patterns-body">Learners in a small group take a clinical position on a case (e.g., anticoagulate this patient now). A second group takes the opposing position. Each group then prompts an AI to produce the <strong>strongest counterargument</strong> against their own position, forcing them to confront the other side on its best terms.</p>
+            <p class="patterns-body">Groups then debate in a synchronous session or an asynchronous discussion thread. The AI's role is adversarial collaborator, not answer key. Learners cite the AI's counterargument in their final reasoning artifact, including whether it changed their mind.</p>
+            <div class="patterns-example">
+              <span class="patterns-example-label">WHY IT CLEARS MODIFICATION</span>
+              <span class="patterns-example-text">Without AI, the exercise would require two instructors to role-play opposing clinicians. The activity was impractical at scale. AI makes it routine, and the quality of the counterargument raises the cognitive demand on both sides of the debate.</span>
+            </div>
+          </div>
+          <div class="patterns-meta">
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">SAMR TIER</div>
+              <div class="patterns-meta-value"><span class="samr-tier m">M</span>Modification</div>
+              <div class="patterns-meta-sub">Task redesign that was previously impractical at scale.</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">INTERACTIONS (MOORE)</div>
+              <div class="patterns-meta-value">All four</div>
+              <div class="patterns-meta-sub">Learner-content, learner-instructor, learner-learner, learner-AI.</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">COI PRESENCES</div>
+              <div class="patterns-meta-value">All three</div>
+              <div class="patterns-meta-sub">Teaching (design + closure), social (group debate), cognitive (sustained inquiry).</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">BEST FIT</div>
+              <div class="patterns-meta-value">Clinical reasoning courses</div>
+              <div class="patterns-meta-sub">Pharmacotherapy, medical decision-making, nursing critical care.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pattern 2 -->
+        <div class="patterns-panel" id="p2">
+          <div class="patterns-main">
+            <h3 class="patterns-title">AI-Coached Writing</h3>
+            <p class="patterns-subtitle">AI functions as a writing coach during drafting, never as a co-author.</p>
+            <p class="patterns-body">Learners draft scholarly writing (a clinical reflection, a case analysis, a quality improvement proposal). At specified checkpoints, they submit their draft to an AI coach that <strong>asks questions about the writing</strong> rather than rewriting it — questions about argument structure, evidence, clarity, and alignment with the rubric.</p>
+            <p class="patterns-body">The AI's output is a set of coaching questions, not edits. Learners then revise in response to the questions and document how their thinking changed. Final submission includes the original draft, the coaching dialogue, and the revised version.</p>
+            <div class="patterns-example">
+              <span class="patterns-example-label">WHY IT CLEARS MODIFICATION</span>
+              <span class="patterns-example-text">Traditional peer review in DE is asymmetric — some learners get thoughtful reviews, others do not. AI coaching gives every learner the same thoughtful questioning on their schedule, while preserving the revision work as the learner's own.</span>
+            </div>
+          </div>
+          <div class="patterns-meta">
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">SAMR TIER</div>
+              <div class="patterns-meta-value"><span class="samr-tier m">M</span>Modification</div>
+              <div class="patterns-meta-sub">Scales expert questioning previously impossible to distribute evenly.</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">INTERACTIONS (MOORE)</div>
+              <div class="patterns-meta-value">Three of four</div>
+              <div class="patterns-meta-sub">Learner-content, learner-instructor (at checkpoints), learner-AI.</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">COI PRESENCES</div>
+              <div class="patterns-meta-value">Teaching + cognitive</div>
+              <div class="patterns-meta-sub">Social presence requires pairing with peer exchange.</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">BEST FIT</div>
+              <div class="patterns-meta-value">Writing-heavy courses</div>
+              <div class="patterns-meta-sub">Reflection-based clinical courses, QI/research writing, capstone preparation.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pattern 3 -->
+        <div class="patterns-panel" id="p3">
+          <div class="patterns-main">
+            <h3 class="patterns-title">AI Standardized Patient</h3>
+            <p class="patterns-subtitle">Learners interview an AI patient, debrief with peers, and receive faculty feedback.</p>
+            <p class="patterns-body">Replaces or supplements expensive standardized patient encounters in DE. An AI is prompted to play a patient with a specific clinical presentation, history, and communication style. Learners conduct the interview asynchronously, taking time to consider each question, while the AI holds the patient role consistently.</p>
+            <p class="patterns-body">After the interview, learners write a clinical note, post the note and interview transcript to a peer discussion, and receive faculty-led debrief feedback on interviewing technique, clinical reasoning, and communication. The activity closes synchronously with a cohort debrief.</p>
+            <div class="patterns-example">
+              <span class="patterns-example-label">WHY IT CLEARS REDEFINITION</span>
+              <span class="patterns-example-text">This activity did not exist before reliable generative AI. Asynchronous standardized-patient practice at scale was not feasible in DE. The combination of individualized interview practice, peer review of the transcript, and faculty-led debrief is a learning experience no prior format could offer.</span>
+            </div>
+          </div>
+          <div class="patterns-meta">
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">SAMR TIER</div>
+              <div class="patterns-meta-value"><span class="samr-tier r">R</span>Redefinition</div>
+              <div class="patterns-meta-sub">A task previously inconceivable in asynchronous DE.</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">INTERACTIONS (MOORE)</div>
+              <div class="patterns-meta-value">All four</div>
+              <div class="patterns-meta-sub">Content, instructor, peer, AI — each at a different phase.</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">COI PRESENCES</div>
+              <div class="patterns-meta-value">All three</div>
+              <div class="patterns-meta-sub">Teaching (debrief), social (peer review), cognitive (sustained clinical reasoning).</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">BEST FIT</div>
+              <div class="patterns-meta-value">Clinical communication courses</div>
+              <div class="patterns-meta-sub">History-taking, motivational interviewing, difficult conversations, cultural competence.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pattern 4 -->
+        <div class="patterns-panel" id="p4">
+          <div class="patterns-main">
+            <h3 class="patterns-title">AI-Annotated Reading</h3>
+            <p class="patterns-subtitle">Learners read a guideline in one pane. AI provides clarifying commentary in an adjacent pane.</p>
+            <p class="patterns-body">Learners receive a dense clinical reading (a guideline, a systematic review, a policy brief). Alongside it, they interact with an AI that can <strong>explain, contextualize, or challenge</strong> any passage they highlight — but only when prompted, and only within constraints the instructor has scripted.</p>
+            <p class="patterns-body">Learners submit their annotation trail: which passages they queried, what they asked, what the AI said, and what they concluded after integrating the AI response with their own thinking. The annotations become a record of the learner's engagement with the reading.</p>
+            <div class="patterns-example">
+              <span class="patterns-example-label">WHY IT CLEARS MODIFICATION</span>
+              <span class="patterns-example-text">A graduate student reading a guideline alone cannot easily ask a follow-up question. An AI co-reader makes structured interrogation of dense material routine, and makes the learner's reading process visible to the instructor for the first time.</span>
+            </div>
+          </div>
+          <div class="patterns-meta">
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">SAMR TIER</div>
+              <div class="patterns-meta-value"><span class="samr-tier m">M</span>Modification</div>
+              <div class="patterns-meta-sub">Makes visible what was previously private (the reading process itself).</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">INTERACTIONS (MOORE)</div>
+              <div class="patterns-meta-value">Three of four</div>
+              <div class="patterns-meta-sub">Learner-content, learner-AI, optional learner-learner.</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">COI PRESENCES</div>
+              <div class="patterns-meta-value">Cognitive + teaching</div>
+              <div class="patterns-meta-sub">Social presence optional via shared annotation.</div>
+            </div>
+            <div class="patterns-meta-card">
+              <div class="patterns-meta-label">BEST FIT</div>
+              <div class="patterns-meta-value">Evidence-based practice</div>
+              <div class="patterns-meta-sub">Journal clubs, guideline analysis, policy interpretation, literature reviews.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 4.5 — SCENARIO VIDEO ============ -->
+    <section class="block" id="b45">
+      <div class="block-head">
+        <span class="block-num">4.5</span>
+        <span class="block-type">Scenario Video · Redesign Walkthrough</span>
+      </div>
+      <h2 class="block-title">From discussion forum to AI simulation</h2>
+      <p class="lede">A three-minute walkthrough of a real SAMR Redefinition redesign. Watch a faculty member move a stagnant discussion forum to an AI Standardized Patient activity, mapping the design loop at each step.</p>
+
+      <div class="scenario-stage" role="img" aria-label="Scenario video placeholder: From discussion forum to AI simulation">
+        <div class="scenario-chars" aria-hidden="true">→ R</div>
+        <div class="video-overlay">
+          <span class="video-tag">SCENARIO · 03:00</span>
+          <div class="video-meta-bottom">
+            <span class="video-title-over">An underperforming forum becomes a clinical simulation. The redesign takes forty minutes on camera.</span>
+            <span>00:00 / 03:00</span>
+          </div>
+        </div>
+        <button class="video-play" aria-label="Play scenario video">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Video production needed</strong>
+        Three-minute narrated walkthrough. Full script in Appendix B4 of the course spec. Visual approach: split screen showing the original discussion forum on the left, the redesigned AI standardized patient activity on the right. Narrator maps the six-step design loop as the redesign unfolds. On-screen SAMR labels show the move from Augmentation to Redefinition. Closed captions required.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 4.6 — SAMR SORT ============ -->
+    <section class="block" id="b46">
+      <div class="block-head">
+        <span class="block-num">4.6</span>
+        <span class="block-type">Sorting Activity · SAMR Sort</span>
+      </div>
+      <h2 class="block-title">Sort eight activities onto the ladder</h2>
+      <p class="lede">Drag each activity description onto the SAMR rung that best describes it. Feedback appears after you submit. Formative only.</p>
+
+      <div class="sort-intro">
+        <span class="sort-intro-num">8</span>
+        <span class="sort-intro-text"><strong>Eight activities, four rungs.</strong> Drag each card onto the rung that matches its SAMR level. Items stack on each rung. Submit when you have placed all eight.</span>
+      </div>
+
+      <div class="sort-game">
+        <div class="sort-column">
+          <h4>ACTIVITIES · DRAG ME</h4>
+          <div id="sort-pool">
+            <div class="sort-item" draggable="true" data-id="a1" data-answer="s">Faculty uses AI to generate a one-paragraph summary of a reading that was previously summarized by hand.</div>
+            <div class="sort-item" draggable="true" data-id="a2" data-answer="a">Faculty asks AI to draft reading summary AND flag passages likely to confuse DE learners.</div>
+            <div class="sort-item" draggable="true" data-id="a3" data-answer="m">Learners debate a clinical case with AI generating the strongest opposing argument for each side.</div>
+            <div class="sort-item" draggable="true" data-id="a4" data-answer="r">Asynchronous AI standardized patient interviews followed by peer review and faculty-led cohort debrief.</div>
+            <div class="sort-item" draggable="true" data-id="a5" data-answer="s">AI drafts a discussion question instead of the faculty writing it from scratch.</div>
+            <div class="sort-item" draggable="true" data-id="a6" data-answer="a">AI drafts a rubric, faculty edits for course-specific criteria, then applies it in grading.</div>
+            <div class="sort-item" draggable="true" data-id="a7" data-answer="m">Learners submit drafts for AI coaching at scheduled checkpoints; revisions and coaching dialogue are submitted together.</div>
+            <div class="sort-item" draggable="true" data-id="a8" data-answer="r">Individualized AI-annotated readings where each learner's questioning trail becomes the assessment artifact.</div>
+          </div>
+        </div>
+        <div class="sort-column">
+          <h4>SAMR LADDER · DROP ZONES</h4>
+          <div class="sort-ladder">
+            <div class="sort-rung s" data-target="s">
+              <div class="sort-rung-head">
+                <span class="sort-rung-letter">S</span>
+                <span class="sort-rung-label">Substitution</span>
+              </div>
+              <div class="sort-rung-desc">AI replaces an older tool with no functional change to the task.</div>
+              <div class="sort-dropped" data-dropped="s"></div>
+            </div>
+            <div class="sort-rung a" data-target="a">
+              <div class="sort-rung-head">
+                <span class="sort-rung-letter">A</span>
+                <span class="sort-rung-label">Augmentation</span>
+              </div>
+              <div class="sort-rung-desc">AI replaces an older tool and adds functional improvement.</div>
+              <div class="sort-dropped" data-dropped="a"></div>
+            </div>
+            <div class="sort-rung m" data-target="m">
+              <div class="sort-rung-head">
+                <span class="sort-rung-letter">M</span>
+                <span class="sort-rung-label">Modification</span>
+              </div>
+              <div class="sort-rung-desc">AI allows significant task redesign that was previously impractical.</div>
+              <div class="sort-dropped" data-dropped="m"></div>
+            </div>
+            <div class="sort-rung r" data-target="r">
+              <div class="sort-rung-head">
+                <span class="sort-rung-letter">R</span>
+                <span class="sort-rung-label">Redefinition</span>
+              </div>
+              <div class="sort-rung-desc">AI enables tasks that were previously inconceivable.</div>
+              <div class="sort-dropped" data-dropped="r"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sort-controls">
+        <span class="sort-status"><strong id="sort-placed">0</strong> of 8 placed</span>
+        <div>
+          <button class="btn btn-ghost" id="sort-reset">Reset</button>
+          <button class="btn btn-primary" id="sort-check">Check my placements</button>
+        </div>
+      </div>
+
+      <div class="sort-feedback" id="sort-feedback">
+        <div class="sort-feedback-title" id="sort-fb-title"></div>
+        <div id="sort-fb-body"></div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 4.7 — ANATOMY OF A REDEFINITION ACTIVITY ============ -->
+    <section class="block" id="b47">
+      <div class="block-head">
+        <span class="block-num">4.7</span>
+        <span class="block-type">Labeled Graphic · Anatomy of Redefinition</span>
+      </div>
+      <h2 class="block-title">Anatomy of a Redefinition activity</h2>
+      <p class="lede">Six elements that a Redefinition-tier activity reliably carries. Hover or click any card to highlight it. Use this as a checklist against your own canvas in Block 4.8.</p>
+
+      <div class="anatomy-wrap">
+        <div class="anatomy-head">
+          <div class="anatomy-label">ANNOTATED EXAMPLE · AI STANDARDIZED PATIENT</div>
+          <div class="anatomy-title">A 90-minute asynchronous clinical interview, peer review, and synchronous debrief</div>
+          <div class="anatomy-desc">This activity could not exist before reliable generative AI. Every element below is non-negotiable; remove one and the activity drops to Modification or lower.</div>
+        </div>
+
+        <div class="anatomy-body">
+          <div class="anatomy-labels-grid">
+            <div class="anatomy-card" data-id="1">
+              <div class="anatomy-card-head">
+                <span class="anatomy-card-num">ELEMENT 01</span>
+                <span class="anatomy-card-icon">O</span>
+              </div>
+              <div class="anatomy-card-name">Single learning outcome</div>
+              <div class="anatomy-card-desc"><strong>Named explicitly.</strong> "Conduct a motivational interview with a patient considering smoking cessation, producing a clinical note." No ambiguity about what learners should leave able to do.</div>
+            </div>
+
+            <div class="anatomy-card" data-id="2">
+              <div class="anatomy-card-head">
+                <span class="anatomy-card-num">ELEMENT 02</span>
+                <span class="anatomy-card-icon">AI</span>
+              </div>
+              <div class="anatomy-card-name">Specific AI role</div>
+              <div class="anatomy-card-desc"><strong>Bounded and scripted.</strong> The AI holds one patient persona consistently across the interview. It is not a generic chatbot. The faculty member wrote and tested the system prompt before deployment.</div>
+            </div>
+
+            <div class="anatomy-card" data-id="3">
+              <div class="anatomy-card-head">
+                <span class="anatomy-card-num">ELEMENT 03</span>
+                <span class="anatomy-card-icon">↔</span>
+              </div>
+              <div class="anatomy-card-name">All four interactions</div>
+              <div class="anatomy-card-desc"><strong>Sequenced across the activity.</strong> Learner-AI (interview), learner-content (note writing), learner-learner (peer review of transcripts), learner-instructor (cohort debrief).</div>
+            </div>
+
+            <div class="anatomy-card" data-id="4">
+              <div class="anatomy-card-head">
+                <span class="anatomy-card-num">ELEMENT 04</span>
+                <span class="anatomy-card-icon">P</span>
+              </div>
+              <div class="anatomy-card-name">All three presences</div>
+              <div class="anatomy-card-desc"><strong>Distributed by design.</strong> Teaching presence in the opening brief and the debrief. Social presence in the peer review phase. Cognitive presence sustained through the interview and the clinical note.</div>
+            </div>
+
+            <div class="anatomy-card" data-id="5">
+              <div class="anatomy-card-head">
+                <span class="anatomy-card-num">ELEMENT 05</span>
+                <span class="anatomy-card-icon">R</span>
+              </div>
+              <div class="anatomy-card-name">Self-regulation cue</div>
+              <div class="anatomy-card-desc"><strong>Goal-setting at start, reflection at end.</strong> Learners set one interview goal before they begin. Post-debrief, they write a 200-word reflection on what the AI patient revealed about their own technique.</div>
+            </div>
+
+            <div class="anatomy-card" data-id="6">
+              <div class="anatomy-card-head">
+                <span class="anatomy-card-num">ELEMENT 06</span>
+                <span class="anatomy-card-icon">=</span>
+              </div>
+              <div class="anatomy-card-name">Criterion-referenced assessment</div>
+              <div class="anatomy-card-desc"><strong>Rubric aligned to the outcome.</strong> The interview transcript, the clinical note, and the reflection are assessed against a rubric that measures interview technique, clinical reasoning, and metacognitive awareness. AI use is part of the rubric, not outside it.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 4.8 — DESIGN CANVAS ============ -->
+    <section class="block" id="b48">
+      <div class="block-head">
+        <span class="block-num">4.8</span>
+        <span class="block-type">Button Stack · Activity Design Canvas</span>
+      </div>
+      <h2 class="block-title">Build your Activity Design Canvas</h2>
+      <p class="lede">Fill out each field. The canvas on the right assembles into your Unit 04 summative artifact. Save or copy when the canvas reads coherently end-to-end.</p>
+
+      <div class="canvas-wrap">
+        <div class="canvas-progress">
+          <span class="canvas-progress-text">Canvas completion · <strong id="canvas-pct">0%</strong></span>
+          <div class="canvas-progress-bar"><div class="canvas-progress-fill" id="canvas-fill"></div></div>
+          <span class="canvas-progress-text"><strong id="canvas-done">0</strong> of 9 fields</span>
+        </div>
+
+        <div class="canvas">
+          <div class="canvas-form">
+            <h4>CANVAS · NINE FIELDS</h4>
+
+            <div class="canvas-field">
+              <label class="canvas-field-label"><span class="canvas-field-label-num">01</span>Course + Module</label>
+              <p class="canvas-field-hint">Course name, module name or number.</p>
+              <input type="text" class="canvas-input" data-field="course" placeholder="e.g. Cardiovascular Pharmacotherapy · Week 4">
+            </div>
+
+            <div class="canvas-field">
+              <label class="canvas-field-label"><span class="canvas-field-label-num">02</span>Aligned Learning Outcome</label>
+              <p class="canvas-field-hint">The single LO this activity serves.</p>
+              <textarea class="canvas-textarea" data-field="outcome" placeholder="LO-X.X: verb + object + condition..."></textarea>
+            </div>
+
+            <div class="canvas-field">
+              <label class="canvas-field-label"><span class="canvas-field-label-num">03</span>Activity Pattern</label>
+              <p class="canvas-field-hint">Which of the four patterns (or a hybrid).</p>
+              <div class="canvas-chips">
+                <button class="canvas-chip" data-field="pattern" data-val="Case Debate with AI Devil's Advocate">Case Debate</button>
+                <button class="canvas-chip" data-field="pattern" data-val="AI-Coached Writing">AI-Coached Writing</button>
+                <button class="canvas-chip" data-field="pattern" data-val="AI Standardized Patient">AI Standardized Patient</button>
+                <button class="canvas-chip" data-field="pattern" data-val="AI-Annotated Reading">AI-Annotated Reading</button>
+                <button class="canvas-chip" data-field="pattern" data-val="Hybrid / Custom">Hybrid / Custom</button>
+              </div>
+            </div>
+
+            <div class="canvas-field">
+              <label class="canvas-field-label"><span class="canvas-field-label-num">04</span>AI Role in the Activity</label>
+              <p class="canvas-field-hint">What the AI does. What it does NOT do.</p>
+              <textarea class="canvas-textarea" data-field="ai_role" placeholder="The AI plays... / The AI will not..."></textarea>
+            </div>
+
+            <div class="canvas-field">
+              <label class="canvas-field-label"><span class="canvas-field-label-num">05</span>Interactions Activated</label>
+              <p class="canvas-field-hint">Select all that apply (Moore, Hillman).</p>
+              <div class="canvas-chips">
+                <button class="canvas-chip" data-field="interactions" data-val="Learner-Content" data-multi="1">Learner-Content</button>
+                <button class="canvas-chip" data-field="interactions" data-val="Learner-Instructor" data-multi="1">Learner-Instructor</button>
+                <button class="canvas-chip" data-field="interactions" data-val="Learner-Learner" data-multi="1">Learner-Learner</button>
+                <button class="canvas-chip" data-field="interactions" data-val="Learner-AI" data-multi="1">Learner-AI</button>
+              </div>
+            </div>
+
+            <div class="canvas-field">
+              <label class="canvas-field-label"><span class="canvas-field-label-num">06</span>CoI Presences Activated</label>
+              <p class="canvas-field-hint">Select all that apply (Garrison et al.).</p>
+              <div class="canvas-chips">
+                <button class="canvas-chip" data-field="presences" data-val="Teaching" data-multi="1">Teaching</button>
+                <button class="canvas-chip" data-field="presences" data-val="Social" data-multi="1">Social</button>
+                <button class="canvas-chip" data-field="presences" data-val="Cognitive" data-multi="1">Cognitive</button>
+              </div>
+            </div>
+
+            <div class="canvas-field">
+              <label class="canvas-field-label"><span class="canvas-field-label-num">07</span>SAMR Classification + Justification</label>
+              <p class="canvas-field-hint">Target tier and one-sentence justification.</p>
+              <select class="canvas-select" data-field="samr_tier">
+                <option value="">Select SAMR tier...</option>
+                <option value="Substitution">S · Substitution</option>
+                <option value="Augmentation">A · Augmentation</option>
+                <option value="Modification">M · Modification</option>
+                <option value="Redefinition">R · Redefinition</option>
+              </select>
+              <textarea class="canvas-textarea" data-field="samr_justify" placeholder="Justification: without AI, this activity would..." style="margin-top: 10px;"></textarea>
+            </div>
+
+            <div class="canvas-field">
+              <label class="canvas-field-label"><span class="canvas-field-label-num">08</span>Self-Regulation Cue</label>
+              <p class="canvas-field-hint">Goal-setting at start and/or reflection at end.</p>
+              <textarea class="canvas-textarea" data-field="srl" placeholder="Learners set... / Learners reflect on..."></textarea>
+            </div>
+
+            <div class="canvas-field">
+              <label class="canvas-field-label"><span class="canvas-field-label-num">09</span>Assessment + Rubric Link</label>
+              <p class="canvas-field-hint">Formative or summative. How AI use is assessed.</p>
+              <textarea class="canvas-textarea" data-field="assessment" placeholder="Assessed by... / Rubric measures... / AI use appears in the rubric as..."></textarea>
+            </div>
+          </div>
+
+          <div class="canvas-preview">
+            <h4>YOUR CANVAS · LIVE ASSEMBLY</h4>
+            <div class="canvas-preview-title" id="cp-title"><span class="placeholder-dots">ACTIVITY TITLE · FILL FIELD 01 AND 03</span></div>
+
+            <div class="canvas-preview-row">
+              <span class="canvas-preview-row-label">01 · COURSE + MODULE</span>
+              <div class="canvas-preview-row-value empty" id="cp-course">PENDING</div>
+            </div>
+            <div class="canvas-preview-row">
+              <span class="canvas-preview-row-label">02 · LEARNING OUTCOME</span>
+              <div class="canvas-preview-row-value empty" id="cp-outcome">PENDING</div>
+            </div>
+            <div class="canvas-preview-row">
+              <span class="canvas-preview-row-label">03 · PATTERN</span>
+              <div class="canvas-preview-row-value empty" id="cp-pattern">PENDING</div>
+            </div>
+            <div class="canvas-preview-row">
+              <span class="canvas-preview-row-label">04 · AI ROLE</span>
+              <div class="canvas-preview-row-value empty" id="cp-ai_role">PENDING</div>
+            </div>
+            <div class="canvas-preview-row">
+              <span class="canvas-preview-row-label">05 · INTERACTIONS</span>
+              <div class="canvas-preview-row-value empty" id="cp-interactions">PENDING</div>
+            </div>
+            <div class="canvas-preview-row">
+              <span class="canvas-preview-row-label">06 · PRESENCES</span>
+              <div class="canvas-preview-row-value empty" id="cp-presences">PENDING</div>
+            </div>
+            <div class="canvas-preview-row">
+              <span class="canvas-preview-row-label">07 · SAMR</span>
+              <div class="canvas-preview-row-value empty" id="cp-samr">PENDING</div>
+            </div>
+            <div class="canvas-preview-row">
+              <span class="canvas-preview-row-label">08 · SELF-REGULATION</span>
+              <div class="canvas-preview-row-value empty" id="cp-srl">PENDING</div>
+            </div>
+            <div class="canvas-preview-row">
+              <span class="canvas-preview-row-label">09 · ASSESSMENT</span>
+              <div class="canvas-preview-row-value empty" id="cp-assessment">PENDING</div>
+            </div>
+          </div>
+
+          <div class="canvas-footer">
+            <span class="canvas-status">Auto-saves to this session · <strong id="canvas-save-status">Not yet saved</strong></span>
+            <div class="canvas-actions">
+              <button class="btn btn-ghost" id="canvas-reset">Reset canvas</button>
+              <button class="btn btn-primary" id="canvas-copy">Copy canvas</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Rise 360 integration note</strong>
+        In production, the completed canvas saves to learner progress, pre-fills the Block 4.9 reflection, and posts to the Unit 04 peer review discussion where peers apply the Activity Design Rubric (course spec Appendix F). This HTML prototype uses in-page memory only.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 4.9 — REFLECTION ============ -->
+    <section class="block" id="b49">
+      <div class="block-head">
+        <span class="block-num">4.9</span>
+        <span class="block-type">Reflection · My Redesign</span>
+      </div>
+      <h2 class="block-title">Why this activity, why now</h2>
+      <p class="lede">You have a canvas. This reflection names the pedagogical reason behind it. This is the narrative your canvas needs to ship alongside it — to peers, to your program director, or to yourself when you revisit the activity next term.</p>
+
+      <div class="reflect-card">
+        <span class="reflect-label">REFLECT · ARTIFACT RATIONALE</span>
+        <div class="reflect-prompt">What is this activity giving your learners that no earlier format could?</div>
+        <textarea class="reflect-textarea" id="reflect-input" placeholder="In 150 to 250 words, name the pedagogical reason your activity exists. What changed when AI entered the design? What presence did you activate that was not reachable before? If you would not describe the gain as substantive, the activity may be Substitution or Augmentation dressed up as Modification — and that is worth knowing too."></textarea>
+        <div class="reflect-footer">
+          <span class="reflect-cite">Activity Design Rubric · course spec Appendix F</span>
+          <button class="reflect-save" id="reflect-save">Save my rationale</button>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Rise 360 integration note</strong>
+        In production, this rationale pairs with the canvas above as the submission artifact. Peers in Unit 04's discussion forum apply the Activity Design Rubric to canvas + rationale together.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 4.10 — UNIT CLOSE ============ -->
+    <section class="block" id="b410">
+      <div class="block-head">
+        <span class="block-num">4.10</span>
+        <span class="block-type">Statement B · Close</span>
+      </div>
+      <h2 class="block-title">Close and bridge</h2>
+
+      <div class="close">
+        <div class="close-left">
+          <h3>You designed a DE activity that did not exist before AI.</h3>
+          <p>An outcome. A pattern. A specific AI role. Four interactions. Three presences. A SAMR tier you can defend. A self-regulation cue and a criterion-referenced rubric. That is an activity your course can actually run.</p>
+          <p>Unit 05 takes the last piece: how do you assess what learners produce when AI is part of the production? You will build the rubric row that carries AI-use expectations alongside the other criteria, and define where AI augments feedback — and where human judgment must remain the final authority.</p>
+        </div>
+        <div class="next-unit">
+          <div class="next-unit-label">COMING UP · UNIT 05 · 35 MIN</div>
+          <div class="next-unit-title">Assessment and Feedback with AI Tools</div>
+          <div class="next-unit-desc">Three appropriate uses. One non-use. A rubric row that declares AI expectations and preserves criterion-referenced judgment.</div>
+          <a href="#" class="next-unit-btn">
+            Begin Unit 05
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COLOPHON ============ -->
+    <footer class="colophon">
+      <div class="col col-brand">
+        <strong>Applied DE Project</strong>
+        A theory-grounded micro-course for health science faculty teaching in distance education environments. Built on Community of Inquiry, TAM, Self-Regulated Learning, and SAMR.
+      </div>
+      <div class="col">
+        <h5>Framework Grounding</h5>
+        <p>Moore (1989)</p>
+        <p>Hillman et al. (1994)</p>
+        <p>Garrison et al. (2000)</p>
+        <p>Puentedura (2006)</p>
+      </div>
+      <div class="col">
+        <h5>Attribution</h5>
+        <p>Marcus "MD" Taylor</p>
+        <p>UNT Health Science Center</p>
+        <p>Unit 04 · v1.0</p>
+      </div>
+    </footer>
+
+  </div>
+</main>
+
+<script>
+// ============ RAIL SCROLL SPY ============
+const blocks = document.querySelectorAll('.block');
+const dots = document.querySelectorAll('.rail-dot');
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      dots.forEach(d => d.classList.remove('active'));
+      const active = document.querySelector(`.rail-dot[href="#${id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+blocks.forEach(b => spy.observe(b));
+
+// ============ BLOCK 4.3 — DESIGN LOOP ============
+const loopData = {
+  1: {
+    word: 'Outcome',
+    def: 'Name one specific learning outcome this activity serves. Every downstream decision follows from it.',
+    why: 'An AI-enhanced activity without a stated outcome will drift toward whatever the model generates well. The outcome anchors the design and tells you when the activity is done.',
+    qs: [
+      'What is the single learning outcome this activity serves?',
+      'Is the outcome measurable in a DE context?',
+      'Does the outcome require AI, or would a standard activity serve it?'
+    ],
+    example: 'LO-4.2: Analyze a complex heart failure regimen, identifying one drug-related problem per patient and justifying your recommendation using evidence-based guidelines.'
+  },
+  2: {
+    word: 'Interaction',
+    def: 'Decide which of the four interactions your activity will move. Each interaction unlocks a specific presence.',
+    why: 'The single strongest predictor of a DE activity feeling flat is that it only moves one interaction. Learner-content alone is a reading, not an activity. The more interactions you move, the more presences you activate at once.',
+    qs: [
+      'Which interactions does the activity move (content, instructor, peer, AI)?',
+      'Are the interactions sequenced, or are they all happening at once?',
+      'Is there at least one interaction where learners speak to each other?'
+    ],
+    example: 'Learners interview the AI patient, write a clinical note (content), post note + transcript to peers (peer review), and attend a faculty-led synchronous debrief (instructor).'
+  },
+  3: {
+    word: 'AI Role',
+    def: 'Specify exactly what the AI does — and what it does not do. Bound the role before the activity runs.',
+    why: 'Every unbounded AI role creates drift. The model will do whatever produces plausible output, which may not match your pedagogical intent. A bounded AI role is the difference between a design and a prompt that happened to work.',
+    qs: [
+      'What is the AI\'s specific role in this activity?',
+      'What will the AI refuse or redirect?',
+      'Did you write and test the system prompt before deployment?'
+    ],
+    example: 'The AI plays a 52-year-old patient considering smoking cessation. It holds the persona across the interview, does not volunteer advice, does not break character, and does not produce the clinical note for the learner.'
+  },
+  4: {
+    word: 'Presence',
+    def: 'Name which CoI presences the activity activates. Confirm at least two.',
+    why: 'A single-presence activity is almost always Augmentation at best. Distributing teaching, social, and cognitive presence across phases of the activity is what pushes a design to Modification or Redefinition. Each presence needs a specific element to activate it.',
+    qs: [
+      'Where is teaching presence activated (design, facilitation, debrief)?',
+      'Where is social presence activated (peer discussion, peer review)?',
+      'Where is cognitive presence sustained across the activity?'
+    ],
+    example: 'Teaching presence in the opening brief and the cohort debrief. Social presence in peer review of interview transcripts. Cognitive presence sustained from interview through clinical note.'
+  },
+  5: {
+    word: 'Reflection',
+    def: 'Embed a self-regulation cue. Goal-setting at the start, metacognitive reflection at the close.',
+    why: 'Asynchronous DE learners who do not self-regulate disengage at higher rates. Reflection prompts are not optional polish. They are the difference between learners who leave an activity able to transfer what they learned and learners who forget it within a week.',
+    qs: [
+      'What goal does the learner set before beginning the activity?',
+      'What does the learner reflect on at the close?',
+      'Is the reflection prompt specific to this activity, or generic?'
+    ],
+    example: 'Before the interview, learners state one interview goal (e.g., "improve my open-ended questioning"). After the debrief, they write a 200-word reflection on what the AI patient revealed about their technique.'
+  },
+  6: {
+    word: 'Assessment',
+    def: 'Choose formative or summative. Specify a rubric aligned to the outcome. Include AI use in the rubric itself.',
+    why: 'An activity with no assessment anchor produces no evidence of learning. A rubric that does not mention AI use leaves learners guessing about disclosure. Including AI use in the rubric makes expectations clear and keeps criterion-referenced judgment at the center.',
+    qs: [
+      'Is this formative, summative, or both?',
+      'Does the rubric measure against the outcome from step 1?',
+      'Is AI use represented as a rubric criterion or as an expectation within criteria?'
+    ],
+    example: 'Summative. Rubric measures interview technique, clinical reasoning, and metacognitive awareness (four levels each). An AI-use row specifies that the interview must be with the AI patient (not a peer) and that the clinical note must be the learner\'s own work.'
+  }
+};
+
+document.querySelectorAll('.loop-step').forEach(step => {
+  step.addEventListener('click', () => {
+    const n = step.dataset.step;
+    document.querySelectorAll('.loop-step').forEach(s => s.classList.remove('active'));
+    step.classList.add('active');
+    const d = loopData[n];
+    document.getElementById('loop-word').textContent = d.word;
+    document.getElementById('loop-def').textContent = d.def;
+    document.getElementById('loop-why').textContent = d.why;
+    document.getElementById('loop-example').textContent = d.example;
+    const list = document.getElementById('loop-questions');
+    list.innerHTML = '';
+    d.qs.forEach(q => {
+      const li = document.createElement('li');
+      li.textContent = q;
+      list.appendChild(li);
+    });
+  });
+});
+
+// ============ BLOCK 4.4 — PATTERN TABS ============
+document.querySelectorAll('.patterns-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const panel = tab.dataset.panel;
+    document.querySelectorAll('.patterns-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.patterns-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(panel).classList.add('active');
+  });
+});
+
+// ============ BLOCK 4.6 — SAMR SORT ============
+const sortItems = document.querySelectorAll('.sort-item');
+const sortRungs = document.querySelectorAll('.sort-rung');
+const sortPlaced = document.getElementById('sort-placed');
+const sortCheckBtn = document.getElementById('sort-check');
+const sortResetBtn = document.getElementById('sort-reset');
+const sortFeedback = document.getElementById('sort-feedback');
+const sortFbTitle = document.getElementById('sort-fb-title');
+const sortFbBody = document.getElementById('sort-fb-body');
+
+const sortState = {}; // id -> placed rung
+let dragged = null;
+
+function updateSortCount() {
+  sortPlaced.textContent = Object.keys(sortState).length;
+  sortCheckBtn.disabled = Object.keys(sortState).length < 8;
+  sortCheckBtn.style.opacity = Object.keys(sortState).length < 8 ? 0.5 : 1;
+}
+updateSortCount();
+
+sortItems.forEach(item => {
+  item.addEventListener('dragstart', (e) => {
+    dragged = item;
+    item.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  item.addEventListener('dragend', () => {
+    item.classList.remove('dragging');
+    dragged = null;
+  });
+});
+
+sortRungs.forEach(rung => {
+  rung.addEventListener('dragover', (e) => { e.preventDefault(); rung.classList.add('over'); });
+  rung.addEventListener('dragleave', () => rung.classList.remove('over'));
+  rung.addEventListener('drop', (e) => {
+    e.preventDefault();
+    rung.classList.remove('over');
+    if (!dragged) return;
+    const id = dragged.dataset.id;
+    const text = dragged.textContent.trim();
+    const target = rung.dataset.target;
+
+    // If item was placed elsewhere, remove from that rung
+    if (sortState[id]) {
+      const prev = document.querySelector(`.sort-dropped[data-dropped="${sortState[id]}"] [data-id="${id}"]`);
+      if (prev) prev.remove();
+    }
+
+    sortState[id] = target;
+    dragged.classList.add('placed');
+
+    const dropped = rung.querySelector('.sort-dropped');
+    const existing = dropped.querySelector(`[data-id="${id}"]`);
+    if (existing) existing.remove();
+
+    const chip = document.createElement('div');
+    chip.className = 'sort-dropped-item';
+    chip.dataset.id = id;
+    chip.dataset.answer = dragged.dataset.answer;
+    chip.innerHTML = `<span>${text.substring(0, 95)}${text.length > 95 ? '...' : ''}</span><span class="sort-dropped-check"></span>`;
+    chip.addEventListener('click', () => {
+      // Click to unplace
+      chip.remove();
+      delete sortState[id];
+      dragged = null;
+      const poolItem = document.querySelector(`.sort-item[data-id="${id}"]`);
+      if (poolItem) poolItem.classList.remove('placed');
+      updateSortCount();
+    });
+    dropped.appendChild(chip);
+    updateSortCount();
+  });
+});
+
+sortCheckBtn.addEventListener('click', () => {
+  let correct = 0;
+  let total = 0;
+  document.querySelectorAll('.sort-dropped-item').forEach(chip => {
+    total++;
+    const isRight = chip.dataset.answer === sortState[chip.dataset.id];
+    if (isRight) {
+      chip.classList.add('correct');
+      chip.querySelector('.sort-dropped-check').textContent = '✓';
+      correct++;
+    } else {
+      chip.classList.add('incorrect');
+      chip.querySelector('.sort-dropped-check').textContent = '✗';
+    }
+  });
+  sortFeedback.classList.remove('correct', 'partial');
+  sortFeedback.classList.add('show');
+  if (correct === total) {
+    sortFeedback.classList.add('correct');
+    sortFbTitle.textContent = `All ${total} placed correctly.`;
+    sortFbBody.innerHTML = 'You can now classify AI-enhanced activities by SAMR tier with confidence. Use this same classification for your own canvas in the next block.';
+  } else {
+    sortFeedback.classList.add('partial');
+    sortFbTitle.textContent = `${correct} of ${total} correct.`;
+    sortFbBody.innerHTML = '<strong style="color: var(--amber)">Tip:</strong> The most common misclassification is reading Augmentation as Modification. Ask: "Was this task previously impractical without AI?" If yes, it is Modification. If the task is the same but a little faster or better, it is Augmentation. Redefinition requires a task that was previously <em>inconceivable</em> — not just harder.';
+  }
+});
+
+sortResetBtn.addEventListener('click', () => {
+  Object.keys(sortState).forEach(k => delete sortState[k]);
+  document.querySelectorAll('.sort-dropped-item').forEach(c => c.remove());
+  sortItems.forEach(i => i.classList.remove('placed'));
+  sortFeedback.classList.remove('show', 'correct', 'partial');
+  updateSortCount();
+});
+
+// ============ BLOCK 4.7 — ANATOMY CARDS ============
+document.querySelectorAll('.anatomy-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.anatomy-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+  });
+});
+
+// ============ BLOCK 4.8 — DESIGN CANVAS ============
+const canvasState = {
+  course: '', outcome: '', pattern: '', ai_role: '',
+  interactions: new Set(), presences: new Set(),
+  samr_tier: '', samr_justify: '',
+  srl: '', assessment: ''
+};
+
+function updateCanvas() {
+  // Title
+  const titleEl = document.getElementById('cp-title');
+  if (canvasState.course && canvasState.pattern) {
+    titleEl.innerHTML = canvasState.pattern + ' <em style="color: var(--green); font-size: 18px; font-style: italic; font-weight: 400;">for ' + canvasState.course + '</em>';
+  } else {
+    titleEl.innerHTML = '<span class="placeholder-dots">ACTIVITY TITLE · FILL FIELD 01 AND 03</span>';
+  }
+
+  const rows = [
+    ['course', canvasState.course],
+    ['outcome', canvasState.outcome],
+    ['pattern', canvasState.pattern],
+    ['ai_role', canvasState.ai_role],
+    ['interactions', canvasState.interactions.size > 0 ? Array.from(canvasState.interactions).join(' · ') : ''],
+    ['presences', canvasState.presences.size > 0 ? Array.from(canvasState.presences).join(' · ') : ''],
+    ['samr', canvasState.samr_tier && canvasState.samr_justify ? `<strong style="color: var(--green);">${canvasState.samr_tier}.</strong> ${canvasState.samr_justify}` : (canvasState.samr_tier || canvasState.samr_justify || '')],
+    ['srl', canvasState.srl],
+    ['assessment', canvasState.assessment]
+  ];
+
+  let filled = 0;
+  rows.forEach(([key, val]) => {
+    const el = document.getElementById('cp-' + key);
+    if (val && val.length > 0) {
+      el.innerHTML = val;
+      el.classList.remove('empty');
+      filled++;
+    } else {
+      el.textContent = 'PENDING';
+      el.classList.add('empty');
+    }
+  });
+
+  const pct = Math.round((filled / 9) * 100);
+  document.getElementById('canvas-pct').textContent = pct + '%';
+  document.getElementById('canvas-done').textContent = filled;
+  document.getElementById('canvas-fill').style.width = pct + '%';
+}
+
+document.querySelectorAll('[data-field]').forEach(el => {
+  const field = el.dataset.field;
+  if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+    el.addEventListener('input', () => {
+      canvasState[field] = el.value.trim();
+      updateCanvas();
+      const status = document.getElementById('canvas-save-status');
+      status.textContent = 'Saved';
+      status.style.color = 'var(--green)';
+    });
+  } else if (el.classList.contains('canvas-chip')) {
+    el.addEventListener('click', () => {
+      const val = el.dataset.val;
+      const multi = el.dataset.multi;
+      if (multi) {
+        if (canvasState[field].has(val)) {
+          canvasState[field].delete(val);
+          el.classList.remove('selected');
+        } else {
+          canvasState[field].add(val);
+          el.classList.add('selected');
+        }
+      } else {
+        document.querySelectorAll(`.canvas-chip[data-field="${field}"]`).forEach(c => c.classList.remove('selected'));
+        if (canvasState[field] === val) {
+          canvasState[field] = '';
+        } else {
+          canvasState[field] = val;
+          el.classList.add('selected');
+        }
+      }
+      updateCanvas();
+      const status = document.getElementById('canvas-save-status');
+      status.textContent = 'Saved';
+      status.style.color = 'var(--green)';
+    });
+  }
+});
+
+document.getElementById('canvas-reset').addEventListener('click', () => {
+  canvasState.course = ''; canvasState.outcome = ''; canvasState.pattern = ''; canvasState.ai_role = '';
+  canvasState.interactions = new Set(); canvasState.presences = new Set();
+  canvasState.samr_tier = ''; canvasState.samr_justify = '';
+  canvasState.srl = ''; canvasState.assessment = '';
+  document.querySelectorAll('[data-field]').forEach(el => {
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') el.value = '';
+    else if (el.classList.contains('canvas-chip')) el.classList.remove('selected');
+  });
+  updateCanvas();
+  document.getElementById('canvas-save-status').textContent = 'Reset';
+});
+
+document.getElementById('canvas-copy').addEventListener('click', async () => {
+  const btn = document.getElementById('canvas-copy');
+  const s = canvasState;
+  const lines = [
+    'ACTIVITY DESIGN CANVAS · UNIT 04',
+    '',
+    `01 · Course + Module: ${s.course || '—'}`,
+    `02 · Learning Outcome: ${s.outcome || '—'}`,
+    `03 · Pattern: ${s.pattern || '—'}`,
+    `04 · AI Role: ${s.ai_role || '—'}`,
+    `05 · Interactions: ${s.interactions.size ? Array.from(s.interactions).join(', ') : '—'}`,
+    `06 · CoI Presences: ${s.presences.size ? Array.from(s.presences).join(', ') : '—'}`,
+    `07 · SAMR: ${s.samr_tier || '—'}${s.samr_justify ? '. ' + s.samr_justify : ''}`,
+    `08 · Self-Regulation: ${s.srl || '—'}`,
+    `09 · Assessment: ${s.assessment || '—'}`
+  ];
+  const text = lines.join('\n');
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = '✓ Copied canvas';
+    // Pre-fill reflection if empty
+    const reflectInput = document.getElementById('reflect-input');
+    if (reflectInput && !reflectInput.value.trim()) {
+      reflectInput.value = `My activity (${s.pattern || 'activity'} for ${s.course || 'course'}) reaches ${s.samr_tier || 'SAMR tier'} because... \n\nThe presence it activates that was not reachable before: \n\nWhy this matters to my learners: `;
+    }
+    setTimeout(() => btn.textContent = 'Copy canvas', 2500);
+  } catch {
+    btn.textContent = 'Copy failed';
+    setTimeout(() => btn.textContent = 'Copy canvas', 2500);
+  }
+});
+
+// ============ BLOCK 4.9 — REFLECTION SAVE ============
+const reflectSave = document.getElementById('reflect-save');
+const reflectInput = document.getElementById('reflect-input');
+reflectSave.addEventListener('click', () => {
+  if (!reflectInput.value.trim()) {
+    reflectSave.textContent = 'Draft required';
+    setTimeout(() => reflectSave.textContent = 'Save my rationale', 2500);
+    return;
+  }
+  reflectSave.textContent = '✓ Saved to this session';
+  reflectSave.style.background = '#E8F3EC';
+  reflectSave.style.color = '#007B3C';
+  setTimeout(() => {
+    reflectSave.textContent = 'Save my rationale';
+    reflectSave.style.background = '';
+    reflectSave.style.color = '';
+  }, 3000);
+});
+
+// ============ VIDEO PLACEHOLDER ============
+document.querySelectorAll('.video-play').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wrapper = btn.closest('.scenario-stage');
+    if (wrapper.querySelector('.video-placeholder-msg')) return;
+    const msg = document.createElement('div');
+    msg.className = 'video-placeholder-msg';
+    msg.style.cssText = 'position:absolute; bottom:24px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.75); color:#F2EBD6; padding:10px 18px; border-radius:3px; font-family:"JetBrains Mono",monospace; font-size: 14px; letter-spacing: 1px; backdrop-filter:blur(8px); z-index:10;';
+    msg.textContent = 'VIDEO ASSET PENDING · SEE PRODUCTION NOTES';
+    wrapper.appendChild(msg);
+    setTimeout(() => msg.remove(), 2800);
+  });
+});
+
+// Initialize
+updateCanvas();
+</script>
+</body>
+</html>

@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 02 — Prompt Engineering for Clinician-Educators | AI Literacy in Healthcare DE</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --green:        #007B3C;
+    --green-dark:   #00562A;
+    --green-soft:   #E8F3EC;
+    --green-on-dark:#4DC17D;
+    --green-tint:   #F4F9F5;
+    --teal:         #00778C;
+    --navy:         #022F46;
+    --navy-soft:    #1a3d52;
+    --cream:        #F2EBD6;
+    --cream-soft:   #FBF7EA;
+    --ink:          #0F1419;
+    --paper:        #FDFCF8;
+    --rule:         #D4C9A8;
+    --rule-soft:    #EAE3CC;
+    --grey:         #5A5F5C;
+    --grey-light:   #5F6865;
+    --rail-w:       72px;
+    --max-w:        1180px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============== LEFT RAIL ============== */
+  .rail {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: var(--rail-w);
+    background: var(--navy);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 28px 0;
+    z-index: 100;
+  }
+  .rail-logo {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-weight: 600; font-size: 28px;
+    color: var(--cream); line-height: 1;
+    margin-bottom: 36px;
+  }
+  .rail-logo span { display: block; font-size: 14px; letter-spacing: 1.5px; color: var(--green-on-dark); margin-top: 6px; font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif; font-weight: 600; }
+
+  .rail-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; width: 100%; }
+  .rail-dot {
+    display: flex; align-items: center; justify-content: center;
+    height: 38px; width: 100%;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all .25s ease;
+    cursor: pointer;
+  }
+  .rail-dot:hover { color: var(--cream); border-left-color: var(--green-on-dark); background: rgba(255,255,255,.04); }
+  .rail-dot.active { color: var(--cream); border-left-color: var(--green-on-dark); background: rgba(0,123,60,.15); }
+  .rail-foot {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px; color: rgba(255,255,255,0.6);
+    writing-mode: vertical-rl; transform: rotate(180deg);
+  }
+
+  /* ============== MAIN ============== */
+  .shell { margin-left: var(--rail-w); min-height: 100vh; }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 56px; }
+
+  /* ============== MASTHEAD ============== */
+  .masthead {
+    padding: 64px 0 48px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .masthead-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px; color: var(--grey);
+    text-transform: uppercase;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead-meta strong { color: var(--green); font-weight: 600; }
+
+  .unit-number {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 260px;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--green);
+    line-height: 0.85;
+    letter-spacing: -8px;
+    margin-top: 28px;
+    display: block;
+  }
+  .unit-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-weight: 500;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--navy);
+    margin-top: -40px;
+    margin-left: 200px;
+    max-width: 780px;
+  }
+  .unit-sub {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--grey);
+    margin-top: 16px;
+    margin-left: 200px;
+    max-width: 780px;
+    line-height: 1.3;
+  }
+
+  .pill-row {
+    display: flex; gap: 0;
+    margin-top: 48px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .pill { flex: 1; padding: 22px 20px; border-right: 1px solid var(--rule); }
+  .pill:last-child { border-right: none; }
+  .pill-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green); text-transform: uppercase;
+    display: block; margin-bottom: 6px;
+  }
+  .pill-value {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px; font-weight: 500;
+    color: var(--navy); line-height: 1.1;
+  }
+
+  /* ============== BLOCK FRAMING ============== */
+  .block {
+    padding: 80px 0 40px;
+    border-bottom: 1px solid var(--rule-soft);
+    scroll-margin-top: 20px;
+  }
+  .block:last-child { border-bottom: none; }
+
+  .block-head { display: flex; align-items: baseline; gap: 24px; margin-bottom: 36px; }
+  .block-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600;
+    color: var(--green); letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .block-type {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--grey-light);
+    border: 1px solid var(--rule);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .block-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 40px; font-weight: 500;
+    color: var(--navy); line-height: 1.05;
+    flex: 1;
+  }
+
+  p.lede {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.45;
+    max-width: 760px;
+    margin-bottom: 24px;
+  }
+
+  p.body { font-size: 16px; max-width: 760px; color: #1a2028; margin-bottom: 16px; }
+
+  /* ============== PLACEHOLDER ============== */
+  .placeholder-note {
+    background: var(--cream-soft);
+    border-left: 3px solid var(--green);
+    padding: 16px 22px;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--navy);
+    max-width: 760px;
+    border-radius: 0 3px 3px 0;
+  }
+  .placeholder-note strong {
+    color: var(--green);
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block; margin-bottom: 6px;
+  }
+
+  /* ============== BLOCK 2.1 — STATEMENT A / UNIT WELCOME ============== */
+  .welcome-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -20px rgba(2, 47, 70, 0.4);
+    min-height: 320px;
+  }
+  .welcome-left { padding: 44px 48px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+  .welcome-left::before {
+    content: '';
+    position: absolute; top: 44px; left: 0;
+    width: 4px; height: 60px;
+    background: var(--green-on-dark);
+  }
+  .welcome-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark); font-weight: 600;
+  }
+  .welcome-quote {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 32px;
+    color: var(--cream);
+    line-height: 1.25;
+    margin-top: 20px;
+  }
+  .welcome-sig {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.55);
+    margin-top: 28px;
+  }
+  .welcome-right {
+    background: rgba(0,0,0,0.15);
+    padding: 44px 48px;
+    position: relative;
+  }
+  .welcome-right::after {
+    content: '02';
+    position: absolute;
+    bottom: -30px; right: -12px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 320px;
+    color: rgba(0,123,60,0.12);
+    line-height: 0.8;
+    pointer-events: none;
+  }
+  .welcome-right h4 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 16px;
+  }
+  .welcome-right ul {
+    list-style: none; position: relative; z-index: 2;
+  }
+  .welcome-right li {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    color: var(--cream);
+    padding: 14px 0;
+    padding-left: 34px;
+    border-bottom: 1px solid rgba(242, 235, 214, 0.15);
+    position: relative;
+    line-height: 1.3;
+  }
+  .welcome-right li::before {
+    content: '→';
+    position: absolute; left: 0; top: 14px;
+    color: var(--green-on-dark);
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+  }
+  .welcome-right li:last-child { border-bottom: none; }
+
+  /* ============== BLOCK 2.2 — TEXT ON IMAGE / REFRAME ============== */
+  .reframe {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-top: 16px;
+    padding: 52px 56px;
+    background: var(--cream-soft);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .reframe::before {
+    content: '"';
+    position: absolute;
+    top: -60px; left: -20px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 380px;
+    color: var(--green);
+    opacity: 0.1;
+    line-height: 1;
+    font-style: italic;
+    pointer-events: none;
+  }
+  .reframe-statement {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 44px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.1;
+    position: relative;
+  }
+  .reframe-statement em {
+    color: var(--green);
+    font-style: italic;
+  }
+  .reframe-body {
+    position: relative;
+  }
+  .reframe-body h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+  .reframe-body p {
+    font-size: 16px;
+    color: var(--navy);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  /* ============== BLOCK 2.3 — PROCESS / RCTFC ============== */
+  .rctfc-wrap { margin-top: 24px; }
+
+  .rctfc-nav {
+    display: flex;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    background: white;
+  }
+  .rctfc-tab {
+    flex: 1;
+    padding: 18px 14px;
+    background: none;
+    border: none;
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+    text-align: center;
+    transition: all .2s ease;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+  }
+  .rctfc-tab:last-child { border-right: none; }
+  .rctfc-tab:hover { background: var(--green-tint); }
+  .rctfc-tab.active { background: var(--green); color: white; }
+  .rctfc-tab.active .rctfc-letter, .rctfc-tab.active .rctfc-word { color: white; }
+  .rctfc-letter {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 38px; font-weight: 500; font-style: italic;
+    color: var(--green);
+    display: block; line-height: 1;
+  }
+  .rctfc-word {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--navy);
+    text-transform: uppercase;
+    margin-top: 8px;
+    display: block;
+    font-weight: 600;
+  }
+
+  .rctfc-panel {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 48px;
+    padding: 44px 48px;
+    background: white;
+    border: 1px solid var(--rule);
+    border-top: none;
+    min-height: 320px;
+  }
+  .rctfc-panel-left h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 48px;
+    font-weight: 500;
+    color: var(--green);
+    line-height: 0.95;
+  }
+  .rctfc-panel-left .rctfc-def {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--navy);
+    line-height: 1.4;
+    margin-top: 16px;
+  }
+  .rctfc-panel-left .rctfc-why {
+    font-size: 14px;
+    color: var(--grey);
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    line-height: 1.6;
+  }
+  .rctfc-panel-right h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+  .rctfc-sample {
+    background: var(--green-tint);
+    border-left: 3px solid var(--green);
+    padding: 18px 22px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    color: var(--navy);
+    line-height: 1.55;
+    font-style: italic;
+    border-radius: 0 3px 3px 0;
+    margin-bottom: 16px;
+  }
+  .rctfc-sample strong { color: var(--green); font-weight: 600; font-style: normal; }
+  .rctfc-checklist {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  .rctfc-checklist li {
+    list-style: none;
+    padding: 8px 0 8px 28px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.5;
+    position: relative;
+  }
+  .rctfc-checklist li::before {
+    content: '✓';
+    position: absolute; left: 0; top: 8px;
+    color: var(--green); font-weight: 700; font-size: 16px;
+  }
+
+  /* ============== BLOCK 2.4 — TABS / WEAK VS STRONG ============== */
+  .compare-wrap { margin-top: 24px; }
+
+  .compare-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 36px;
+  }
+  .compare-tab {
+    padding: 16px 24px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--grey);
+    transition: all .2s ease;
+    margin-bottom: -1px;
+  }
+  .compare-tab:hover { color: var(--navy); }
+  .compare-tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+  .compare-panel { display: none; }
+  .compare-panel.active { display: block; }
+
+  .compare-scenario {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 28px;
+    padding-left: 20px;
+    border-left: 3px solid var(--green);
+    line-height: 1.45;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .compare-col {
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    background: white;
+  }
+  .compare-col.weak .compare-header { background: #f5e6e1; color: #8b3a2a; }
+  .compare-col.strong .compare-header { background: var(--green-soft); color: var(--green-dark); }
+  .compare-header {
+    padding: 14px 20px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .compare-label { font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-style: italic; font-size: 22px; letter-spacing: 0; text-transform: none; font-weight: 500; }
+  .compare-prompt-box {
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .compare-prompt-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--grey);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .compare-prompt {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.6;
+  }
+  .compare-output-box {
+    padding: 22px 24px;
+    background: var(--cream-soft);
+  }
+  .compare-output {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--navy);
+    line-height: 1.55;
+  }
+  .compare-output-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  /* ============== BLOCK 2.5 — SCENARIO VIDEO ============== */
+  .scenario-stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #022F46 0%, #014259 50%, #005a77 100%);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -20px rgba(2, 47, 70, 0.4);
+  }
+  .scenario-stage::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: 
+      linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.02) 55%, transparent 55%),
+      radial-gradient(circle at 70% 30%, rgba(0,119,140,0.25) 0%, transparent 50%);
+    background-size: 20px 20px, 100% 100%;
+    pointer-events: none;
+  }
+  .scenario-chars {
+    position: absolute;
+    bottom: 0; right: 0;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 140px;
+    font-weight: 600;
+    color: rgba(0, 123, 60, 0.65);
+    line-height: 0.8;
+    padding: 0 40px 20px 0;
+    pointer-events: none;
+    letter-spacing: -4px;
+  }
+  .video-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 36px 44px;
+    color: var(--cream);
+  }
+  .video-tag {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    align-self: flex-start;
+    padding: 6px 12px;
+    border: 1px solid var(--green);
+    border-radius: 2px;
+  }
+  .video-play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .3s ease;
+    animation: pulse 2.5s infinite;
+    border: none;
+  }
+  .video-play:hover { transform: translate(-50%, -50%) scale(1.08); }
+  .video-play svg { width: 28px; height: 28px; fill: white; margin-left: 4px; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0,123,60,0.5); }
+    70% { box-shadow: 0 0 0 24px rgba(0,123,60,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,123,60,0); }
+  }
+  .video-meta-bottom {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.65);
+  }
+  .video-title-over {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--cream);
+    max-width: 60%;
+    line-height: 1.3;
+  }
+
+  /* ============== BLOCK 2.6 — PROMPT DIAGNOSTIC ============== */
+  .diag-intro {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 32px;
+    padding: 20px 24px;
+    background: var(--cream-soft);
+    border-radius: 3px;
+  }
+  .diag-intro-num {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--green);
+    font-style: italic;
+    line-height: 1;
+  }
+  .diag-intro-text { font-size: 15px; color: var(--navy); }
+  .diag-intro-text strong { color: var(--green); }
+
+  .diag-progress {
+    display: flex; gap: 6px;
+    margin-bottom: 28px;
+  }
+  .diag-dot {
+    flex: 1;
+    height: 4px;
+    background: var(--rule-soft);
+    border-radius: 2px;
+    transition: background .3s ease;
+  }
+  .diag-dot.active { background: var(--green); }
+  .diag-dot.done { background: var(--green-dark); }
+
+  .diag-item { display: none; }
+  .diag-item.active { display: block; }
+
+  .diag-q-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .diag-q-prompt {
+    background: #1a2028;
+    color: #f5f5dc;
+    padding: 24px 28px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--green);
+  }
+  .diag-q-prompt::before {
+    content: 'PROMPT';
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green); display: block;
+    margin-bottom: 10px; font-weight: 600;
+  }
+  .diag-q-question {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 20px;
+    line-height: 1.25;
+  }
+  .diag-options { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  .diag-opt {
+    padding: 14px 20px;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    background: white;
+    cursor: pointer;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--navy);
+    transition: all .2s ease;
+  }
+  .diag-opt:hover { border-color: var(--green); color: var(--green); }
+  .diag-opt.selected { background: var(--green); color: white; border-color: var(--green); }
+  .diag-opt.correct { background: var(--green-soft); color: var(--green-dark); border-color: var(--green); }
+  .diag-opt.incorrect { background: #f5e6e1; color: #8b3a2a; border-color: #c8816e; }
+
+  .diag-feedback {
+    margin-top: 16px;
+    padding: 18px 22px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.6;
+    display: none;
+  }
+  .diag-feedback.show { display: block; }
+  .diag-feedback.right { background: var(--green-soft); border-left: 3px solid var(--green); }
+  .diag-feedback.wrong { background: #f9ece7; border-left: 3px solid #c8816e; }
+  .diag-feedback strong { color: var(--green); font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 6px; }
+
+  .diag-controls {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  .diag-counter {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--grey);
+    letter-spacing: 1px;
+  }
+  .diag-counter strong { color: var(--green); }
+
+  .btn {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+    border: 1.5px solid transparent;
+    background: none;
+  }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: var(--green); color: white; border-color: var(--green); }
+  .btn-primary:hover:not(:disabled) { background: var(--green-dark); border-color: var(--green-dark); }
+  .btn-ghost { background: none; color: var(--navy); border-color: var(--rule); }
+  .btn-ghost:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
+
+  .diag-summary {
+    display: none;
+    padding: 40px 48px;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 3px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .diag-summary.show { display: block; }
+  .diag-summary h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 34px;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+  .diag-summary p { font-size: 15px; color: rgba(242, 235, 214, 0.85); max-width: 520px; margin: 0 auto 20px; line-height: 1.6; }
+  .diag-score {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 72px;
+    font-style: italic;
+    color: var(--green-on-dark);
+    line-height: 1;
+    margin: 12px 0;
+  }
+
+  /* ============== BLOCK 2.7 — LABELED GRAPHIC / PROMPT ANATOMY ============== */
+  .anatomy-wrap {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+    margin-top: 16px;
+  }
+
+  .anatomy-prompt {
+    background: #0d1b24;
+    color: #e8e4d2;
+    padding: 32px 36px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    line-height: 2;
+    border-left: 4px solid var(--green);
+    position: relative;
+  }
+  .anatomy-prompt-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    display: block;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .hotspot {
+    display: inline;
+    cursor: pointer;
+    padding: 3px 8px;
+    margin: 0 1px;
+    border-radius: 2px;
+    transition: all .25s ease;
+    position: relative;
+    border-bottom: 2px dashed rgba(0, 123, 60, 0.4);
+  }
+  .hotspot:hover, .hotspot.active {
+    background: rgba(0, 123, 60, 0.3);
+    border-bottom-color: var(--green);
+    color: white;
+  }
+  .hotspot .hs-num {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+  .hotspot:hover .hs-num, .hotspot.active .hs-num { opacity: 1; }
+
+  .anatomy-labels {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .anatomy-label {
+    padding: 18px 22px;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    background: white;
+    transition: all .25s ease;
+    cursor: pointer;
+  }
+  .anatomy-label:hover, .anatomy-label.active {
+    border-color: var(--green);
+    background: var(--green-tint);
+    transform: translateX(6px);
+  }
+  .anatomy-label-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .anatomy-letter {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--green);
+    line-height: 1;
+  }
+  .anatomy-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--grey);
+    letter-spacing: 1px;
+  }
+  .anatomy-word {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .anatomy-body {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+  }
+
+  /* ============== BLOCK 2.8 — PROMPT TEMPLATE LIBRARY ============== */
+  .library-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 16px;
+  }
+  .lib-card {
+    border: 1.5px solid var(--rule);
+    padding: 28px 30px;
+    border-radius: 3px;
+    background: white;
+    transition: all .25s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .lib-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 0;
+    background: var(--green);
+    transition: height .3s ease;
+  }
+  .lib-card:hover { border-color: var(--green); transform: translateY(-2px); box-shadow: 0 12px 24px -8px rgba(0,123,60,0.15); }
+  .lib-card:hover::before { height: 100%; }
+
+  .lib-num {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .lib-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .lib-use {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.55;
+    margin-bottom: 18px;
+    flex: 1;
+  }
+  .lib-footer {
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .lib-samr {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--green);
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .lib-open {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--green);
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  /* Modal for template preview */
+  .lib-modal {
+    position: fixed; inset: 0;
+    background: rgba(2, 47, 70, 0.88);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 40px 20px;
+  }
+  .lib-modal.show { display: flex; }
+  .lib-modal-box {
+    background: var(--paper);
+    max-width: 780px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 4px;
+    padding: 44px 48px;
+    position: relative;
+  }
+  .lib-modal-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: none; border: none;
+    font-size: 24px; color: var(--grey);
+    cursor: pointer; width: 36px; height: 36px;
+    border-radius: 50%;
+    transition: all .2s ease;
+  }
+  .lib-modal-close:hover { background: var(--cream-soft); color: var(--navy); }
+  .lib-modal-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 10px;
+  }
+  .lib-modal-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 20px;
+    line-height: 1.15;
+  }
+  .lib-modal-prompt {
+    background: #0d1b24;
+    color: #e8e4d2;
+    padding: 24px 28px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    border-left: 4px solid var(--green);
+    margin-bottom: 16px;
+    white-space: pre-wrap;
+  }
+  .lib-modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+
+  /* ============== BLOCK 2.9 — REFLECTION / DRAFT ============== */
+  .reflect-card {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 48px 56px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .reflect-card::before {
+    content: '"';
+    position: absolute;
+    top: -20px; right: 36px;
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 280px;
+    color: var(--green-on-dark);
+    opacity: 0.25;
+    line-height: 1;
+    font-style: italic;
+  }
+  .reflect-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green-on-dark);
+    margin-bottom: 16px;
+  }
+  .reflect-prompt {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--cream);
+    line-height: 1.35;
+    max-width: 720px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .reflect-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .reflect-field {
+    background: rgba(253, 252, 248, 0.95);
+    border: none;
+    border-radius: 3px;
+    padding: 16px 18px;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+  }
+  .reflect-field::placeholder { color: #a5aba3; }
+  .reflect-field:focus { outline: 2px solid var(--green); outline-offset: 2px; }
+  .reflect-textarea {
+    grid-column: span 2;
+    width: 100%;
+    min-height: 140px;
+    background: rgba(253, 252, 248, 0.95);
+    border: none;
+    border-radius: 3px;
+    padding: 20px 22px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.65;
+    resize: vertical;
+  }
+  .reflect-textarea:focus { outline: 2px solid var(--green); outline-offset: 2px; }
+
+  .reflect-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px;
+    position: relative;
+  }
+  .reflect-cite {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(242, 235, 214, 0.6);
+  }
+  .reflect-save {
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 12px 24px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .reflect-save:hover { background: var(--green-dark); }
+
+  /* ============== BLOCK 2.10 — UNIT CLOSE ============== */
+  .close {
+    padding: 56px 56px;
+    background: linear-gradient(135deg, var(--cream-soft) 0%, var(--cream) 100%);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .close-left h3 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .close-left p {
+    font-size: 16px;
+    color: var(--navy);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .next-unit {
+    background: white;
+    padding: 28px 32px;
+    border-radius: 3px;
+    border-left: 4px solid var(--green);
+  }
+  .next-unit-label {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .next-unit-title {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .next-unit-desc {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .next-unit-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: white;
+    background: var(--green);
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all .2s ease;
+  }
+  .next-unit-btn:hover { background: var(--green-dark); }
+
+  /* ============== COLOPHON ============== */
+  .colophon {
+    padding: 80px 0 64px;
+    border-top: 3px double var(--rule);
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  .col-brand {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--navy);
+    line-height: 1.4;
+  }
+  .col-brand strong { font-weight: 600; color: var(--green); display: block; font-size: 14px; font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; font-style: normal; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .col h5 {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px; letter-spacing: 1px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .col p, .col a {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.7;
+    text-decoration: none;
+    display: block;
+  }
+  .col a:hover { color: var(--green); }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .rail { display: none; }
+    .shell { margin-left: 0; }
+    .wrap { padding: 0 28px; }
+    .unit-number { font-size: 140px; letter-spacing: -4px; }
+    .unit-title { font-size: 40px; margin-left: 0; margin-top: 16px; }
+    .unit-sub { font-size: 20px; margin-left: 0; }
+    .block-title { font-size: 28px; }
+    .welcome-strip, .reframe, .rctfc-panel, .compare-grid, .anatomy-wrap, .library-grid, .close, .reflect-fields { grid-template-columns: 1fr; gap: 24px; }
+    .pill-row { flex-direction: column; }
+    .pill { border-right: none; border-bottom: 1px solid var(--rule); }
+    .colophon { grid-template-columns: 1fr; }
+    .reframe-statement { font-size: 30px; }
+    .rctfc-nav { flex-wrap: wrap; }
+    .rctfc-tab { flex: 1 0 40%; border-bottom: 1px solid var(--rule); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LEFT RAIL ============ -->
+<nav class="rail" aria-label="Unit blocks">
+  <div class="rail-logo">AIL<span>UNIT 02</span></div>
+  <div class="rail-nav">
+    <a href="#b21" class="rail-dot active" data-block="1">2.1</a>
+    <a href="#b22" class="rail-dot" data-block="2">2.2</a>
+    <a href="#b23" class="rail-dot" data-block="3">2.3</a>
+    <a href="#b24" class="rail-dot" data-block="4">2.4</a>
+    <a href="#b25" class="rail-dot" data-block="5">2.5</a>
+    <a href="#b26" class="rail-dot" data-block="6">2.6</a>
+    <a href="#b27" class="rail-dot" data-block="7">2.7</a>
+    <a href="#b28" class="rail-dot" data-block="8">2.8</a>
+    <a href="#b29" class="rail-dot" data-block="9">2.9</a>
+    <a href="#b210" class="rail-dot" data-block="10">2.10</a>
+  </div>
+  <div class="rail-foot">MD TAYLOR</div>
+</nav>
+
+<main class="shell">
+  <div class="wrap">
+
+    <!-- ============ MASTHEAD ============ -->
+    <header class="masthead">
+      <div class="masthead-meta">
+        <span>AI Literacy in Healthcare Distance Education</span>
+        <span><strong>Unit 02 of 05</strong> · 40 minutes · Rise 360</span>
+      </div>
+      <span class="unit-number">02</span>
+      <h1 class="unit-title">Prompt Engineering for Clinician-Educators</h1>
+      <p class="unit-sub">A prompt is a lesson plan. Here is how to write one.</p>
+
+      <div class="pill-row">
+        <div class="pill">
+          <span class="pill-label">SAMR Target</span>
+          <span class="pill-value">Augmentation → Modification</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">CoI Emphasis</span>
+          <span class="pill-value">Cognitive Presence</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">Summative Artifact</span>
+          <span class="pill-value">RCTFC Prompt Template</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ BLOCK 2.1 — STATEMENT A / UNIT WELCOME ============ -->
+    <section class="block" id="b21">
+      <div class="block-head">
+        <span class="block-num">2.1</span>
+        <span class="block-type">Statement A · Unit Welcome</span>
+      </div>
+      <h2 class="block-title">From evaluation to authorship</h2>
+      <p class="lede">Unit 01 gave you the vocabulary to evaluate AI tools. Unit 02 asks you to build the instrument of instruction itself — the prompt.</p>
+
+      <div class="welcome-strip">
+        <div class="welcome-left">
+          <div>
+            <span class="welcome-tag">02 · UNIT OPENING</span>
+            <p class="welcome-quote">"If the prompt is vague, the output is vague. Teach the prompt the way you would teach a lesson."</p>
+          </div>
+          <div class="welcome-sig">FACILITATOR · OPENING REMARK</div>
+        </div>
+        <div class="welcome-right">
+          <h4>WHAT THIS UNIT DELIVERS</h4>
+          <ul>
+            <li>A five-part prompt model you can apply tomorrow.</li>
+            <li>A diagnostic for weak vs strong prompts.</li>
+            <li>A six-template library for common DE tasks.</li>
+            <li>Your own first RCTFC prompt, tied to a course outcome.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Audio/video asset optional</strong>
+        A 30-second opening video works here but is not required. The script is in Appendix A (Unit 02 variant). If produced, replace the static quote card with an inline video embed. Default: keep as-is.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 2.2 — REFRAME ============ -->
+    <section class="block" id="b22">
+      <div class="block-head">
+        <span class="block-num">2.2</span>
+        <span class="block-type">Text on Image · Reframe</span>
+      </div>
+      <h2 class="block-title">A prompt is a lesson plan</h2>
+      <p class="lede">Most faculty treat AI prompts as commands. That framing produces command-grade output. Reframe the prompt as an instructional artifact and the output changes.</p>
+
+      <div class="reframe">
+        <div class="reframe-statement">
+          Stop writing <em>commands</em>.<br>
+          Start writing <em>lesson plans</em> the model can execute.
+        </div>
+        <div class="reframe-body">
+          <h5>WHY THIS REFRAME MATTERS</h5>
+          <p>A command describes an action. A lesson plan describes an <strong>outcome</strong>, the <strong>learner</strong>, the <strong>conditions</strong>, and the <strong>constraints</strong>. When you prompt an LLM, you are handing it a lesson plan for a one-time task. The quality of your instruction determines the quality of its work.</p>
+          <p>This is also how Technology Acceptance Model predicts adoption. Perceived usefulness rises sharply when faculty see AI producing pedagogically useful output — which is what happens when prompts are written like plans.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 2.3 — PROCESS / RCTFC MODEL ============ -->
+    <section class="block" id="b23">
+      <div class="block-head">
+        <span class="block-num">2.3</span>
+        <span class="block-type">Process · The RCTFC Model</span>
+      </div>
+      <h2 class="block-title">The five-part prompt</h2>
+      <p class="lede">Click each letter to see its role, its purpose, and a clinical education example. Work through all five to complete the block.</p>
+
+      <div class="rctfc-wrap">
+        <div class="rctfc-nav">
+          <button class="rctfc-tab active" data-step="r">
+            <span class="rctfc-letter">R</span>
+            <span class="rctfc-word">Role</span>
+          </button>
+          <button class="rctfc-tab" data-step="c1">
+            <span class="rctfc-letter">C</span>
+            <span class="rctfc-word">Context</span>
+          </button>
+          <button class="rctfc-tab" data-step="t">
+            <span class="rctfc-letter">T</span>
+            <span class="rctfc-word">Task</span>
+          </button>
+          <button class="rctfc-tab" data-step="f">
+            <span class="rctfc-letter">F</span>
+            <span class="rctfc-word">Format</span>
+          </button>
+          <button class="rctfc-tab" data-step="c2">
+            <span class="rctfc-letter">C</span>
+            <span class="rctfc-word">Constraints</span>
+          </button>
+        </div>
+
+        <div class="rctfc-panel">
+          <div class="rctfc-panel-left">
+            <h3 id="rctfc-word">Role</h3>
+            <div class="rctfc-def" id="rctfc-def">Name the expertise and stance the model should adopt before it produces anything.</div>
+            <div class="rctfc-why" id="rctfc-why">A model without a role defaults to generic, average-case output. A model with a role draws from a specific slice of its training. Role-setting is the single highest-leverage edit most faculty can make.</div>
+          </div>
+          <div class="rctfc-panel-right">
+            <h5>CLINICAL EDUCATION EXAMPLE</h5>
+            <div class="rctfc-sample" id="rctfc-sample"><strong>"You are an expert health science instructor</strong> in pharmacotherapy with ten years of teaching experience in asynchronous DE formats..."</div>
+            <ul class="rctfc-checklist" id="rctfc-checklist">
+              <li>Names an expertise area (not just "a helpful assistant").</li>
+              <li>Gives a stance the model can hold across the whole prompt.</li>
+              <li>Bounds the domain — pharmacotherapy, not all of pharmacy.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 2.4 — TABS / WEAK VS STRONG ============ -->
+    <section class="block" id="b24">
+      <div class="block-head">
+        <span class="block-num">2.4</span>
+        <span class="block-type">Tabs · Weak vs Strong</span>
+      </div>
+      <h2 class="block-title">Three side-by-side diagnostics</h2>
+      <p class="lede">The same instructional task prompted two ways. Read both prompts and both outputs. Notice what the RCTFC structure changes.</p>
+
+      <div class="compare-wrap">
+        <div class="compare-tabs">
+          <button class="compare-tab active" data-panel="p1">01 · Case Draft</button>
+          <button class="compare-tab" data-panel="p2">02 · Reading Summary</button>
+          <button class="compare-tab" data-panel="p3">03 · Discussion Question</button>
+        </div>
+
+        <!-- Panel 1: Case Draft -->
+        <div class="compare-panel active" id="p1">
+          <div class="compare-scenario">Pharmacy faculty needs a case-based scenario for a Week 4 cardiology discussion board — asynchronous DE, graduate level.</div>
+          <div class="compare-grid">
+            <div class="compare-col weak">
+              <div class="compare-header">
+                <span>Weak</span>
+                <span class="compare-label">Command-grade</span>
+              </div>
+              <div class="compare-prompt-box">
+                <span class="compare-prompt-label">PROMPT</span>
+                <div class="compare-prompt">"Write a pharmacy case about heart failure."</div>
+              </div>
+              <div class="compare-output-box">
+                <span class="compare-output-label">OUTPUT</span>
+                <div class="compare-output">A 58-year-old man presents with shortness of breath and fatigue. PMH: hypertension, diabetes. Discuss management. [Generic. No clinical depth. No teaching signal. Requires full rewrite.]</div>
+              </div>
+            </div>
+            <div class="compare-col strong">
+              <div class="compare-header">
+                <span>Strong</span>
+                <span class="compare-label">RCTFC-grade</span>
+              </div>
+              <div class="compare-prompt-box">
+                <span class="compare-prompt-label">PROMPT</span>
+                <div class="compare-prompt">"You are a pharmacotherapy instructor [R]. My Week 4 cardiology module is for graduate pharmacy students in an asynchronous DE course [C]. Draft one case-based scenario for a discussion board [T]. Format: 200-word vignette plus three guiding questions [F]. Avoid demographic stereotyping, include one clinical ambiguity, cite your reasoning at the end [Constraints]."</div>
+              </div>
+              <div class="compare-output-box">
+                <span class="compare-output-label">OUTPUT</span>
+                <div class="compare-output">A 62-year-old patient presents to ambulatory care with worsening dyspnea on exertion, orthopnea, and a 3 kg weight gain over two weeks. Current regimen: lisinopril 20mg, metoprolol succinate 50mg, furosemide 40mg daily. The ambiguity: recent start of NSAID for joint pain. [Usable. Teaching signal clear. Ambiguity invites discussion.]</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Reading Summary -->
+        <div class="compare-panel" id="p2">
+          <div class="compare-scenario">Nursing faculty needs a scaffolded summary of a dense clinical guideline to use as a pre-reading in an online course.</div>
+          <div class="compare-grid">
+            <div class="compare-col weak">
+              <div class="compare-header">
+                <span>Weak</span>
+                <span class="compare-label">Command-grade</span>
+              </div>
+              <div class="compare-prompt-box">
+                <span class="compare-prompt-label">PROMPT</span>
+                <div class="compare-prompt">"Summarize this sepsis guideline."</div>
+              </div>
+              <div class="compare-output-box">
+                <span class="compare-output-label">OUTPUT</span>
+                <div class="compare-output">The guideline covers sepsis recognition, early antibiotic administration, and fluid resuscitation. [Flat list. No scaffolding. No learner fit. Doesn't match reading level of new DE learners.]</div>
+              </div>
+            </div>
+            <div class="compare-col strong">
+              <div class="compare-header">
+                <span>Strong</span>
+                <span class="compare-label">RCTFC-grade</span>
+              </div>
+              <div class="compare-prompt-box">
+                <span class="compare-prompt-label">PROMPT</span>
+                <div class="compare-prompt">"You are an academic writing coach for nursing learners [R]. My learner is a clinician new to asynchronous DE coursework [C]. Convert this sepsis guideline into a scaffolded study guide [T]. Format: three tiers — Essential, Advanced, Optional [F]. Use plain language, preserve APA citations, flag content requiring verification [Constraints]."</div>
+              </div>
+              <div class="compare-output-box">
+                <span class="compare-output-label">OUTPUT</span>
+                <div class="compare-output">ESSENTIAL: Sepsis is a life-threatening response to infection. Recognize early (qSOFA, lactate). Start broad-spectrum antibiotics within 1 hour. ADVANCED: Source control, resuscitation targets, vasopressor choice. OPTIONAL: Biomarker debates, post-sepsis syndrome. [Tiered. Learner-ready. Verification flags included.]</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 3: Discussion Question -->
+        <div class="compare-panel" id="p3">
+          <div class="compare-scenario">Health science faculty needs three discussion questions that activate cognitive presence for a weekly reading.</div>
+          <div class="compare-grid">
+            <div class="compare-col weak">
+              <div class="compare-header">
+                <span>Weak</span>
+                <span class="compare-label">Command-grade</span>
+              </div>
+              <div class="compare-prompt-box">
+                <span class="compare-prompt-label">PROMPT</span>
+                <div class="compare-prompt">"Give me discussion questions about this article."</div>
+              </div>
+              <div class="compare-output-box">
+                <span class="compare-output-label">OUTPUT</span>
+                <div class="compare-output">1. What did you learn? 2. What surprised you? 3. Do you agree? [Generic. Low cognitive demand. Does not drive CoI inquiry.]</div>
+              </div>
+            </div>
+            <div class="compare-col strong">
+              <div class="compare-header">
+                <span>Strong</span>
+                <span class="compare-label">RCTFC-grade</span>
+              </div>
+              <div class="compare-prompt-box">
+                <span class="compare-prompt-label">PROMPT</span>
+                <div class="compare-prompt">"You are a DE course designer [R]. Learners are graduate health science students in a CoI-framed course [C]. Draft three discussion questions that activate cognitive presence per Garrison et al. (2000) [T]. Format: one triggering, one exploratory, one integrative [F]. Each requires evidence from the reading; avoid single-right-answer framing [Constraints]."</div>
+              </div>
+              <div class="compare-output-box">
+                <span class="compare-output-label">OUTPUT</span>
+                <div class="compare-output">TRIGGERING: Where does the author's position conflict with your current clinical practice? EXPLORATORY: What evidence in the reading would change a clinician's decision-making at the bedside? INTEGRATIVE: How would you reconcile this with the competing framework covered in Week 2? [Phase-specific. CoI-aligned. Evidence-grounded.]</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 2.5 — SCENARIO VIDEO ============ -->
+    <section class="block" id="b25">
+      <div class="block-head">
+        <span class="block-num">2.5</span>
+        <span class="block-type">Scenario Video · Screencast</span>
+      </div>
+      <h2 class="block-title">Building a prompt in real time</h2>
+      <p class="lede">A three-minute narrated screencast. Watch faculty build an RCTFC prompt piece by piece. See before-and-after outputs at each step.</p>
+
+      <div class="scenario-stage" role="img" aria-label="Scenario video placeholder: Building a prompt in real time">
+        <div class="scenario-chars" aria-hidden="true">{ }</div>
+        <div class="video-overlay">
+          <span class="video-tag">SCENARIO · 03:00</span>
+          <div class="video-meta-bottom">
+            <span class="video-title-over">Narrator builds an RCTFC prompt one layer at a time, showing each output change.</span>
+            <span>00:00 / 03:00</span>
+          </div>
+        </div>
+        <button class="video-play" aria-label="Play scenario video">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Video production needed</strong>
+        Three-minute narrated screencast. Full script in Appendix B2 of the course spec. Visual approach: clean chatbot UI with the prompt being typed in real time, side-by-side output panel, narrator voiceover naming each RCTFC element as it is added. On-screen labels highlight Role, Context, Task, Format, and Constraints as they appear. Closed captions required.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 2.6 — KNOWLEDGE CHECK / PROMPT DIAGNOSTIC ============ -->
+    <section class="block" id="b26">
+      <div class="block-head">
+        <span class="block-num">2.6</span>
+        <span class="block-type">Knowledge Check · Prompt Diagnostic</span>
+      </div>
+      <h2 class="block-title">Diagnose the missing element</h2>
+      <p class="lede">Five prompts. Each is missing one RCTFC element. Identify the missing piece. Formative only — feedback after each answer.</p>
+
+      <div class="diag-intro">
+        <span class="diag-intro-num">5</span>
+        <span class="diag-intro-text"><strong>Five diagnostic items.</strong> Select the RCTFC element that is missing or weakest in each prompt. You get feedback immediately after each answer.</span>
+      </div>
+
+      <div class="diag-progress" id="diag-progress">
+        <div class="diag-dot active"></div>
+        <div class="diag-dot"></div>
+        <div class="diag-dot"></div>
+        <div class="diag-dot"></div>
+        <div class="diag-dot"></div>
+      </div>
+
+      <!-- Question 1 -->
+      <div class="diag-item active" data-q="1" data-answer="role">
+        <span class="diag-q-label">ITEM 01 OF 05</span>
+        <div class="diag-q-prompt">"Draft a 200-word clinical case about a 65-year-old patient with diabetes for my asynchronous DE course. Include three guiding questions. Avoid demographic stereotyping."</div>
+        <h3 class="diag-q-question">Which RCTFC element is missing?</h3>
+        <div class="diag-options">
+          <button class="diag-opt" data-value="role">Role</button>
+          <button class="diag-opt" data-value="context">Context</button>
+          <button class="diag-opt" data-value="task">Task</button>
+          <button class="diag-opt" data-value="format">Format</button>
+          <button class="diag-opt" data-value="constraints">Constraints</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="diag-item" data-q="2" data-answer="context">
+        <span class="diag-q-label">ITEM 02 OF 05</span>
+        <div class="diag-q-prompt">"You are a pharmacotherapy instructor. Draft a case-based scenario. Format: 200-word vignette plus three guiding questions. Avoid stereotyping."</div>
+        <h3 class="diag-q-question">Which RCTFC element is missing?</h3>
+        <div class="diag-options">
+          <button class="diag-opt" data-value="role">Role</button>
+          <button class="diag-opt" data-value="context">Context</button>
+          <button class="diag-opt" data-value="task">Task</button>
+          <button class="diag-opt" data-value="format">Format</button>
+          <button class="diag-opt" data-value="constraints">Constraints</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="diag-item" data-q="3" data-answer="format">
+        <span class="diag-q-label">ITEM 03 OF 05</span>
+        <div class="diag-q-prompt">"You are a DE course designer. My learners are graduate health science students. Create discussion questions that activate cognitive presence. Do not use single-right-answer framing."</div>
+        <h3 class="diag-q-question">Which RCTFC element is missing?</h3>
+        <div class="diag-options">
+          <button class="diag-opt" data-value="role">Role</button>
+          <button class="diag-opt" data-value="context">Context</button>
+          <button class="diag-opt" data-value="task">Task</button>
+          <button class="diag-opt" data-value="format">Format</button>
+          <button class="diag-opt" data-value="constraints">Constraints</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="diag-item" data-q="4" data-answer="constraints">
+        <span class="diag-q-label">ITEM 04 OF 05</span>
+        <div class="diag-q-prompt">"You are an academic writing coach for nursing learners. My learner is new to DE coursework. Convert this sepsis guideline into a study guide. Format: three tiers — Essential, Advanced, Optional."</div>
+        <h3 class="diag-q-question">Which RCTFC element is missing or weakest?</h3>
+        <div class="diag-options">
+          <button class="diag-opt" data-value="role">Role</button>
+          <button class="diag-opt" data-value="context">Context</button>
+          <button class="diag-opt" data-value="task">Task</button>
+          <button class="diag-opt" data-value="format">Format</button>
+          <button class="diag-opt" data-value="constraints">Constraints</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="diag-item" data-q="5" data-answer="task">
+        <span class="diag-q-label">ITEM 05 OF 05</span>
+        <div class="diag-q-prompt">"You are a simulation specialist. My course is a DE anatomy course for first-year PA students. Format: 150 words per scenario, with three reflection questions. Avoid single-answer framing and stay clinically accurate."</div>
+        <h3 class="diag-q-question">Which RCTFC element is missing?</h3>
+        <div class="diag-options">
+          <button class="diag-opt" data-value="role">Role</button>
+          <button class="diag-opt" data-value="context">Context</button>
+          <button class="diag-opt" data-value="task">Task</button>
+          <button class="diag-opt" data-value="format">Format</button>
+          <button class="diag-opt" data-value="constraints">Constraints</button>
+        </div>
+        <div class="diag-feedback"></div>
+      </div>
+
+      <div class="diag-controls">
+        <span class="diag-counter"><strong id="diag-q-num">1</strong> of 5 · Correct: <strong id="diag-correct">0</strong></span>
+        <button class="btn btn-primary" id="diag-next" disabled>Next item →</button>
+      </div>
+
+      <div class="diag-summary" id="diag-summary">
+        <h3>Diagnostic complete.</h3>
+        <div class="diag-score" id="diag-final-score">0 / 5</div>
+        <p id="diag-final-msg">You are ready to move on to the prompt anatomy block.</p>
+        <button class="btn btn-primary" id="diag-restart" style="background: var(--green); border-color: var(--green);">Retake diagnostic</button>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 2.7 — LABELED GRAPHIC / PROMPT ANATOMY ============ -->
+    <section class="block" id="b27">
+      <div class="block-head">
+        <span class="block-num">2.7</span>
+        <span class="block-type">Labeled Graphic · Prompt Anatomy</span>
+      </div>
+      <h2 class="block-title">See an RCTFC prompt, fully labeled</h2>
+      <p class="lede">Hover or click each highlighted phrase in the prompt to see which RCTFC element it maps to. Five hotspots, five elements.</p>
+
+      <div class="anatomy-wrap">
+        <div class="anatomy-prompt">
+          <span class="anatomy-prompt-label">WORKED PROMPT · CARDIOLOGY DISCUSSION CASE</span>
+          <span class="hotspot" data-hs="1">You are a pharmacotherapy instructor with ten years of DE teaching experience<span class="hs-num">1</span></span>. <span class="hotspot" data-hs="2">My Week 4 cardiology module is for graduate pharmacy students in an asynchronous DE course aligned to outcome LO-4.2<span class="hs-num">2</span></span>. <span class="hotspot" data-hs="3">Draft one case-based scenario for a Week 4 discussion board<span class="hs-num">3</span></span>. <span class="hotspot" data-hs="4">Format: a 200-word vignette plus three guiding questions mapped to the Triggering, Exploratory, and Integrative CoI phases<span class="hs-num">4</span></span>. <span class="hotspot" data-hs="5">Avoid demographic stereotyping, include one clinical ambiguity, and cite your reasoning at the end<span class="hs-num">5</span></span>.
+        </div>
+
+        <div class="anatomy-labels">
+          <div class="anatomy-label" data-hs="1">
+            <div class="anatomy-label-head">
+              <span class="anatomy-letter">R</span>
+              <span class="anatomy-num">HOTSPOT 01</span>
+            </div>
+            <div class="anatomy-word">Role</div>
+            <div class="anatomy-body">Bounded expertise and stance. Pharmacotherapy, not all pharmacy. DE-experienced, not generic.</div>
+          </div>
+          <div class="anatomy-label" data-hs="2">
+            <div class="anatomy-label-head">
+              <span class="anatomy-letter">C</span>
+              <span class="anatomy-num">HOTSPOT 02</span>
+            </div>
+            <div class="anatomy-word">Context</div>
+            <div class="anatomy-body">Course, module, audience, modality, and aligned learning outcome. Every variable named.</div>
+          </div>
+          <div class="anatomy-label" data-hs="3">
+            <div class="anatomy-label-head">
+              <span class="anatomy-letter">T</span>
+              <span class="anatomy-num">HOTSPOT 03</span>
+            </div>
+            <div class="anatomy-word">Task</div>
+            <div class="anatomy-body">A single verb-driven, measurable instructional action. One output, clearly bounded.</div>
+          </div>
+          <div class="anatomy-label" data-hs="4">
+            <div class="anatomy-label-head">
+              <span class="anatomy-letter">F</span>
+              <span class="anatomy-num">HOTSPOT 04</span>
+            </div>
+            <div class="anatomy-word">Format</div>
+            <div class="anatomy-body">Output structure tied to instructional use. Length and shape both specified.</div>
+          </div>
+          <div class="anatomy-label" data-hs="5">
+            <div class="anatomy-label-head">
+              <span class="anatomy-letter">C</span>
+              <span class="anatomy-num">HOTSPOT 05</span>
+            </div>
+            <div class="anatomy-word">Constraints</div>
+            <div class="anatomy-body">Ethics, accuracy, and scope guardrails. Prevents generic or harmful output.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 2.8 — BUTTON STACK / TEMPLATE LIBRARY ============ -->
+    <section class="block" id="b28">
+      <div class="block-head">
+        <span class="block-num">2.8</span>
+        <span class="block-type">Button Stack · Prompt Template Library</span>
+      </div>
+      <h2 class="block-title">Six templates for common DE tasks</h2>
+      <p class="lede">Each template is a pre-built RCTFC prompt for a common clinician-educator task. Click any card to view and copy the full prompt.</p>
+
+      <div class="library-grid">
+        <div class="lib-card" data-tpl="1">
+          <span class="lib-num">TEMPLATE 01</span>
+          <h3 class="lib-title">Case-Based Scenario Generator</h3>
+          <p class="lib-use">Draft clinical cases for asynchronous discussion boards, mapped to a named learning outcome.</p>
+          <div class="lib-footer">
+            <span class="lib-samr">SAMR · AUGMENTATION</span>
+            <button class="lib-open">View prompt →</button>
+          </div>
+        </div>
+        <div class="lib-card" data-tpl="2">
+          <span class="lib-num">TEMPLATE 02</span>
+          <h3 class="lib-title">Reading Summary Scaffold</h3>
+          <p class="lib-use">Convert dense readings into tiered study guides: Essential, Advanced, Optional.</p>
+          <div class="lib-footer">
+            <span class="lib-samr">SAMR · AUGMENTATION</span>
+            <button class="lib-open">View prompt →</button>
+          </div>
+        </div>
+        <div class="lib-card" data-tpl="3">
+          <span class="lib-num">TEMPLATE 03</span>
+          <h3 class="lib-title">Discussion Question Writer</h3>
+          <p class="lib-use">Generate triggering, exploratory, and integrative questions aligned to CoI cognitive presence.</p>
+          <div class="lib-footer">
+            <span class="lib-samr">SAMR · MODIFICATION</span>
+            <button class="lib-open">View prompt →</button>
+          </div>
+        </div>
+        <div class="lib-card" data-tpl="4">
+          <span class="lib-num">TEMPLATE 04</span>
+          <h3 class="lib-title">Formative Feedback First-Pass</h3>
+          <p class="lib-use">Draft Glow/Grow/Go formative feedback from a rubric without assigning scores.</p>
+          <div class="lib-footer">
+            <span class="lib-samr">SAMR · MODIFICATION</span>
+            <button class="lib-open">View prompt →</button>
+          </div>
+        </div>
+        <div class="lib-card" data-tpl="5">
+          <span class="lib-num">TEMPLATE 05</span>
+          <h3 class="lib-title">Rubric Row Drafter</h3>
+          <p class="lib-use">Draft a four-level rubric row with explicit AI-use expectations built in.</p>
+          <div class="lib-footer">
+            <span class="lib-samr">SAMR · AUGMENTATION</span>
+            <button class="lib-open">View prompt →</button>
+          </div>
+        </div>
+        <div class="lib-card" data-tpl="6">
+          <span class="lib-num">TEMPLATE 06</span>
+          <h3 class="lib-title">Syllabus Disclosure Builder</h3>
+          <p class="lib-use">Draft a one-paragraph AI disclosure for your syllabus, aligned to institutional policy.</p>
+          <div class="lib-footer">
+            <span class="lib-samr">SAMR · AUGMENTATION</span>
+            <button class="lib-open">View prompt →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Artifact asset needed</strong>
+        In production, each template is downloadable as a plain-text file or copyable to clipboard inside Rise 360. Consider bundling all six into a single "Prompt Library PDF" as a Unit 02 downloadable resource. Source is Appendix E of the course spec.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 2.9 — REFLECTION / DRAFT ============ -->
+    <section class="block" id="b29">
+      <div class="block-head">
+        <span class="block-num">2.9</span>
+        <span class="block-type">Reflection · My First RCTFC Prompt</span>
+      </div>
+      <h2 class="block-title">Draft your own prompt</h2>
+      <p class="lede">This is your Unit 02 summative artifact. Identify one course outcome. Build one RCTFC prompt that serves it. You will evaluate it against the Prompt Quality Rubric in Block 2.10.</p>
+
+      <div class="reflect-card">
+        <span class="reflect-label">DRAFT · PRIVATE TO YOU</span>
+        <div class="reflect-prompt">Write one RCTFC prompt aligned to a learning outcome in your current course.</div>
+
+        <div class="reflect-fields">
+          <input type="text" class="reflect-field" id="course-field" placeholder="Course name · e.g. Cardiovascular Pharmacotherapy (PHAR 752)">
+          <input type="text" class="reflect-field" id="outcome-field" placeholder="Aligned learning outcome · e.g. Analyze heart failure regimens">
+          <textarea class="reflect-textarea" id="prompt-field" placeholder="Paste your RCTFC prompt here. Work through each letter:
+
+Role: You are a [expert in X]...
+Context: My course is [audience, modality, outcome]...
+Task: [One verb-driven task]...
+Format: [Length, structure]...
+Constraints: [Ethics, accuracy, scope]..."></textarea>
+        </div>
+
+        <div class="reflect-footer">
+          <span class="reflect-cite">Technology Acceptance · Davis (1989)</span>
+          <button class="reflect-save" id="reflect-save">Save my draft</button>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <strong>Rise 360 integration note</strong>
+        In production, this draft feeds the summative artifact and can optionally post to the Unit 02 peer discussion board where peers apply the Prompt Quality Rubric (Appendix F of the course spec). This HTML prototype uses in-page memory only.
+      </div>
+    </section>
+
+    <!-- ============ BLOCK 2.10 — UNIT CLOSE ============ -->
+    <section class="block" id="b210">
+      <div class="block-head">
+        <span class="block-num">2.10</span>
+        <span class="block-type">Statement B · Close</span>
+      </div>
+      <h2 class="block-title">Close and bridge</h2>
+
+      <div class="close">
+        <div class="close-left">
+          <h3>You now build prompts the way you build lessons.</h3>
+          <p>Role. Context. Task. Format. Constraints. A prompt that carries all five is an instructional artifact, not a command. Outputs change because the design changed.</p>
+          <p>Unit 03 adds the ethical lens. Before you deploy your prompt library, you will apply a five-part ethics screen — because healthcare education carries patient, privacy, and integrity stakes no other domain replicates.</p>
+        </div>
+        <div class="next-unit">
+          <div class="next-unit-label">COMING UP · UNIT 03 · 35 MIN</div>
+          <div class="next-unit-title">AI Ethics and Bias in Clinical Contexts</div>
+          <div class="next-unit-desc">The PRISM screen, the three failure modes, and a one-paragraph disclosure stance you can paste into your syllabus.</div>
+          <a href="#" class="next-unit-btn">
+            Begin Unit 03
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COLOPHON ============ -->
+    <footer class="colophon">
+      <div class="col col-brand">
+        <strong>Applied DE Project</strong>
+        A theory-grounded micro-course for health science faculty teaching in distance education environments. Built on Community of Inquiry, TAM, Self-Regulated Learning, and SAMR.
+      </div>
+      <div class="col">
+        <h5>Framework Grounding</h5>
+        <p>Davis (1989)</p>
+        <p>Venkatesh et al. (2003)</p>
+        <p>Garrison et al. (2000)</p>
+        <p>Puentedura (2006)</p>
+      </div>
+      <div class="col">
+        <h5>Attribution</h5>
+        <p>Marcus "MD" Taylor</p>
+        <p>UNT Health Science Center</p>
+        <p>Unit 02 · v1.0</p>
+      </div>
+    </footer>
+
+  </div>
+</main>
+
+<!-- ============ TEMPLATE MODAL ============ -->
+<div class="lib-modal" id="lib-modal">
+  <div class="lib-modal-box">
+    <button class="lib-modal-close" id="modal-close" aria-label="Close">×</button>
+    <div class="lib-modal-label" id="modal-label">TEMPLATE 01</div>
+    <h2 class="lib-modal-title" id="modal-title"></h2>
+    <div class="lib-modal-prompt" id="modal-prompt"></div>
+    <div class="lib-modal-actions">
+      <button class="btn btn-ghost" id="modal-copy">Copy prompt</button>
+      <button class="btn btn-primary" id="modal-done">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ RAIL SCROLL SPY ============
+const blocks = document.querySelectorAll('.block');
+const dots = document.querySelectorAll('.rail-dot');
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      dots.forEach(d => d.classList.remove('active'));
+      const active = document.querySelector(`.rail-dot[href="#${id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+blocks.forEach(b => spy.observe(b));
+
+// ============ BLOCK 2.3 — RCTFC PROCESS ============
+const rctfcData = {
+  r: {
+    word: 'Role',
+    def: 'Name the expertise and stance the model should adopt before it produces anything.',
+    why: 'A model without a role defaults to generic, average-case output. A model with a role draws from a specific slice of its training. Role-setting is the single highest-leverage edit most faculty can make.',
+    sample: '<strong>"You are an expert health science instructor</strong> in pharmacotherapy with ten years of teaching experience in asynchronous DE formats..."',
+    checklist: [
+      'Names an expertise area (not just "a helpful assistant").',
+      'Gives a stance the model can hold across the whole prompt.',
+      'Bounds the domain — pharmacotherapy, not all of pharmacy.'
+    ]
+  },
+  c1: {
+    word: 'Context',
+    def: 'Describe the course, audience, modality, and aligned outcome so the model knows who and what this is for.',
+    why: 'Context is what separates a generic teaching artifact from one that fits your course. Name the variables the model cannot guess — your learners\' level, your course modality, the outcome this output serves.',
+    sample: '<strong>"My course is an asynchronous DE course</strong> for graduate pharmacy students aligned to learning outcome LO-4.2: analyze complex heart failure regimens..."',
+    checklist: [
+      'Names the course, module, or unit.',
+      'Describes the audience (discipline, level, prior experience).',
+      'States the DE modality (async, hybrid, sync).',
+      'Cites the aligned learning outcome.'
+    ]
+  },
+  t: {
+    word: 'Task',
+    def: 'State what the model should produce — one verb-driven, measurable instructional action.',
+    why: 'A vague task produces a vague artifact. Name the verb. Bound the scope. One task per prompt, to keep outputs reviewable and revisable.',
+    sample: '<strong>"Draft one case-based scenario</strong> for a Week 4 discussion board..."',
+    checklist: [
+      'Uses a concrete verb (draft, generate, summarize, critique).',
+      'Bounds the output to one artifact.',
+      'Avoids compound tasks that require different styles.'
+    ]
+  },
+  f: {
+    word: 'Format',
+    def: 'Specify the output structure and length. Format is how the output will be used.',
+    why: 'Format is often the difference between output you can use and output you must rewrite. If the output will live in a discussion board, a syllabus, or a rubric, say so. Give length, shape, and section structure.',
+    sample: '<strong>"Format: a 200-word vignette</strong> plus three guiding questions mapped to the Triggering, Exploratory, and Integrative phases of CoI cognitive presence..."',
+    checklist: [
+      'Specifies length or word count.',
+      'Names the structural shape (list, table, paragraph, sections).',
+      'Ties format to instructional use.'
+    ]
+  },
+  c2: {
+    word: 'Constraints',
+    def: 'Name the ethical, accuracy, and scope guardrails the model must observe.',
+    why: 'Constraints prevent both harmful output and generic output. Name what to avoid (stereotyping), what to preserve (citations, clinical accuracy), and what is outside the scope of the task.',
+    sample: '<strong>"Avoid demographic stereotyping</strong>, include one clinical ambiguity for discussion, and cite your reasoning at the end. Flag any content requiring verification..."',
+    checklist: [
+      'Names at least one ethics constraint.',
+      'Specifies an accuracy or verification requirement.',
+      'Scopes out content the model should not produce.'
+    ]
+  }
+};
+
+document.querySelectorAll('.rctfc-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const step = tab.dataset.step;
+    document.querySelectorAll('.rctfc-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    const d = rctfcData[step];
+    document.getElementById('rctfc-word').textContent = d.word;
+    document.getElementById('rctfc-def').textContent = d.def;
+    document.getElementById('rctfc-why').textContent = d.why;
+    document.getElementById('rctfc-sample').innerHTML = d.sample;
+    const list = document.getElementById('rctfc-checklist');
+    list.innerHTML = '';
+    d.checklist.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      list.appendChild(li);
+    });
+  });
+});
+
+// ============ BLOCK 2.4 — COMPARE TABS ============
+document.querySelectorAll('.compare-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const panel = tab.dataset.panel;
+    document.querySelectorAll('.compare-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.compare-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(panel).classList.add('active');
+  });
+});
+
+// ============ BLOCK 2.6 — PROMPT DIAGNOSTIC ============
+const diagItems = document.querySelectorAll('.diag-item');
+const diagDots = document.querySelectorAll('.diag-dot');
+const diagQNum = document.getElementById('diag-q-num');
+const diagCorrectEl = document.getElementById('diag-correct');
+const diagNext = document.getElementById('diag-next');
+const diagSummary = document.getElementById('diag-summary');
+const diagFinalScore = document.getElementById('diag-final-score');
+const diagFinalMsg = document.getElementById('diag-final-msg');
+const diagRestart = document.getElementById('diag-restart');
+
+const feedbackText = {
+  role: {
+    right: 'The Role is explicit and bounded. A model with a defined expertise draws from a specific slice of its training, which is why your outputs become more clinically specific.',
+    miss_role: 'The prompt never names who the model should be. Without a role, the output defaults to generic, average-case writing. Add: "You are an expert [discipline] instructor in [subfield]..."',
+    miss_context: 'Context is thin or absent. The model does not know the course, audience, or aligned outcome. Add: course name, learner level, DE modality, and the learning outcome this serves.',
+    miss_task: 'The task verb is missing or ambiguous. Add a single, verb-driven action: "Draft...", "Generate...", "Critique...", "Summarize..."',
+    miss_format: 'Format is unspecified. Add length, structure, and how the output will be used: "Format: a 200-word vignette plus three guiding questions..."',
+    miss_constraints: 'Constraints are missing. Without guardrails, the output may include stereotyping, fabricated citations, or out-of-scope content. Add ethics, accuracy, and scope rules.'
+  }
+};
+
+function getFeedback(qNum, answer, selected) {
+  const correct = selected === answer;
+  const msg = {
+    role: 'The prompt is missing an explicit Role. The model has no stance to adopt, so it defaults to generic writing.',
+    context: 'The prompt is missing Context. No course, audience, modality, or outcome is named, so outputs cannot be course-fit.',
+    task: 'The prompt is missing a clear Task verb. The model is left to guess what to produce.',
+    format: 'The prompt is missing a Format specification. Length and shape are not defined, so the output is unpredictable.',
+    constraints: 'The prompt is missing Constraints. Without guardrails, the model may drift toward stereotyping, fabrication, or out-of-scope output.'
+  };
+  return { correct, message: msg[answer] };
+}
+
+diagItems.forEach(item => {
+  const q = parseInt(item.dataset.q);
+  const answer = item.dataset.answer;
+  const opts = item.querySelectorAll('.diag-opt');
+  const feedback = item.querySelector('.diag-feedback');
+
+  opts.forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (item.dataset.answered) return;
+      item.dataset.answered = 'true';
+      const selected = opt.dataset.value;
+      const result = getFeedback(q, answer, selected);
+
+      opts.forEach(o => {
+        if (o.dataset.value === answer) o.classList.add('correct');
+        else if (o === opt && !result.correct) o.classList.add('incorrect');
+      });
+
+      feedback.classList.add('show', result.correct ? 'right' : 'wrong');
+      feedback.innerHTML = (result.correct
+        ? '<strong>Correct</strong>'
+        : '<strong>Not quite</strong>') +
+        result.message;
+
+      if (result.correct) {
+        const count = parseInt(diagCorrectEl.textContent) + 1;
+        diagCorrectEl.textContent = count;
+      }
+      diagDots[q - 1].classList.remove('active');
+      diagDots[q - 1].classList.add('done');
+      diagNext.disabled = false;
+    });
+  });
+});
+
+let currentQ = 1;
+diagNext.addEventListener('click', () => {
+  const current = document.querySelector(`.diag-item[data-q="${currentQ}"]`);
+  current.classList.remove('active');
+  currentQ++;
+  if (currentQ > 5) {
+    diagSummary.classList.add('show');
+    diagNext.style.display = 'none';
+    const score = parseInt(diagCorrectEl.textContent);
+    diagFinalScore.textContent = `${score} / 5`;
+    if (score === 5) diagFinalMsg.textContent = 'You have a working diagnostic eye for prompt weakness. Move on to Block 2.7.';
+    else if (score >= 3) diagFinalMsg.textContent = 'You can spot missing RCTFC elements most of the time. Consider reviewing the elements you missed before Block 2.7.';
+    else diagFinalMsg.textContent = 'Review the RCTFC process in Block 2.3 before continuing. The diagnostic eye sharpens with practice.';
+    return;
+  }
+  const next = document.querySelector(`.diag-item[data-q="${currentQ}"]`);
+  next.classList.add('active');
+  diagDots[currentQ - 1].classList.add('active');
+  diagQNum.textContent = currentQ;
+  diagNext.disabled = true;
+});
+
+diagRestart.addEventListener('click', () => {
+  currentQ = 1;
+  diagCorrectEl.textContent = '0';
+  diagQNum.textContent = '1';
+  diagSummary.classList.remove('show');
+  diagNext.style.display = '';
+  diagNext.disabled = true;
+  diagItems.forEach((item, i) => {
+    delete item.dataset.answered;
+    item.classList.remove('active');
+    if (i === 0) item.classList.add('active');
+    item.querySelectorAll('.diag-opt').forEach(o => {
+      o.classList.remove('correct', 'incorrect', 'selected');
+    });
+    const fb = item.querySelector('.diag-feedback');
+    fb.classList.remove('show', 'right', 'wrong');
+    fb.innerHTML = '';
+  });
+  diagDots.forEach((d, i) => {
+    d.classList.remove('done', 'active');
+    if (i === 0) d.classList.add('active');
+  });
+});
+
+// ============ BLOCK 2.7 — ANATOMY HOTSPOTS ============
+document.querySelectorAll('.hotspot').forEach(hs => {
+  const id = hs.dataset.hs;
+  const label = document.querySelector(`.anatomy-label[data-hs="${id}"]`);
+  hs.addEventListener('mouseenter', () => { hs.classList.add('active'); if (label) label.classList.add('active'); });
+  hs.addEventListener('mouseleave', () => { hs.classList.remove('active'); if (label) label.classList.remove('active'); });
+  hs.addEventListener('click', () => {
+    document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('active'));
+    document.querySelectorAll('.anatomy-label').forEach(l => l.classList.remove('active'));
+    hs.classList.add('active');
+    if (label) label.classList.add('active');
+  });
+});
+document.querySelectorAll('.anatomy-label').forEach(label => {
+  const id = label.dataset.hs;
+  const hs = document.querySelector(`.hotspot[data-hs="${id}"]`);
+  label.addEventListener('mouseenter', () => { label.classList.add('active'); if (hs) hs.classList.add('active'); });
+  label.addEventListener('mouseleave', () => { label.classList.remove('active'); if (hs) hs.classList.remove('active'); });
+});
+
+// ============ BLOCK 2.8 — TEMPLATE LIBRARY MODAL ============
+const templates = {
+  1: {
+    label: 'TEMPLATE 01 · CASE-BASED SCENARIO',
+    title: 'Case-Based Scenario Generator',
+    prompt: `Role: You are an expert health science instructor in [discipline].
+
+Context: My course is an asynchronous DE course for [audience] aligned to learning outcome [LO].
+
+Task: Draft a clinical case for learners to analyze on a discussion board.
+
+Format: A 200-word vignette plus three guiding questions.
+
+Constraints: Avoid demographic stereotyping. Include one clinical ambiguity that invites discussion. Cite your reasoning at the end.`
+  },
+  2: {
+    label: 'TEMPLATE 02 · READING SUMMARY SCAFFOLD',
+    title: 'Reading Summary Scaffold',
+    prompt: `Role: You are an academic writing coach for health science learners.
+
+Context: My learner is a clinician new to asynchronous DE coursework.
+
+Task: Convert a dense reading into a scaffolded study guide.
+
+Format: Three tiers — Essential, Advanced, Optional — with 2 to 4 bullets per tier.
+
+Constraints: Use plain language. Preserve APA citations. Flag any content that requires verification before classroom use.`
+  },
+  3: {
+    label: 'TEMPLATE 03 · DISCUSSION QUESTIONS',
+    title: 'Discussion Question Writer',
+    prompt: `Role: You are a DE course designer familiar with the Community of Inquiry framework.
+
+Context: Learners are graduate health science students in an asynchronous DE course.
+
+Task: Draft three discussion questions that activate cognitive presence per Garrison et al. (2000).
+
+Format: One triggering question, one exploratory question, one integrative question.
+
+Constraints: Each question requires evidence from the week's readings. Avoid single-right-answer framing.`
+  },
+  4: {
+    label: 'TEMPLATE 04 · FORMATIVE FEEDBACK',
+    title: 'Formative Feedback First-Pass',
+    prompt: `Role: You are an instructional feedback assistant, not a grader.
+
+Context: The rubric is attached. The submission is a graduate-level clinical reflection.
+
+Task: Draft formative feedback on the student submission.
+
+Format: Three paragraphs using the Glow, Grow, Go format, aligned to rubric criteria.
+
+Constraints: Do not assign a score. Flag anything ambiguous for the instructor to review. Do not rewrite the student's work.`
+  },
+  5: {
+    label: 'TEMPLATE 05 · RUBRIC ROW',
+    title: 'Rubric Row Drafter',
+    prompt: `Role: You are an assessment design partner.
+
+Context: The course outcome is [LO] in an asynchronous DE setting.
+
+Task: Draft a rubric row with four performance levels and explicit AI-use expectations.
+
+Format: Criterion, Exceeds, Mastery, Near, Below, and an AI-use note for each level.
+
+Constraints: Use criterion-referenced language. Avoid norm-referenced phrasing. Keep levels distinguishable, not just adjective-swapped.`
+  },
+  6: {
+    label: 'TEMPLATE 06 · DISCLOSURE STATEMENT',
+    title: 'Syllabus Disclosure Builder',
+    prompt: `Role: You are a policy writing assistant.
+
+Context: My DE course will permit AI in specific ways and restrict it in others.
+
+Task: Draft a one-paragraph AI disclosure for the syllabus.
+
+Format: Stance, permitted uses, restricted uses, disclosure requirement, and a support resource link.
+
+Constraints: Keep to 180 words. Align with institutional policy. Use student-friendly language, not legal language.`
+  }
+};
+
+const modal = document.getElementById('lib-modal');
+const modalLabel = document.getElementById('modal-label');
+const modalTitle = document.getElementById('modal-title');
+const modalPrompt = document.getElementById('modal-prompt');
+const modalClose = document.getElementById('modal-close');
+const modalDone = document.getElementById('modal-done');
+const modalCopy = document.getElementById('modal-copy');
+
+document.querySelectorAll('.lib-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const id = card.dataset.tpl;
+    const t = templates[id];
+    if (!t) return;
+    modalLabel.textContent = t.label;
+    modalTitle.textContent = t.title;
+    modalPrompt.textContent = t.prompt;
+    modal.classList.add('show');
+  });
+});
+
+modalClose.addEventListener('click', () => modal.classList.remove('show'));
+modalDone.addEventListener('click', () => modal.classList.remove('show'));
+modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+
+modalCopy.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(modalPrompt.textContent);
+    modalCopy.textContent = '✓ Copied';
+    setTimeout(() => modalCopy.textContent = 'Copy prompt', 2000);
+  } catch {
+    modalCopy.textContent = 'Select and copy manually';
+    setTimeout(() => modalCopy.textContent = 'Copy prompt', 2000);
+  }
+});
+
+// ============ BLOCK 2.9 — REFLECTION SAVE ============
+const reflectSave = document.getElementById('reflect-save');
+const promptField = document.getElementById('prompt-field');
+reflectSave.addEventListener('click', () => {
+  if (!promptField.value.trim()) {
+    reflectSave.textContent = 'Please draft a prompt first';
+    setTimeout(() => reflectSave.textContent = 'Save my draft', 2500);
+    return;
+  }
+  reflectSave.textContent = '✓ Saved to this session';
+  reflectSave.style.background = '#E8F3EC';
+  reflectSave.style.color = '#007B3C';
+  setTimeout(() => {
+    reflectSave.textContent = 'Save my draft';
+    reflectSave.style.background = '';
+    reflectSave.style.color = '';
+  }, 3000);
+});
+
+// ============ VIDEO PLACEHOLDER CLICK ============
+document.querySelectorAll('.video-play').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wrapper = btn.closest('.scenario-stage');
+    if (wrapper.querySelector('.video-placeholder-msg')) return;
+    const msg = document.createElement('div');
+    msg.className = 'video-placeholder-msg';
+    msg.style.cssText = 'position:absolute; bottom:24px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.75); color:#F2EBD6; padding:10px 18px; border-radius:3px; font-family:"JetBrains Mono",monospace; font-size: 14px; letter-spacing: 1px; backdrop-filter:blur(8px); z-index:10;';
+    msg.textContent = 'VIDEO ASSET PENDING · SEE PRODUCTION NOTES';
+    wrapper.appendChild(msg);
+    setTimeout(() => msg.remove(), 2800);
+  });
+});
+
+// ESC closes modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.classList.contains('show')) modal.classList.remove('show');
+});
+</script>
+</body>
+</html>
