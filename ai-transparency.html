@@ -37,7 +37,41 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  .wrap { max-width: 860px; margin: 0 auto; padding: 80px 56px 120px; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 40px 56px 120px; }
+
+  /* ============== BACK LINK ============== */
+  .back-link-bar {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 56px 0;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+  .back-link:hover {
+    border-bottom-color: var(--green);
+    transform: translateX(-3px);
+  }
+  .back-link-arrow {
+    font-size: 16px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  .back-link:hover .back-link-arrow {
+    transform: translateX(-2px);
+  }
 
   /* ============== MASTHEAD ============== */
   .masthead {
@@ -262,6 +296,13 @@
 </head>
 <body>
 
+<div class="back-link-bar">
+  <a href="index.html" class="back-link">
+    <span class="back-link-arrow">←</span>
+    Back to course home
+  </a>
+</div>
+
 <div class="wrap">
 
   <!-- MASTHEAD -->
@@ -277,7 +318,7 @@
   </header>
 
   <!-- INTRO -->
-  <p>This course was authored by <strong>Marcus "MD" Taylor</strong>, Instructional Designer and AI Integration Specialist at the UNT Health Science Center. The instructional design, the theoretical grounding, the pedagogical sequencing, the clinical scenarios, and every final editorial decision are the author's own. AI tools were used at specific points in the production process, in specific roles. Those roles are named below.</p>
+  <p>This course was authored by <strong>Marcus "MD" Taylor</strong>, Instructional Designer and AI Integration Specialist at UNT Health. The instructional design, the theoretical grounding, the pedagogical sequencing, the clinical scenarios, and every final editorial decision are the author's own. AI tools were used at specific points in the production process, in specific roles. Those roles are named below.</p>
 
   <p>The principle in Unit 03 of this course — <em>AI refines, it does not replace</em> — applies to the course's own production. What AI assisted with is named. What it did not author is also named.</p>
 
@@ -293,7 +334,7 @@
         <div class="contrib-tool-role">Structure & Layout</div>
       </div>
       <div class="contrib-use">
-        <strong>Role:</strong> HTML structure and visual layout of the five interactive course units. Claude generated the Rise 360-compatible block templates, the editorial grid system, the color-token architecture, and the scroll-spy navigation. Every design decision was reviewed and approved by the author before commit.
+        <strong>Role:</strong> HTML structure and visual layout of the five interactive course units. Claude generated the LMS-compatible block templates, the editorial grid system, the color-token architecture, and the scroll-spy navigation. Every design decision was reviewed and approved by the author before commit.
       </div>
     </div>
 
@@ -355,7 +396,7 @@
       <h5>Author</h5>
       <p>Marcus "MD" Taylor</p>
       <p>Instructional Designer & AI Integration Specialist</p>
-      <p>UNT Health Science Center</p>
+      <p>UNT Health</p>
     </div>
     <div class="colophon-item">
       <h5>Document</h5>
