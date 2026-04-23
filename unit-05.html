@@ -1552,6 +1552,36 @@
     .pill { border-right: none; border-bottom: 1px solid var(--rule); }
     .colophon { grid-template-columns: 1fr; }
   }
+
+  /* Back to Course Home link in masthead meta bar */
+  .masthead-home {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--grey);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .masthead-home:hover {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+  .masthead-home-arrow {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  .masthead-home:hover .masthead-home-arrow {
+    transform: translateX(-3px);
+  }
 </style>
 </head>
 <body>
@@ -1577,11 +1607,11 @@
 <main class="shell">
   <div class="wrap">
 
-   <!-- ============ MASTHEAD ============ -->
+    <!-- ============ MASTHEAD ============ -->
     <header class="masthead">
       <div class="masthead-meta">
-        <a href="index.html">← Back to Course Home</a>
-        <span><strong>Unit 05 of 05</strong> · 30 minutes</span>
+        <a href="index.html" class="masthead-home" aria-label="Back to course home"><span class="masthead-home-arrow">&larr;</span> <span class="masthead-home-text">Back to Course Home</span></a>
+        <span><strong>Unit 05 of 05</strong> · 35 minutes · Final Unit</span>
       </div>
       <span class="unit-number">05</span>
       <h1 class="unit-title">Assessment and Feedback with AI Tools</h1>
@@ -2092,7 +2122,10 @@
         </div>
       </div>
 
-     
+      <div class="placeholder-note">
+        <strong>Production integration note</strong>
+        In production, the completed rubric row saves to learner progress and posts to the Unit 05 peer review where peers apply the Rubric Quality Rubric (course spec Appendix F). This HTML prototype uses in-page memory only.
+      </div>
     </section>
 
     <!-- ============ BLOCK 5.8 — PORTFOLIO ASSEMBLY ============ -->
@@ -2176,7 +2209,10 @@
         </div>
       </div>
 
-     
+      <div class="placeholder-note">
+        <strong>Production integration note</strong>
+        In production, this commitment pairs with the course portfolio as the final submission. A follow-up email six weeks after course completion asks learners whether the change was implemented — the closing loop for the SRL framework underlying the course.
+      </div>
     </section>
 
     <!-- ============ BLOCK 5.10 — COURSE CLOSE ============ -->
@@ -2232,7 +2268,7 @@
       <div class="col">
         <h5>Attribution</h5>
         <p>Marcus "MD" Taylor</p>
-        <p>UNT Health </p>
+        <p>UNT Health</p>
         <p>Unit 05 · v1.0</p>
       </div>
     </footer>
