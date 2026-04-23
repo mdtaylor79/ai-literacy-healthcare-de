@@ -1361,6 +1361,36 @@
     .builder-left, .builder-right { padding: 24px 28px; }
     .builder-left { border-right: none; border-bottom: 1px solid var(--rule); }
   }
+
+  /* Back to Course Home link in masthead meta bar */
+  .masthead-home {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--grey);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .masthead-home:hover {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+  .masthead-home-arrow {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  .masthead-home:hover .masthead-home-arrow {
+    transform: translateX(-3px);
+  }
 </style>
 </head>
 <body>
@@ -1386,11 +1416,11 @@
 <main class="shell">
   <div class="wrap">
 
-  <!-- ============ MASTHEAD ============ -->
-     <header class="masthead">
+    <!-- ============ MASTHEAD ============ -->
+    <header class="masthead">
       <div class="masthead-meta">
-        <a href="index.html">← Back to Course Home</a>
-        <span><strong>Unit 03 of 05</strong> · 30 minutes</span>
+        <a href="index.html" class="masthead-home" aria-label="Back to course home"><span class="masthead-home-arrow">&larr;</span> <span class="masthead-home-text">Back to Course Home</span></a>
+        <span><strong>Unit 03 of 05</strong> · 35 minutes</span>
       </div>
       <span class="unit-number">03</span>
       <h1 class="unit-title">AI Ethics and Bias in Clinical Contexts</h1>
@@ -2048,7 +2078,11 @@
         </div>
       </div>
 
-        </section>
+      <div class="placeholder-note">
+        <strong>Production integration note</strong>
+        In production, the assembled stance saves to the learner's progress and is pre-populated into the Block 3.9 reflection. This HTML prototype uses in-page memory only.
+      </div>
+    </section>
 
     <!-- ============ BLOCK 3.9 — REFLECTION ============ -->
     <section class="block" id="b39">
@@ -2069,7 +2103,10 @@
         </div>
       </div>
 
-  
+      <div class="placeholder-note">
+        <strong>Production integration note</strong>
+        In production, this draft posts to the Unit 03 peer discussion forum where peers respond with one scenario that would test the stance. This HTML prototype uses in-page memory only.
+      </div>
     </section>
 
     <!-- ============ BLOCK 3.10 — UNIT CLOSE ============ -->
@@ -2114,7 +2151,7 @@
       <div class="col">
         <h5>Attribution</h5>
         <p>Marcus "MD" Taylor</p>
-        <p>UNT Health </p>
+        <p>UNT Health</p>
         <p>Unit 03 · v1.0</p>
       </div>
     </footer>
